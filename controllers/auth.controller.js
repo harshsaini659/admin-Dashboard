@@ -26,6 +26,7 @@ exports.signup = async (req, res) => {
     await user.save();
 
     const token = generateToken(user)
+    // res.status(201).redirect('/admin/user/dashboard')
     res.status(201).json({
       message: "User created & logged in successfully",
       user: {
@@ -54,6 +55,7 @@ exports.login = async (req, res) => {
     if(!isMatch) return res.status(400).json({message: "Invalid Password"})
 
     const token = generateToken(existingUser)
+    // res.status(201).redirect('/admin/user/dashboard')
     res.status(201).json({
       message: "User Logged In Successfully",
       user: {
@@ -68,3 +70,4 @@ exports.login = async (req, res) => {
     res.status(500).json({ message: "Server error" });
   }
 };
+
