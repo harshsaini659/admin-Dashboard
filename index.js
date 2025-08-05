@@ -5,13 +5,10 @@ dotenv.config()
 const app = express()
 app.use(express.json())
 connectDB()
-const app = express()
-const PORT = 3000
 
 app.get('/', (req,res)=>{
     res.send('Admin Homepage')
 })
-
 
 app.use('/admin/user', require('./routes/auth.routes'))   //signup&login routes
 // app.use('/admin/user', require('./routes/user.routes'))   //protected routes
