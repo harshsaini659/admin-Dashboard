@@ -11,4 +11,10 @@ router.get('/login', (req, res) => {
 router.post('/signup',authController.signup)
 router.post('/login', authController.login)
 
+// Logout route
+router.get('/logout', (req, res) => {
+  res.clearCookie('token');
+  res.redirect('/admin/login');
+});
+
 module.exports = router

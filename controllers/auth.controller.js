@@ -26,16 +26,10 @@ exports.signup = async (req, res) => {
     await user.save();
 
     const token = generateToken(user)
-    // res.status(201).redirect('/admin/user/dashboard')
-    res.status(201).json({
-      message: "User created & logged in successfully",
-      user: {
-        id: user._id,
-        username: user.username,
-        email: user.email,
-      },
-      token,
-    });
+    
+    // Set token in cookie and redirect to dashboard
+    res.cookie('token', token, { httpOnly: true, maxAge: 3600000 }); // 1 hour
+    res.status(201).redirect('/admin/user/dashboard');
   } catch (err) {
     console.error(err);
     res.status(500).json({ message: "Server error" });
@@ -55,16 +49,10 @@ exports.login = async (req, res) => {
     if(!isMatch) return res.status(400).json({message: "Invalid Password"})
 
     const token = generateToken(existingUser)
-    // res.status(201).redirect('/admin/user/dashboard')
-    res.status(201).json({
-      message: "User Logged In Successfully",
-      user: {
-        id: existingUser._id,
-        username: existingUser.username,
-        email: existingUser.email,
-      },
-      token,
-    });
+    
+    // Set token in cookie and redirect to dashboard
+    res.cookie('token', token, { httpOnly: true, maxAge: 3600000 }); // 1 hour
+    res.status(201).redirect('/admin/user/dashboard');
   } catch (err) {
     console.error(err);
     res.status(500).json({ message: "Server error" });

@@ -1,10 +1,12 @@
 const express = require('express')
 const connectDB = require('./config/db')
 const dotenv = require('dotenv')
+const cookieParser = require('cookie-parser')
 dotenv.config()
 const app = express()
 app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
+app.use(cookieParser())
 app.use(express.static('public'));
 connectDB()
 const path = require('path')
@@ -17,7 +19,7 @@ app.get('/', (req,res)=>{
 })
 
 app.use('/admin', require('./routes/auth.routes'))   //signup&login routes
-// app.use('/admin/user', require('./routes/user.routes'))   //protected routes
+app.use('/admin/user', require('./routes/user.routes'))   //protected routes
 
 const PORT = process.env.PORT || 3000
 app.listen(PORT, ()=>{
