@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <title><%= title %> - Admin Dashboard</title>
+        <meta http-equiv="x-ua-compatible" content="ie=edge" />
+        <meta name="description" content="" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta property="og:title" content="" />
+        <meta property="og:type" content="" />
+        <meta property="og:url" content="" />
+        <meta property="og:image" content="" />
+        <!-- Favicon -->
+        <link rel="shortcut icon" type="image/x-icon" href="/imgs/theme/favicon.svg" />
+        <!-- Template CSS -->
+        <script src="/js/vendors/color-modes.js"></script>
+        <link href="/css/main.css?v=6.0" rel="stylesheet" type="text/css" />
+    </head>
+
+    <body>
+        <div class="screen-overlay"></div>
+        <aside class="navbar-aside" id="offcanvas_aside">
+            <div class="aside-top">
+                <a href="/admin/user/dashboard" class="brand-wrap">
+                    <img src="/imgs/theme/logo.svg" class="logo" alt="Nest Dashboard" />
+                </a>
+                <div>
+                    <button class="btn btn-icon btn-aside-minimize"><i class="text-muted material-icons md-menu_open"></i></button>
+                </div>
+            </div>
+            <nav>
+                <ul class="menu-aside">
+                    <li class="menu-item">
+                        <a class="menu-link" href="/admin/user/dashboard">
+                            <i class="icon material-icons md-home"></i>
+                            <span class="text">Dashboard</span>
+                        </a>
+                    </li>
+                    <li class="menu-item active has-submenu">
+                        <a class="menu-link" href="/admin/user/categories">
+                            <i class="icon material-icons md-category"></i>
+                            <span class="text">Categories</span>
+                        </a>
+                        <div class="submenu">
+                            <a href="/admin/user/categories">All Categories</a>
+                            <a href="/admin/user/categories/create">Add Category</a>
+                        </div>
+                    </li>
+                    <li class="menu-item has-submenu">
+                        <a class="menu-link" href="/admin/user/products">
+                            <i class="icon material-icons md-shopping_bag"></i>
+                            <span class="text">Products</span>
+                        </a>
+                        <div class="submenu">
+                            <a href="/admin/user/products/list">Product List</a>
+                            <a href="/admin/user/products/grid">Product grid</a>
+                        </div>
+                    </li>
+                    <li class="menu-item has-submenu">
+                        <a class="menu-link" href="/admin/user/orders">
+                            <i class="icon material-icons md-shopping_cart"></i>
+                            <span class="text">Orders</span>
+                        </a>
+                        <div class="submenu">
+                            <a href="/admin/user/orders/list">Order list</a>
+                            <a href="/admin/user/orders/detail">Order detail</a>
+                        </div>
+                    </li>
+                    <li class="menu-item has-submenu">
+                        <a class="menu-link" href="/admin/user/sellers">
+                            <i class="icon material-icons md-store"></i>
+                            <span class="text">Sellers</span>
+                        </a>
+                        <div class="submenu">
+                            <a href="/admin/user/sellers/cards">Sellers cards</a>
+                            <a href="/admin/user/sellers/list">Sellers list</a>
+                        </div>
+                    </li>
+                    <li class="menu-item has-submenu">
+                        <a class="menu-link" href="/admin/user/products/add">
+                            <i class="icon material-icons md-add_box"></i>
+                            <span class="text">Add product</span>
+                        </a>
+                    </li>
+                    <li class="menu-item has-submenu">
+                        <a class="menu-link" href="/admin/user/transactions">
+                            <i class="icon material-icons md-monetization_on"></i>
+                            <span class="text">Transactions</span>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a class="menu-link" href="/admin/user/reviews">
+                            <i class="icon material-icons md-comment"></i>
+                            <span class="text">Reviews</span>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a class="menu-link" href="/admin/user/brands"> 
+                            <i class="icon material-icons md-stars"></i> 
+                            <span class="text">Brands</span> 
+                        </a>
+                    </li>
+                </ul>
+                <hr />
+                <ul class="menu-aside">
+                    <li class="menu-item has-submenu">
+                        <a class="menu-link" href="/admin/user/settings">
+                            <i class="icon material-icons md-settings"></i>
+                            <span class="text">Settings</span>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a class="menu-link" href="/admin/logout">
+                            <i class="icon material-icons md-exit_to_app"></i>
+                            <span class="text">Logout</span>
+                        </a>
+                    </li>
+                </ul>
+                <br />
+                <br />
+            </nav>
+        </aside>
+        <main class="main-wrap">
+            <header class="main-header navbar">
+                <div class="col-search">
+                    <form class="searchform">
+                        <div class="input-group">
+                            <input list="search_terms" type="text" class="form-control" placeholder="Search term" />
+                            <button class="btn btn-light bg" type="button"><i class="material-icons md-search"></i></button>
+                        </div>
+                        <datalist id="search_terms">
+                            <option value="Products"></option>
+                            <option value="New orders"></option>
+                            <option value="Apple iphone"></option>
+                            <option value="Ahmed Hassan"></option>
+                        </datalist>
+                    </form>
+                </div>
+                <div class="col-nav">
+                    <button class="btn btn-icon btn-mobile me-auto" data-trigger="#offcanvas_aside"><i class="material-icons md-apps"></i></button>
+                    <ul class="nav">
+                        <li class="nav-item">
+                            <a class="nav-link btn-icon" href="#">
+                                <i class="material-icons md-notifications animation-shake"></i>
+                                <span class="badge rounded-pill">3</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link btn-icon darkmode" href="#"> <i class="material-icons md-nights_stay"></i> </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#" class="requestfullscreen nav-link btn-icon"><i class="material-icons md-cast"></i></a>
+                        </li>
+                        <li class="dropdown nav-item">
+                            <a class="dropdown-toggle" data-bs-toggle="dropdown" href="#" id="dropdownLanguage" aria-expanded="false"><i class="material-icons md-public"></i></a>
+                            <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownLanguage">
+                                <a class="dropdown-item text-brand" href="#"><img src="/imgs/theme/flag-us.png" alt="English" />English</a>
+                                <a class="dropdown-item" href="#"><img src="/imgs/theme/flag-fr.png" alt="Français" />Français</a>
+                                <a class="dropdown-item" href="#"><img src="/imgs/theme/flag-jp.png" alt="Français" />日本語</a>
+                                <a class="dropdown-item" href="#"><img src="/imgs/theme/flag-cn.png" alt="Français" />中国人</a>
+                            </div>
+                        </li>
+                        <li class="dropdown nav-item">
+                            <a class="dropdown-toggle" data-bs-toggle="dropdown" href="#" id="dropdownAccount" aria-expanded="false"> 
+                                <img class="img-xs rounded-circle" src="/imgs/people/avatar-2.png" alt="User" />
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownAccount">
+                                <a class="dropdown-item" href="/admin/user/profile"><i class="material-icons md-perm_identity"></i>Edit Profile</a>
+                                <a class="dropdown-item" href="/admin/user/settings"><i class="material-icons md-settings"></i>Account Settings</a>
+                                <a class="dropdown-item" href="/admin/user/wallet"><i class="material-icons md-account_balance_wallet"></i>Wallet</a>
+                                <a class="dropdown-item" href="/admin/user/billing"><i class="material-icons md-receipt"></i>Billing</a>
+                                <a class="dropdown-item" href="/admin/user/help"><i class="material-icons md-help_outline"></i>Help center</a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item text-danger" href="/admin/logout"><i class="material-icons md-exit_to_app"></i>Logout</a>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </header>
+            <section class="content-main">
+                <div class="content-header">
+                    <div>
+                        <h2 class="content-title card-title"><%= title %></h2>
+                        <p>Update category information</p>
+                    </div>
+                    <div>
+                        <a href="/admin/user/categories" class="btn btn-light">
+                            <i class="material-icons md-arrow_back"></i> Back to Categories
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Error Message -->
+                <% if (typeof error !== 'undefined' && error) { %>
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <%= error %>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+                <% } %>
+                
+                <div class="row">
+                    <div class="col-lg-8">
+                        <div class="card mb-4">
+                            <div class="card-body">
+                                <form method="POST" action="/admin/user/categories/edit/<%= category._id %>">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="mb-3">
+                                                <label for="categoryName" class="form-label">Category Name <span class="text-danger">*</span></label>
+                                                <input type="text" class="form-control" id="categoryName" name="name" value="<%= category.name %>" required maxlength="50" placeholder="Enter category name">
+                                                <div class="form-text">Maximum 50 characters</div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="mb-3">
+                                                <label for="categoryStatus" class="form-label">Status</label>
+                                                <select class="form-select" id="categoryStatus" name="status">
+                                                    <option value="active" <%= category.status === 'active' ? 'selected' : '' %>>Active</option>
+                                                    <option value="inactive" <%= category.status === 'inactive' ? 'selected' : '' %>>Inactive</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label for="categoryDescription" class="form-label">Description</label>
+                                        <textarea class="form-control" id="categoryDescription" name="description" rows="4" maxlength="200" placeholder="Enter category description (optional)"><%= category.description || '' %></textarea>
+                                        <div class="form-text">Maximum 200 characters</div>
+                                    </div>
+
+                                    <% if (parentCategories && parentCategories.length > 0) { %>
+                                        <div class="mb-3">
+                                            <label for="categoryParent" class="form-label">Parent Category</label>
+                                            <select class="form-select" id="categoryParent" name="parent">
+                                                <option value="">-- Root Category --</option>
+                                                <% 
+                                                // Helper function to build hierarchical structure
+                                                const buildHierarchy = (categories, parentId = null, prefix = '') => {
+                                                    return categories
+                                                        .filter(cat => {
+                                                            if (parentId === null) {
+                                                                return !cat.parent
+                                                            }
+                                                            return cat.parent && cat.parent._id && cat.parent._id.toString() === parentId.toString()
+                                                        })
+                                                        .map(cat => {
+                                                            const item = {
+                                                                _id: cat._id,
+                                                                name: prefix + cat.name,
+                                                                children: buildHierarchy(categories, cat._id, prefix + '    ')
+                                                            }
+                                                            return [item, ...item.children]
+                                                        })
+                                                        .flat()
+                                                }
+                                                
+                                                const hierarchicalCategories = buildHierarchy(parentCategories)
+                                                const currentParentId = category.parent ? category.parent._id : null
+                                                
+                                                hierarchicalCategories.forEach(cat => {
+                                                    const selected = currentParentId && currentParentId.toString() === cat._id.toString() ? 'selected' : ''
+                                                %>
+                                                    <option value="<%= cat._id %>" <%= selected %>><%= cat.name %></option>
+                                                <% }) %>
+                                            </select>
+                                            <div class="form-text">Select a parent category or leave empty for root category</div>
+                                        </div>
+                                    <% } %>
+
+                                    <div class="d-flex gap-2">
+                                        <button type="submit" class="btn btn-primary">
+                                            <i class="material-icons md-save"></i> Update Category
+                                        </button>
+                                        <a href="/admin/user/categories" class="btn btn-light">Cancel</a>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-lg-4">
+                        <div class="card">
+                            <div class="card-header">
+                                <h6 class="card-title">Category Info</h6>
+                            </div>
+                            <div class="card-body">
+                                <p><strong>Created:</strong> <%= new Date(category.createdAt).toLocaleDateString() %></p>
+                                <% if (category.updatedAt && category.updatedAt !== category.createdAt) { %>
+                                    <p><strong>Last Updated:</strong> <%= new Date(category.updatedAt).toLocaleDateString() %></p>
+                                <% } %>
+                                <% if (category.parent) { %>
+                                    <p><strong>Current Parent:</strong> <%= category.parent.name %></p>
+                                <% } else { %>
+                                    <p><strong>Type:</strong> Root Category</p>
+                                <% } %>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <footer class="main-footer font-xs">
+                <div class="row pb-30 pt-15">
+                    <div class="col-sm-6">
+                        <script>
+                            document.write(new Date().getFullYear());
+                        </script>
+                        &copy; Nest Dashboard.
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="text-sm-end">All rights reserved</div>
+                    </div>
+                </div>
+            </footer>
+        </main>
+        
+        <script src="/js/vendors/jquery-3.6.0.min.js"></script>
+        <script src="/js/vendors/bootstrap.bundle.min.js"></script>
+        <script src="/js/vendors/select2.min.js"></script>
+        <script src="/js/vendors/perfect-scrollbar.js"></script>
+        <script src="/js/vendors/jquery.fullscreen.min.js"></script>
+        <!-- Main Script -->
+        <script src="/js/main.js?v=6.0" type="text/javascript"></script>
+        
+        <script>
+            // Character counter for description
+            const descriptionField = document.getElementById('categoryDescription');
+            const maxLength = 200;
+            
+            if (descriptionField) {
+                const counter = document.createElement('div');
+                counter.className = 'form-text text-end';
+                counter.style.marginTop = '5px';
+                descriptionField.parentNode.appendChild(counter);
+                
+                function updateCounter() {
+                    const remaining = maxLength - descriptionField.value.length;
+                    counter.textContent = `${remaining} characters remaining`;
+                    counter.className = remaining < 20 ? 'form-text text-end text-warning' : 'form-text text-end text-muted';
+                }
+                
+                descriptionField.addEventListener('input', updateCounter);
+                updateCounter();
+            }
+            
+            // Auto-dismiss alerts after 5 seconds
+            document.addEventListener('DOMContentLoaded', function() {
+                const alerts = document.querySelectorAll('.alert.alert-dismissible');
+                
+                alerts.forEach(function(alert) {
+                    // Auto-dismiss after 5 seconds
+                    setTimeout(function() {
+                        // Use Bootstrap's alert method to close
+                        const bsAlert = new bootstrap.Alert(alert);
+                        bsAlert.close();
+                    }, 5000);
+                });
+            });
+        </script>
+    </body>
+</html>
