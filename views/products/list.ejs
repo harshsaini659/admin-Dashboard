@@ -36,7 +36,7 @@
                             <span class="text">Dashboard</span>
                         </a>
                     </li>
-                    <li class="menu-item active has-submenu">
+                    <li class="menu-item has-submenu">
                         <a class="menu-link" href="/admin/user/categories">
                             <i class="icon material-icons md-category"></i>
                             <span class="text">Categories</span>
@@ -56,7 +56,7 @@
                             <a href="/admin/user/variants/create">Add Variant</a>
                         </div>
                     </li>
-                    <li class="menu-item has-submenu">
+                    <li class="menu-item active has-submenu">
                         <a class="menu-link" href="/admin/user/products">
                             <i class="icon material-icons md-shopping_bag"></i>
                             <span class="text">Products</span>
@@ -64,16 +64,6 @@
                         <div class="submenu">
                             <a href="/admin/user/products">All Products</a>
                             <a href="/admin/user/products/create">Add Product</a>
-                        </div>
-                    </li>
-                    <li class="menu-item has-submenu">
-                        <a class="menu-link" href="/admin/user/products">
-                            <i class="icon material-icons md-shopping_bag"></i>
-                            <span class="text">Products</span>
-                        </a>
-                        <div class="submenu">
-                            <a href="/admin/user/products/list">Product List</a>
-                            <a href="/admin/user/products/grid">Product grid</a>
                         </div>
                     </li>
                     <li class="menu-item has-submenu">
@@ -145,14 +135,14 @@
                 <div class="col-search">
                     <form class="searchform">
                         <div class="input-group">
-                            <input list="search_terms" type="text" class="form-control" placeholder="Search term" />
+                            <input list="search_terms" type="text" class="form-control" placeholder="Search products..." />
                             <button class="btn btn-light bg" type="button"><i class="material-icons md-search"></i></button>
                         </div>
                         <datalist id="search_terms">
-                            <option value="Products"></option>
-                            <option value="New orders"></option>
-                            <option value="Apple iphone"></option>
-                            <option value="Ahmed Hassan"></option>
+                            <option value="iPhone"></option>
+                            <option value="Samsung"></option>
+                            <option value="Electronics"></option>
+                            <option value="Clothing"></option>
                         </datalist>
                     </form>
                 </div>
@@ -201,11 +191,11 @@
                 <div class="content-header">
                     <div>
                         <h2 class="content-title card-title"><%= title %></h2>
-                        <p>Manage your product categories</p>
+                        <p>Manage your product inventory</p>
                     </div>
                     <div>
-                        <a href="/admin/user/categories/create" class="btn btn-primary">
-                            <i class="material-icons md-add"></i> Add Category
+                        <a href="/admin/user/products/create" class="btn btn-primary">
+                            <i class="material-icons md-add"></i> Add Product
                         </a>
                     </div>
                 </div>
@@ -226,65 +216,134 @@
                     </div>
                 <% } %>
                 
+                <!-- Filters -->
                 <div class="card mb-4">
                     <div class="card-body">
-                        <% if (categories && categories.length > 0) { %>
+                        <div class="row">
+                            <div class="col-md-3">
+                                <select class="form-select" id="statusFilter">
+                                    <option value="">All Status</option>
+                                    <option value="true">Active</option>
+                                    <option value="false">Inactive</option>
+                                </select>
+                            </div>
+                            <div class="col-md-3">
+                                <select class="form-select" id="categoryFilter">
+                                    <option value="">All Categories</option>
+                                </select>
+                            </div>
+                            <div class="col-md-3">
+                                <input type="text" class="form-control" id="searchFilter" placeholder="Search products...">
+                            </div>
+                            <div class="col-md-3">
+                                <button class="btn btn-secondary" onclick="clearFilters()">Clear Filters</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <% if (products && products.length > 0) { %>
                             <div class="table-responsive">
                                 <table class="table table-hover">
                                     <thead class="table-light">
                                         <tr>
                                             <th scope="col">#</th>
-                                            <th scope="col">Category Hierarchy</th>
-                                            <th scope="col">Parent</th>
-                                            <th scope="col">Description</th>
+                                            <th scope="col">Product</th>
+                                            <th scope="col">Category</th>
+                                            <th scope="col">Price</th>
+                                            <th scope="col">Stock</th>
+                                            <th scope="col">Variants</th>
                                             <th scope="col">Status</th>
                                             <th scope="col">Created</th>
                                             <th scope="col">Actions</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <% categories.forEach((category, index) => { %>
+                                        <% products.forEach((product, index) => { %>
                                             <tr>
-                                                <th scope="row"><%= index + 1 %></th>
+                                                <th scope="row"><%= ((currentPage - 1) * 10) + index + 1 %></th>
                                                 <td>
-                                                    <div style="margin-left: <%= category.depth * 20 %>px;">
-                                                        <% if (category.depth > 0) { %>
-                                                            <i class="material-icons md-subdirectory_arrow_right text-muted" style="font-size: 16px; vertical-align: middle;"></i>
-                                                        <% } %>
-                                                        <strong><%= category.name %></strong>
-                                                        <% if (category.children && category.children.length > 0) { %>
-                                                            <span class="badge badge-soft-info ms-2"><%= category.children.length %> subcategory(ies)</span>
+                                                    <div class="d-flex align-items-center">
+                                                        <div class="me-3">
+                                                            <% if (product.images && product.images.length > 0) { %>
+                                                                <img src="<%= product.images[0] %>" alt="<%= product.name %>" 
+                                                                     class="img-thumbnail" style="width: 50px; height: 50px; object-fit: cover;">
+                                                            <% } else { %>
+                                                                <div class="bg-light d-flex align-items-center justify-content-center" 
+                                                                     style="width: 50px; height: 50px;">
+                                                                    <i class="material-icons md-image text-muted"></i>
+                                                                </div>
+                                                            <% } %>
+                                                        </div>
+                                                        <div>
+                                                            <h6 class="mb-0"><%= product.name %></h6>
+                                                            <small class="text-muted">
+                                                                <%= product.description.length > 50 ? product.description.substring(0, 50) + '...' : product.description %>
+                                                            </small>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <span class="badge badge-soft-info">
+                                                        <%= product.category ? product.category.name : 'No Category' %>
+                                                    </span>
+                                                </td>
+                                                <td>
+                                                    <div>
+                                                        <% if (product.discount > 0) { %>
+                                                            <span class="text-decoration-line-through text-muted">$<%= product.price %></span>
+                                                            <br>
+                                                            <strong class="text-success">$<%= product.finalPrice.toFixed(2) %></strong>
+                                                            <small class="text-danger">(<%= product.discount %>% off)</small>
+                                                        <% } else { %>
+                                                            <strong>$<%= product.price %></strong>
                                                         <% } %>
                                                     </div>
                                                 </td>
                                                 <td>
-                                                    <% if (category.parent && category.parent.name) { %>
-                                                        <span class="text-primary"><%= category.parent.name %></span>
+                                                    <% if (product.stock > 10) { %>
+                                                        <span class="badge badge-soft-success"><%= product.stock %></span>
+                                                    <% } else if (product.stock > 0) { %>
+                                                        <span class="badge badge-soft-warning"><%= product.stock %></span>
                                                     <% } else { %>
-                                                        <span class="text-muted">Root Category</span>
+                                                        <span class="badge badge-soft-danger">Out of Stock</span>
                                                     <% } %>
                                                 </td>
                                                 <td>
-                                                    <% if (category.description) { %>
-                                                        <%= category.description.length > 50 ? category.description.substring(0, 50) + '...' : category.description %>
+                                                    <% if (product.variants && product.variants.length > 0) { %>
+                                                        <% product.variants.forEach(variant => { %>
+                                                            <div class="mb-1">
+                                                                <small class="fw-bold"><%= variant.variant.name %>:</small>
+                                                                <small class="text-muted"><%= variant.selectedValues.join(', ') %></small>
+                                                            </div>
+                                                        <% }) %>
                                                     <% } else { %>
-                                                        <span class="text-muted">No description</span>
+                                                        <span class="text-muted">No variants</span>
                                                     <% } %>
                                                 </td>
                                                 <td>
-                                                    <% if (category.status === 'active') { %>
+                                                    <% if (product.active) { %>
                                                         <span class="badge badge-pill badge-soft-success">Active</span>
                                                     <% } else { %>
                                                         <span class="badge badge-pill badge-soft-secondary">Inactive</span>
                                                     <% } %>
                                                 </td>
-                                                <td><%= new Date(category.createdAt).toLocaleDateString() %></td>
+                                                <td><%= new Date(product.createdAt).toLocaleDateString() %></td>
                                                 <td>
                                                     <div class="btn-group btn-group-sm" role="group">
-                                                        <a href="/admin/user/categories/edit/<%= category._id %>" class="btn btn-light btn-sm" title="Edit Category">
+                                                        <a href="/admin/user/products/edit/<%= product._id %>" class="btn btn-light btn-sm" title="Edit Product">
                                                             <i class="material-icons md-edit"></i>
                                                         </a>
-                                                        <button type="button" class="btn btn-light btn-sm text-danger" onclick="deleteCategory('<%= category._id %>', '<%= category.name %>')" title="Delete Category">
+                                                        <button type="button" class="btn btn-light btn-sm" 
+                                                                onclick="toggleProductStatus('<%= product._id %>', <%= product.active %>)" 
+                                                                title="<%= product.active ? 'Deactivate' : 'Activate' %> Product">
+                                                            <i class="material-icons md-<%= product.active ? 'visibility_off' : 'visibility' %>"></i>
+                                                        </button>
+                                                        <button type="button" class="btn btn-light btn-sm text-danger" 
+                                                                onclick="deleteProduct('<%= product._id %>', '<%= product.name %>')" 
+                                                                title="Delete Product">
                                                             <i class="material-icons md-delete"></i>
                                                         </button>
                                                     </div>
@@ -294,13 +353,32 @@
                                     </tbody>
                                 </table>
                             </div>
+                            
+                            <!-- Pagination -->
+                            <% if (totalPages > 1) { %>
+                                <nav aria-label="Product pagination">
+                                    <ul class="pagination justify-content-center">
+                                        <li class="page-item <%= currentPage === 1 ? 'disabled' : '' %>">
+                                            <a class="page-link" href="?page=<%= currentPage - 1 %>">Previous</a>
+                                        </li>
+                                        <% for (let i = 1; i <= totalPages; i++) { %>
+                                            <li class="page-item <%= currentPage === i ? 'active' : '' %>">
+                                                <a class="page-link" href="?page=<%= i %>"><%= i %></a>
+                                            </li>
+                                        <% } %>
+                                        <li class="page-item <%= currentPage === totalPages ? 'disabled' : '' %>">
+                                            <a class="page-link" href="?page=<%= currentPage + 1 %>">Next</a>
+                                        </li>
+                                    </ul>
+                                </nav>
+                            <% } %>
                         <% } else { %>
                             <div class="text-center py-5">
-                                <i class="material-icons md-category" style="font-size: 4rem; color: #ddd;"></i>
-                                <h4 class="mt-3 text-muted">No Categories Found</h4>
-                                <p class="text-muted">Start by creating your first category.</p>
-                                <a href="/admin/user/categories/create" class="btn btn-primary">
-                                    <i class="material-icons md-add"></i> Add Category
+                                <i class="material-icons md-shopping_bag" style="font-size: 4rem; color: #ddd;"></i>
+                                <h4 class="mt-3 text-muted">No Products Found</h4>
+                                <p class="text-muted">Start by adding your first product to the inventory.</p>
+                                <a href="/admin/user/products/create" class="btn btn-primary">
+                                    <i class="material-icons md-add"></i> Add Product
                                 </a>
                             </div>
                         <% } %>
@@ -331,28 +409,48 @@
         <script src="/js/main.js?v=6.0" type="text/javascript"></script>
         
         <script>
-            function deleteCategory(id, name) {
-                if (confirm(`Are you sure you want to delete the category "${name}"?`)) {
-                    // Create a form to submit DELETE request
-                    const form = document.createElement('form');
-                    form.method = 'POST';
-                    form.action = `/admin/user/categories/delete/${id}`;
-                    document.body.appendChild(form);
-                    form.submit();
+            function deleteProduct(id, name) {
+                if (confirm(`Are you sure you want to delete the product "${name}"?`)) {
+                    fetch(`/admin/user/api/products/${id}`, {
+                        method: 'DELETE',
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.message) {
+                            window.location.href = '/admin/user/products?success=' + encodeURIComponent(data.message);
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        alert('Error deleting product');
+                    });
                 }
             }
-        </script>
-        
-        <script>
-            // Clear URL parameters after showing success/error messages to prevent re-showing on refresh
-            if (window.location.search.includes('success=') || window.location.search.includes('error=')) {
-                // Use setTimeout to allow the alert to be visible first
-                setTimeout(() => {
-                    const url = new URL(window.location);
-                    url.searchParams.delete('success');
-                    url.searchParams.delete('error');
-                    window.history.replaceState({}, document.title, url.pathname + url.search);
-                }, 100);
+            
+            function toggleProductStatus(id, currentStatus) {
+                const action = currentStatus ? 'deactivate' : 'activate';
+                if (confirm(`Are you sure you want to ${action} this product?`)) {
+                    fetch(`/admin/user/api/products/${id}/toggle-status`, {
+                        method: 'PATCH',
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.message) {
+                            window.location.href = '/admin/user/products?success=' + encodeURIComponent(data.message);
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        alert('Error updating product status');
+                    });
+                }
+            }
+            
+            function clearFilters() {
+                document.getElementById('statusFilter').value = '';
+                document.getElementById('categoryFilter').value = '';
+                document.getElementById('searchFilter').value = '';
+                window.location.href = '/admin/user/products';
             }
             
             // Auto-dismiss alerts after 5 seconds
@@ -360,9 +458,7 @@
                 const alerts = document.querySelectorAll('.alert.alert-dismissible');
                 
                 alerts.forEach(function(alert) {
-                    // Auto-dismiss after 5 seconds
                     setTimeout(function() {
-                        // Use Bootstrap's alert method to close
                         const bsAlert = new bootstrap.Alert(alert);
                         bsAlert.close();
                     }, 5000);

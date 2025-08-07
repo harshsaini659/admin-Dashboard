@@ -1,5 +1,45 @@
 const Category = require('../models/category.model')
 
+// Helper function to build category tree (DSA - Tree concept - Hierarchical structure)
+const buildCategoryTree = (categories, parentId = null, depth = 0) => {
+    const tree = []
+    
+    categories
+        .filter(cat => {
+            if (parentId === null) {
+                return !cat.parent
+            }
+            return cat.parent && cat.parent._id && cat.parent._id.toString() === parentId.toString()
+        })
+        .forEach(category => {
+            const categoryObj = {
+                ...category.toObject(),
+                depth,
+                children: buildCategoryTree(categories, category._id, depth + 1)
+            }
+            tree.push(categoryObj)
+        })
+    
+    return tree
+}
+
+// Helper function to flatten tree for display(DSA - Tree concept - Flattening)
+const flattenCategoryTree = (tree) => {
+    const flattened = []
+    
+    const traverse = (nodes) => {
+        nodes.forEach(node => {
+            flattened.push(node)
+            if (node.children && node.children.length > 0) {
+                traverse(node.children)
+            }
+        })
+    }
+    
+    traverse(tree)
+    return flattened
+}
+
 // Show create category form
 exports.createCategoryForm = async (req, res) => {
     try {
@@ -65,46 +105,6 @@ exports.createCategory = async (req, res) =>{
     }
 }
 
-// Helper function to build category tree (DSA - Tree concept - Hierarchical structure)
-const buildCategoryTree = (categories, parentId = null, depth = 0) => {
-    const tree = []
-    
-    categories
-        .filter(cat => {
-            if (parentId === null) {
-                return !cat.parent
-            }
-            return cat.parent && cat.parent._id && cat.parent._id.toString() === parentId.toString()
-        })
-        .forEach(category => {
-            const categoryObj = {
-                ...category.toObject(),
-                depth,
-                children: buildCategoryTree(categories, category._id, depth + 1)
-            }
-            tree.push(categoryObj)
-        })
-    
-    return tree
-}
-
-// Helper function to flatten tree for display(DSA - Tree concept - Flattening)
-const flattenCategoryTree = (tree) => {
-    const flattened = []
-    
-    const traverse = (nodes) => {
-        nodes.forEach(node => {
-            flattened.push(node)
-            if (node.children && node.children.length > 0) {
-                traverse(node.children)
-            }
-        })
-    }
-    
-    traverse(tree)
-    return flattened
-}
-
 exports.listCategory = async (req, res) =>{
     try {
         const categories = await Category.find().populate('parent', 'name').sort({ name: 1 })
@@ -140,7 +140,7 @@ exports.editCategoryForm = async (req, res) => {
         const category = await Category.findById(id).populate('parent', 'name')
         
         if (!category) {
-            return res.redirect('/admin/user/categories?error=' + encodeURIComponent('Category not found'))
+            return res.redirect('/admin/user/categories?error=' +  ('Category not found'))
         }
         
         // Get all categories for parent dropdown (excluding current category and its descendants)

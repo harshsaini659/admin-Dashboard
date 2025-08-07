@@ -36,7 +36,7 @@
                             <span class="text">Dashboard</span>
                         </a>
                     </li>
-                    <li class="menu-item active has-submenu">
+                    <li class="menu-item has-submenu">
                         <a class="menu-link" href="/admin/user/categories">
                             <i class="icon material-icons md-category"></i>
                             <span class="text">Categories</span>
@@ -46,7 +46,7 @@
                             <a href="/admin/user/categories/create">Add Category</a>
                         </div>
                     </li>
-                    <li class="menu-item has-submenu">
+                    <li class="menu-item active has-submenu">
                         <a class="menu-link" href="/admin/user/variants">
                             <i class="icon material-icons md-tune"></i>
                             <span class="text">Variants</span>
@@ -201,11 +201,11 @@
                 <div class="content-header">
                     <div>
                         <h2 class="content-title card-title"><%= title %></h2>
-                        <p>Manage your product categories</p>
+                        <p>Manage product variants like size, color, material</p>
                     </div>
                     <div>
-                        <a href="/admin/user/categories/create" class="btn btn-primary">
-                            <i class="material-icons md-add"></i> Add Category
+                        <a href="/admin/user/variants/create" class="btn btn-primary">
+                            <i class="material-icons md-add"></i> Add Variant
                         </a>
                     </div>
                 </div>
@@ -228,63 +228,48 @@
                 
                 <div class="card mb-4">
                     <div class="card-body">
-                        <% if (categories && categories.length > 0) { %>
+                        <% if (variants && variants.length > 0) { %>
                             <div class="table-responsive">
                                 <table class="table table-hover">
                                     <thead class="table-light">
                                         <tr>
                                             <th scope="col">#</th>
-                                            <th scope="col">Category Hierarchy</th>
-                                            <th scope="col">Parent</th>
-                                            <th scope="col">Description</th>
-                                            <th scope="col">Status</th>
+                                            <th scope="col">Variant Name</th>
+                                            <th scope="col">Values</th>
+                                            <th scope="col">Total Values</th>
                                             <th scope="col">Created</th>
                                             <th scope="col">Actions</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <% categories.forEach((category, index) => { %>
+                                        <% variants.forEach((variant, index) => { %>
                                             <tr>
                                                 <th scope="row"><%= index + 1 %></th>
                                                 <td>
-                                                    <div style="margin-left: <%= category.depth * 20 %>px;">
-                                                        <% if (category.depth > 0) { %>
-                                                            <i class="material-icons md-subdirectory_arrow_right text-muted" style="font-size: 16px; vertical-align: middle;"></i>
+                                                    <strong><%= variant.name %></strong>
+                                                </td>
+                                                <td>
+                                                    <% if (variant.value && variant.value.length > 0) { %>
+                                                        <% variant.value.slice(0, 3).forEach((val, idx) => { %>
+                                                            <span class="badge badge-soft-primary me-1"><%= val %></span>
+                                                        <% }) %>
+                                                        <% if (variant.value.length > 3) { %>
+                                                            <span class="text-muted">+<%= variant.value.length - 3 %> more</span>
                                                         <% } %>
-                                                        <strong><%= category.name %></strong>
-                                                        <% if (category.children && category.children.length > 0) { %>
-                                                            <span class="badge badge-soft-info ms-2"><%= category.children.length %> subcategory(ies)</span>
-                                                        <% } %>
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    <% if (category.parent && category.parent.name) { %>
-                                                        <span class="text-primary"><%= category.parent.name %></span>
                                                     <% } else { %>
-                                                        <span class="text-muted">Root Category</span>
+                                                        <span class="text-muted">No values</span>
                                                     <% } %>
                                                 </td>
                                                 <td>
-                                                    <% if (category.description) { %>
-                                                        <%= category.description.length > 50 ? category.description.substring(0, 50) + '...' : category.description %>
-                                                    <% } else { %>
-                                                        <span class="text-muted">No description</span>
-                                                    <% } %>
+                                                    <span class="badge badge-soft-info"><%= variant.value ? variant.value.length : 0 %></span>
                                                 </td>
-                                                <td>
-                                                    <% if (category.status === 'active') { %>
-                                                        <span class="badge badge-pill badge-soft-success">Active</span>
-                                                    <% } else { %>
-                                                        <span class="badge badge-pill badge-soft-secondary">Inactive</span>
-                                                    <% } %>
-                                                </td>
-                                                <td><%= new Date(category.createdAt).toLocaleDateString() %></td>
+                                                <td><%= new Date(variant.createdAt).toLocaleDateString() %></td>
                                                 <td>
                                                     <div class="btn-group btn-group-sm" role="group">
-                                                        <a href="/admin/user/categories/edit/<%= category._id %>" class="btn btn-light btn-sm" title="Edit Category">
+                                                        <a href="/admin/user/variants/edit/<%= variant._id %>" class="btn btn-light btn-sm" title="Edit Variant">
                                                             <i class="material-icons md-edit"></i>
                                                         </a>
-                                                        <button type="button" class="btn btn-light btn-sm text-danger" onclick="deleteCategory('<%= category._id %>', '<%= category.name %>')" title="Delete Category">
+                                                        <button type="button" class="btn btn-light btn-sm text-danger" onclick="deleteVariant('<%= variant._id %>', '<%= variant.name %>')" title="Delete Variant">
                                                             <i class="material-icons md-delete"></i>
                                                         </button>
                                                     </div>
@@ -296,11 +281,11 @@
                             </div>
                         <% } else { %>
                             <div class="text-center py-5">
-                                <i class="material-icons md-category" style="font-size: 4rem; color: #ddd;"></i>
-                                <h4 class="mt-3 text-muted">No Categories Found</h4>
-                                <p class="text-muted">Start by creating your first category.</p>
-                                <a href="/admin/user/categories/create" class="btn btn-primary">
-                                    <i class="material-icons md-add"></i> Add Category
+                                <i class="material-icons md-tune" style="font-size: 4rem; color: #ddd;"></i>
+                                <h4 class="mt-3 text-muted">No Variants Found</h4>
+                                <p class="text-muted">Start by creating your first variant like size, color, or material.</p>
+                                <a href="/admin/user/variants/create" class="btn btn-primary">
+                                    <i class="material-icons md-add"></i> Add Variant
                                 </a>
                             </div>
                         <% } %>
@@ -331,28 +316,28 @@
         <script src="/js/main.js?v=6.0" type="text/javascript"></script>
         
         <script>
-            function deleteCategory(id, name) {
-                if (confirm(`Are you sure you want to delete the category "${name}"?`)) {
-                    // Create a form to submit DELETE request
-                    const form = document.createElement('form');
-                    form.method = 'POST';
-                    form.action = `/admin/user/categories/delete/${id}`;
-                    document.body.appendChild(form);
-                    form.submit();
+            function deleteVariant(id, name) {
+                if (confirm(`Are you sure you want to delete the variant "${name}"?`)) {
+                    // Create a form to submit DELETE request via API
+                    fetch(`/admin/user/variants/delete/${id}`, {
+                        method: 'DELETE',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        }
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.message.includes('successfully')) {
+                            window.location.reload();
+                        } else {
+                            alert('Error deleting variant: ' + data.message);
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        alert('Error deleting variant');
+                    });
                 }
-            }
-        </script>
-        
-        <script>
-            // Clear URL parameters after showing success/error messages to prevent re-showing on refresh
-            if (window.location.search.includes('success=') || window.location.search.includes('error=')) {
-                // Use setTimeout to allow the alert to be visible first
-                setTimeout(() => {
-                    const url = new URL(window.location);
-                    url.searchParams.delete('success');
-                    url.searchParams.delete('error');
-                    window.history.replaceState({}, document.title, url.pathname + url.search);
-                }, 100);
             }
             
             // Auto-dismiss alerts after 5 seconds
@@ -360,9 +345,7 @@
                 const alerts = document.querySelectorAll('.alert.alert-dismissible');
                 
                 alerts.forEach(function(alert) {
-                    // Auto-dismiss after 5 seconds
                     setTimeout(function() {
-                        // Use Bootstrap's alert method to close
                         const bsAlert = new bootstrap.Alert(alert);
                         bsAlert.close();
                     }, 5000);

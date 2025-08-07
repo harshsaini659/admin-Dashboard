@@ -8,9 +8,7 @@ const authMiddleware = require('../middlewares/auth.middleware')
 
 router.get('/dashboard', authMiddleware, userController.dashboard)  // /admin/user/dashboard
 router.use('/categories', require('./category.routes'))             // /admin/user/categories
-// router.get('/profile', authMiddleware, userController.profile)      // /admin/user/profile
-// router.get('/settings', authMiddleware, userController.settings)    // /admin/user/settings
-
-
+router.use('/variants',require('./variant.routes'))                 // /admin/user/variants
+router.use('/', require('./product.routes'))                       // /admin/user/products
 
 module.exports = router

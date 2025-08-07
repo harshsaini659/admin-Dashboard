@@ -2,14 +2,16 @@ const express = require('express')
 const connectDB = require('./config/db')
 const dotenv = require('dotenv')
 const cookieParser = require('cookie-parser')
+const path = require('path')
 dotenv.config()
 const app = express()
 app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
 app.use(cookieParser())
 app.use(express.static('public'));
+// Serve uploaded files
+app.use('/uploads', express.static(path.join(__dirname, 'public/uploads')));
 connectDB()
-const path = require('path')
 
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));

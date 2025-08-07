@@ -3650,6 +3650,35 @@ footer.main-footer {
   border-color: #383e50 !important;
   color: #fff !important;
 }
+.dark .form-control::placeholder {
+  color: #a6b0cf !important;
+  opacity: 1;
+}
+.dark .form-control:focus {
+  background-color: #1e2231 !important;
+  border-color: #5a6c7d !important;
+  color: #fff !important;
+  box-shadow: 0 0 0 0.2rem rgba(90, 108, 125, 0.25);
+}
+.dark input[type="text"],
+.dark input[type="email"],
+.dark input[type="password"],
+.dark input[type="number"],
+.dark input[type="tel"],
+.dark textarea {
+  background-color: #1e2231 !important;
+  border-color: #383e50 !important;
+  color: #fff !important;
+}
+.dark input[type="text"]::placeholder,
+.dark input[type="email"]::placeholder,
+.dark input[type="password"]::placeholder,
+.dark input[type="number"]::placeholder,
+.dark input[type="tel"]::placeholder,
+.dark textarea::placeholder {
+  color: #a6b0cf !important;
+  opacity: 1;
+}
 .dark .btn {
   color: white;
 }
@@ -3691,6 +3720,26 @@ footer.main-footer {
 .dark .custom_select .select2-container--default .select2-selection--single {
   background-color: #32394e;
   border: 2px solid #32394e;
+  color: #fff !important;
+}
+.dark .custom_select .select2-container--default .select2-selection--single .select2-selection__rendered {
+  color: #fff !important;
+}
+.dark .custom_select .select2-container--default .select2-selection--single .select2-selection__placeholder {
+  color: #a6b0cf !important;
+}
+.dark .form-label,
+.dark label {
+  color: #f6f6f6 !important;
+}
+.dark .form-select {
+  color: #fff !important;
+  background-color: #1e2231 !important;
+  border-color: #383e50 !important;
+}
+.dark .form-select option {
+  background-color: #1e2231;
+  color: #fff;
 }
 .dark table {
   color: #a6b0cf;

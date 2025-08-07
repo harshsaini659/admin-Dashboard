@@ -10,13 +10,10 @@ router.post('/create', categoryController.createCategory)
 //route for listing categories
 router.get('/', categoryController.listCategory)
 
-
 // Route for showing edit category form
 router.get('/edit/:id', categoryController.editCategoryForm)
-
-
-
 router.post('/edit/:id', categoryController.editCategory)
+
 router.post('/delete/:id', categoryController.deleteCategory)
 
 module.exports = router
