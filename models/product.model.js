@@ -16,6 +16,10 @@ const productSchema = new mongoose.Schema({
         ref: 'Category',
         required: true
     },
+    active: {
+        type: Boolean,
+        default: true
+    },
     variants: [{
         variant: {
             type: mongoose.Schema.Types.ObjectId,
@@ -47,10 +51,6 @@ const productSchema = new mongoose.Schema({
         required: true,
         min: 0,
         default: 0
-    },
-    active: {
-        type: Boolean,
-        default: true
     },
     // Calculated fields
     finalPrice: {

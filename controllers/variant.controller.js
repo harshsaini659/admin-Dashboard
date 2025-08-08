@@ -91,9 +91,6 @@ exports.editVariant = async (req, res) => {
     try{
         const { id } = req.params
         const { name, value } = req.body
-        console.log("id",id)
-        console.log("name:",name)
-        console.log("value:",value)
 
         // Check if another variant with this name already exists (excluding current variant)
         const existingVariant = await Variant.findOne({ 
@@ -113,7 +110,6 @@ exports.editVariant = async (req, res) => {
             { new: true}  //This option returns the updated document...
             //ye nahi lagaya to old data hi reflect hota api hit hone par 2nd time hit karne par new data dikhega
         )
-        console.log("updatedVariant:", updatedVariant)
         if (!updatedVariant) return res.status(404).json({ message: "Variant not found" })
         res.status(200).json({ message: "Variant updated successfully", variant: updatedVariant })
     }catch(err){

@@ -1,0 +1,111 @@
+        <aside class="navbar-aside" id="offcanvas_aside">
+            <div class="aside-top">
+                <a href="/admin/user/dashboard" class="brand-wrap">
+                    <img src="/imgs/theme/logo.svg" class="logo" alt="Nest Dashboard" />
+                </a>
+                <div>
+                    <button class="btn btn-icon btn-aside-minimize"><i class="text-muted material-icons md-menu_open"></i></button>
+                </div>
+            </div>
+            <nav>
+                <ul class="menu-aside">
+                    <li class="menu-item <%= typeof currentPage !== 'undefined' && currentPage === 'dashboard' ? 'active' : '' %>">
+                        <a class="menu-link" href="/admin/user/dashboard">
+                            <i class="icon material-icons md-home"></i>
+                            <span class="text">Dashboard</span>
+                        </a>
+                    </li>
+                    <li class="menu-item <%= typeof currentPage !== 'undefined' && currentPage === 'categories' ? 'active' : '' %> has-submenu">
+                        <a class="menu-link" href="/admin/user/categories/list">
+                            <i class="icon material-icons md-category"></i>
+                            <span class="text">Categories</span>
+                        </a>
+                        <div class="submenu">
+                            <a href="/admin/user/categories/list">All Categories</a>
+                            <a href="/admin/user/categories/create">Add Category</a>
+                        </div>
+                    </li>
+                    <li class="menu-item <%= typeof currentPage !== 'undefined' && currentPage === 'variants' ? 'active' : '' %> has-submenu">
+                        <a class="menu-link" href="/admin/user/variants">
+                            <i class="icon material-icons md-tune"></i>
+                            <span class="text">Variants</span>
+                        </a>
+                        <div class="submenu">
+                            <a href="/admin/user/variants">All Variants</a>
+                            <a href="/admin/user/variants/create">Add Variant</a>
+                        </div>
+                    </li>
+                    <li class="menu-item <%= typeof currentPage !== 'undefined' && currentPage === 'products' ? 'active' : '' %> has-submenu">
+                        <a class="menu-link" href="/admin/user/products">
+                            <i class="icon material-icons md-shopping_bag"></i>
+                            <span class="text">Products</span>
+                        </a>
+                        <div class="submenu">
+                            <a href="/admin/user/products">All Products</a>
+                            <a href="/admin/user/products/create">Add Product</a>
+                        </div>
+                    </li>
+                    <li class="menu-item <%= typeof currentPage !== 'undefined' && currentPage === 'orders' ? 'active' : '' %> has-submenu">
+                        <a class="menu-link" href="/admin/user/orders">
+                            <i class="icon material-icons md-shopping_cart"></i>
+                            <span class="text">Orders</span>
+                        </a>
+                        <div class="submenu">
+                            <a href="/admin/user/orders/list">Order list</a>
+                            <a href="/admin/user/orders/detail">Order detail</a>
+                        </div>
+                    </li>
+                    <li class="menu-item <%= typeof currentPage !== 'undefined' && currentPage === 'sellers' ? 'active' : '' %> has-submenu">
+                        <a class="menu-link" href="/admin/user/sellers">
+                            <i class="icon material-icons md-store"></i>
+                            <span class="text">Sellers</span>
+                        </a>
+                        <div class="submenu">
+                            <a href="/admin/user/sellers/cards">Sellers cards</a>
+                            <a href="/admin/user/sellers/list">Sellers list</a>
+                        </div>
+                    </li>
+                    <li class="menu-item has-submenu">
+                        <a class="menu-link" href="/admin/user/products/add">
+                            <i class="icon material-icons md-add_box"></i>
+                            <span class="text">Add product</span>
+                        </a>
+                    </li>
+                    <li class="menu-item <%= typeof currentPage !== 'undefined' && currentPage === 'transactions' ? 'active' : '' %> has-submenu">
+                        <a class="menu-link" href="/admin/user/transactions">
+                            <i class="icon material-icons md-monetization_on"></i>
+                            <span class="text">Transactions</span>
+                        </a>
+                    </li>
+                    <li class="menu-item <%= typeof currentPage !== 'undefined' && currentPage === 'reviews' ? 'active' : '' %>">
+                        <a class="menu-link" href="/admin/user/reviews">
+                            <i class="icon material-icons md-comment"></i>
+                            <span class="text">Reviews</span>
+                        </a>
+                    </li>
+                    <li class="menu-item <%= typeof currentPage !== 'undefined' && currentPage === 'brands' ? 'active' : '' %>">
+                        <a class="menu-link" href="/admin/user/brands"> 
+                            <i class="icon material-icons md-stars"></i> 
+                            <span class="text">Brands</span> 
+                        </a>
+                    </li>
+                </ul>
+                <hr />
+                <ul class="menu-aside">
+                    <li class="menu-item <%= typeof currentPage !== 'undefined' && currentPage === 'settings' ? 'active' : '' %> has-submenu">
+                        <a class="menu-link" href="/admin/user/settings">
+                            <i class="icon material-icons md-settings"></i>
+                            <span class="text">Settings</span>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a class="menu-link" href="/admin/logout">
+                            <i class="icon material-icons md-exit_to_app"></i>
+                            <span class="text">Logout</span>
+                        </a>
+                    </li>
+                </ul>
+                <br />
+                <br />
+            </nav>
+        </aside>

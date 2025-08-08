@@ -1,192 +1,7 @@
-<!DOCTYPE html>
-<html lang="en">
-    <head>
-        <meta charset="utf-8" />
-        <title><%= title %> - Admin Dashboard</title>
-        <meta http-equiv="x-ua-compatible" content="ie=edge" />
-        <meta name="description" content="" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <meta property="og:title" content="" />
-        <meta property="og:type" content="" />
-        <meta property="og:url" content="" />
-        <meta property="og:image" content="" />
-        <!-- Favicon -->
-        <link rel="shortcut icon" type="image/x-icon" href="/imgs/theme/favicon.svg" />
-        <!-- Template CSS -->
-        <script src="/js/vendors/color-modes.js"></script>
-        <link href="/css/main.css?v=6.0" rel="stylesheet" type="text/css" />
-    </head>
-
-    <body>
-        <div class="screen-overlay"></div>
-        <aside class="navbar-aside" id="offcanvas_aside">
-            <div class="aside-top">
-                <a href="/admin/user/dashboard" class="brand-wrap">
-                    <img src="/imgs/theme/logo.svg" class="logo" alt="Nest Dashboard" />
-                </a>
-                <div>
-                    <button class="btn btn-icon btn-aside-minimize"><i class="text-muted material-icons md-menu_open"></i></button>
-                </div>
-            </div>
-            <nav>
-                <ul class="menu-aside">
-                    <li class="menu-item">
-                        <a class="menu-link" href="/admin/user/dashboard">
-                            <i class="icon material-icons md-home"></i>
-                            <span class="text">Dashboard</span>
-                        </a>
-                    </li>
-                    <li class="menu-item has-submenu">
-                        <a class="menu-link" href="/admin/user/categories">
-                            <i class="icon material-icons md-category"></i>
-                            <span class="text">Categories</span>
-                        </a>
-                        <div class="submenu">
-                            <a href="/admin/user/categories">All Categories</a>
-                            <a href="/admin/user/categories/create">Add Category</a>
-                        </div>
-                    </li>
-                    <li class="menu-item has-submenu">
-                        <a class="menu-link" href="/admin/user/variants">
-                            <i class="icon material-icons md-tune"></i>
-                            <span class="text">Variants</span>
-                        </a>
-                        <div class="submenu">
-                            <a href="/admin/user/variants">All Variants</a>
-                            <a href="/admin/user/variants/create">Add Variant</a>
-                        </div>
-                    </li>
-                    <li class="menu-item active has-submenu">
-                        <a class="menu-link" href="/admin/user/products">
-                            <i class="icon material-icons md-shopping_bag"></i>
-                            <span class="text">Products</span>
-                        </a>
-                        <div class="submenu">
-                            <a href="/admin/user/products">All Products</a>
-                            <a href="/admin/user/products/create">Add Product</a>
-                        </div>
-                    </li>
-                    <li class="menu-item has-submenu">
-                        <a class="menu-link" href="/admin/user/orders">
-                            <i class="icon material-icons md-shopping_cart"></i>
-                            <span class="text">Orders</span>
-                        </a>
-                        <div class="submenu">
-                            <a href="/admin/user/orders/list">Order list</a>
-                            <a href="/admin/user/orders/detail">Order detail</a>
-                        </div>
-                    </li>
-                    <li class="menu-item has-submenu">
-                        <a class="menu-link" href="/admin/user/sellers">
-                            <i class="icon material-icons md-store"></i>
-                            <span class="text">Sellers</span>
-                        </a>
-                        <div class="submenu">
-                            <a href="/admin/user/sellers/cards">Sellers cards</a>
-                            <a href="/admin/user/sellers/list">Sellers list</a>
-                        </div>
-                    </li>
-                    <li class="menu-item has-submenu">
-                        <a class="menu-link" href="/admin/user/products/add">
-                            <i class="icon material-icons md-add_box"></i>
-                            <span class="text">Add product</span>
-                        </a>
-                    </li>
-                    <li class="menu-item has-submenu">
-                        <a class="menu-link" href="/admin/user/transactions">
-                            <i class="icon material-icons md-monetization_on"></i>
-                            <span class="text">Transactions</span>
-                        </a>
-                    </li>
-                    <li class="menu-item">
-                        <a class="menu-link" href="/admin/user/reviews">
-                            <i class="icon material-icons md-comment"></i>
-                            <span class="text">Reviews</span>
-                        </a>
-                    </li>
-                    <li class="menu-item">
-                        <a class="menu-link" href="/admin/user/brands"> 
-                            <i class="icon material-icons md-stars"></i> 
-                            <span class="text">Brands</span> 
-                        </a>
-                    </li>
-                </ul>
-                <hr />
-                <ul class="menu-aside">
-                    <li class="menu-item has-submenu">
-                        <a class="menu-link" href="/admin/user/settings">
-                            <i class="icon material-icons md-settings"></i>
-                            <span class="text">Settings</span>
-                        </a>
-                    </li>
-                    <li class="menu-item">
-                        <a class="menu-link" href="/admin/logout">
-                            <i class="icon material-icons md-exit_to_app"></i>
-                            <span class="text">Logout</span>
-                        </a>
-                    </li>
-                </ul>
-                <br />
-                <br />
-            </nav>
-        </aside>
+<%- include('../partials/header') %>
+<%- include('../partials/sidebar') %>
         <main class="main-wrap">
-            <header class="main-header navbar">
-                <div class="col-search">
-                    <form class="searchform">
-                        <div class="input-group">
-                            <input list="search_terms" type="text" class="form-control" placeholder="Search term" />
-                            <button class="btn btn-light bg" type="button"><i class="material-icons md-search"></i></button>
-                        </div>
-                        <datalist id="search_terms">
-                            <option value="Products"></option>
-                            <option value="New orders"></option>
-                            <option value="Apple iphone"></option>
-                            <option value="Ahmed Hassan"></option>
-                        </datalist>
-                    </form>
-                </div>
-                <div class="col-nav">
-                    <button class="btn btn-icon btn-mobile me-auto" data-trigger="#offcanvas_aside"><i class="material-icons md-apps"></i></button>
-                    <ul class="nav">
-                        <li class="nav-item">
-                            <a class="nav-link btn-icon" href="#">
-                                <i class="material-icons md-notifications animation-shake"></i>
-                                <span class="badge rounded-pill">3</span>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link btn-icon darkmode" href="#"> <i class="material-icons md-nights_stay"></i> </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="#" class="requestfullscreen nav-link btn-icon"><i class="material-icons md-cast"></i></a>
-                        </li>
-                        <li class="dropdown nav-item">
-                            <a class="dropdown-toggle" data-bs-toggle="dropdown" href="#" id="dropdownLanguage" aria-expanded="false"><i class="material-icons md-public"></i></a>
-                            <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownLanguage">
-                                <a class="dropdown-item text-brand" href="#"><img src="/imgs/theme/flag-us.png" alt="English" />English</a>
-                                <a class="dropdown-item" href="#"><img src="/imgs/theme/flag-fr.png" alt="Français" />Français</a>
-                                <a class="dropdown-item" href="#"><img src="/imgs/theme/flag-jp.png" alt="Français" />日本語</a>
-                                <a class="dropdown-item" href="#"><img src="/imgs/theme/flag-cn.png" alt="Français" />中国人</a>
-                            </div>
-                        </li>
-                        <li class="dropdown nav-item">
-                            <a class="dropdown-toggle" data-bs-toggle="dropdown" href="#" id="dropdownAccount" aria-expanded="false"> 
-                                <img class="img-xs rounded-circle" src="/imgs/people/avatar-2.png" alt="User" />
-                            </a>
-                            <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownAccount">
-                                <a class="dropdown-item" href="/admin/user/profile"><i class="material-icons md-perm_identity"></i>Edit Profile</a>
-                                <a class="dropdown-item" href="/admin/user/settings"><i class="material-icons md-settings"></i>Account Settings</a>
-                                <a class="dropdown-item" href="/admin/user/wallet"><i class="material-icons md-account_balance_wallet"></i>Wallet</a>
-                                <a class="dropdown-item" href="/admin/user/billing"><i class="material-icons md-receipt"></i>Billing</a>
-                                <a class="dropdown-item" href="/admin/user/help"><i class="material-icons md-help_outline"></i>Help center</a>
-                                <div class="dropdown-divider"></div>
-                                <a class="dropdown-item text-danger" href="/admin/logout"><i class="material-icons md-exit_to_app"></i>Logout</a>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-            </header>
+<%- include('../partials/navbar') %>
             <section class="content-main">
                 <div class="content-header">
                     <div>
@@ -249,6 +64,45 @@
                                         </div>
                                     </div>
                                     
+                                    <!-- Product Variants Section -->
+                                    <div class="mb-4">
+                                        <label class="form-label">Product Variants</label>
+                                        <div class="border rounded p-3 bg-light">
+                                            <div class="row mb-3">
+                                                <div class="col-md-4">
+                                                    <label for="variantSelect1" class="form-label">First Variant</label>
+                                                    <select class="form-select" id="variantSelect1" onchange="loadVariantOptions(1)">
+                                                        <option value="">Select Variant</option>
+                                                        <% variants.forEach(variant => { %>
+                                                            <option value="<%= variant._id %>"><%= variant.name %></option>
+                                                        <% }) %>
+                                                    </select>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <label for="variantValue1" class="form-label">Variant Value</label>
+                                                    <select class="form-select" id="variantValue1" disabled>
+                                                        <option value="">Select variant first</option>
+                                                    </select>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <label class="form-label">&nbsp;</label>
+                                                    <button type="button" class="btn btn-success w-100" onclick="addAnotherVariant()" disabled id="addVariantBtn">
+                                                        <i class="material-icons md-add"></i> Add Another Variant
+                                                    </button>
+                                                </div>
+                                            </div>
+                                            
+                                            <!-- Additional variants will be added here -->
+                                            <div id="additionalVariants"></div>
+                                            
+                                            <!-- Selected variants display -->
+                                            <div id="selectedVariants" class="mt-3" style="display: none;">
+                                                <h6>Selected Variants:</h6>
+                                                <div id="selectedVariantsList"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
                                     <div class="row">
                                         <div class="col-md-4">
                                             <div class="mb-4">
@@ -277,21 +131,6 @@
                                         </div>
                                     </div>
                                 </form>
-                            </div>
-                        </div>
-                        
-                        <!-- Variants Section -->
-                        <div class="card mb-4">
-                            <div class="card-header d-flex justify-content-between align-items-center">
-                                <h4>Product Variants</h4>
-                                <button type="button" class="btn btn-sm btn-primary" onclick="addVariant()">
-                                    <i class="material-icons md-add"></i> Add Variant
-                                </button>
-                            </div>
-                            <div class="card-body">
-                                <div id="variantsContainer">
-                                    <p class="text-muted">No variants added yet. Click "Add Variant" to get started.</p>
-                                </div>
                             </div>
                         </div>
                         
@@ -381,34 +220,13 @@
                     </div>
                 </div>
             </section>
-            <footer class="main-footer font-xs">
-                <div class="row pb-30 pt-15">
-                    <div class="col-sm-6">
-                        <script>
-                            document.write(new Date().getFullYear());
-                        </script>
-                        &copy; Nest Dashboard.
-                    </div>
-                    <div class="col-sm-6">
-                        <div class="text-sm-end">All rights reserved</div>
-                    </div>
-                </div>
-            </footer>
-        </main>
-        
-        <script src="/js/vendors/jquery-3.6.0.min.js"></script>
-        <script src="/js/vendors/bootstrap.bundle.min.js"></script>
-        <script src="/js/vendors/select2.min.js"></script>
-        <script src="/js/vendors/perfect-scrollbar.js"></script>
-        <script src="/js/vendors/jquery.fullscreen.min.js"></script>
-        <!-- Main Script -->
-        <script src="/js/main.js?v=6.0" type="text/javascript"></script>
         
         <script>
             // Available variants from server
             const availableVariants = <%- JSON.stringify(variants) %>;
-            let variantCounter = 0;
+            let variantCounter = 1;
             let imageCounter = 0;
+            let selectedVariants = [];
             
             // Calculate final price
             function calculateFinalPrice() {
@@ -417,6 +235,181 @@
                 const finalPrice = price - (price * (discount / 100));
                 document.getElementById('finalPrice').textContent = finalPrice.toFixed(2);
                 return finalPrice;
+            }
+            
+            // Load variant options for a specific variant selector
+            function loadVariantOptions(variantNumber) {
+                const variantSelect = document.getElementById(`variantSelect${variantNumber}`);
+                const variantValueSelect = document.getElementById(`variantValue${variantNumber}`);
+                const addVariantBtn = document.getElementById('addVariantBtn');
+                
+                if (!variantSelect.value) {
+                    variantValueSelect.innerHTML = '<option value="">Select variant first</option>';
+                    variantValueSelect.disabled = true;
+                    if (variantNumber === 1) {
+                        addVariantBtn.disabled = true;
+                    }
+                    return;
+                }
+                
+                const selectedVariant = availableVariants.find(v => v._id === variantSelect.value);
+                if (selectedVariant && selectedVariant.value) {
+                    variantValueSelect.innerHTML = '<option value="">Select value</option>';
+                    
+                    // Get already selected values for this variant type to avoid duplicates
+                    const selectedValuesForThisVariant = selectedVariants
+                        .filter(v => v.id === variantSelect.value)
+                        .map(v => v.value);
+                    
+                    selectedVariant.value.forEach(value => {
+                        const isAlreadySelected = selectedValuesForThisVariant.includes(value);
+                        if (!isAlreadySelected) {
+                            variantValueSelect.innerHTML += `<option value="${value}">${value}</option>`;
+                        }
+                    });
+                    
+                    variantValueSelect.disabled = false;
+                    
+                    // Auto-update when value is selected
+                    variantValueSelect.onchange = function() {
+                        if (this.value) {
+                            updateSelectedVariants(variantNumber);
+                            if (variantNumber === 1) {
+                                addVariantBtn.disabled = false;
+                            }
+                        } else {
+                            // Remove this variant from selected list if value is cleared
+                            removeVariant(variantNumber);
+                        }
+                    };
+                }
+            }
+            
+            // Update selected variants display
+            function updateSelectedVariants(variantNumber) {
+                const variantSelect = document.getElementById(`variantSelect${variantNumber}`);
+                const variantValueSelect = document.getElementById(`variantValue${variantNumber}`);
+                
+                if (variantSelect.value && variantValueSelect.value) {
+                    const variantName = variantSelect.selectedOptions[0].text;
+                    const variantValue = variantValueSelect.value;
+                    
+                    // Update or add to selected variants
+                    const existingIndex = selectedVariants.findIndex(v => v.number === variantNumber);
+                    if (existingIndex >= 0) {
+                        selectedVariants[existingIndex] = {
+                            number: variantNumber,
+                            id: variantSelect.value,
+                            name: variantName,
+                            value: variantValue
+                        };
+                    } else {
+                        selectedVariants.push({
+                            number: variantNumber,
+                            id: variantSelect.value,
+                            name: variantName,
+                            value: variantValue
+                        });
+                    }
+                    
+                    // Update display
+                    updateVariantDisplay();
+                }
+            }
+            
+            // Update variant display
+            function updateVariantDisplay() {
+                const selectedVariantsDiv = document.getElementById('selectedVariants');
+                const selectedVariantsList = document.getElementById('selectedVariantsList');
+                
+                if (selectedVariants.length > 0) {
+                    selectedVariantsDiv.style.display = 'block';
+                    selectedVariantsList.innerHTML = selectedVariants.map(variant => `
+                        <span class="badge bg-primary me-2 mb-2">
+                            ${variant.name}: ${variant.value}
+                            <button type="button" class="btn-close btn-close-white ms-2" 
+                                    onclick="removeVariant(${variant.number})" style="font-size: 0.7em;"></button>
+                        </span>
+                    `).join('');
+                } else {
+                    selectedVariantsDiv.style.display = 'none';
+                }
+                
+                updateSummary();
+            }
+            
+            // Add another variant
+            function addAnotherVariant() {
+                variantCounter++;
+                const additionalVariants = document.getElementById('additionalVariants');
+                const addVariantBtn = document.getElementById('addVariantBtn');
+                
+                const variantHtml = `
+                    <div class="row mb-3" id="variantRow${variantCounter}">
+                        <div class="col-md-4">
+                            <select class="form-select" id="variantSelect${variantCounter}" onchange="loadVariantOptions(${variantCounter})">
+                                <option value="">Select Variant</option>
+                                ${availableVariants.map(variant => 
+                                    `<option value="${variant._id}">${variant.name}</option>`
+                                ).join('')}
+                            </select>
+                        </div>
+                        <div class="col-md-4">
+                            <select class="form-select" id="variantValue${variantCounter}" disabled>
+                                <option value="">Select variant first</option>
+                            </select>
+                        </div>
+                        <div class="col-md-4">
+                            <button type="button" class="btn btn-danger w-100" onclick="removeVariantRow(${variantCounter})">
+                                <i class="material-icons md-delete"></i> Remove
+                            </button>
+                        </div>
+                    </div>
+                `;
+                
+                additionalVariants.insertAdjacentHTML('beforeend', variantHtml);
+                
+                // Keep add button enabled so user can add more variants
+                addVariantBtn.disabled = false;
+            }
+            
+            // Remove variant row
+            function removeVariantRow(variantNumber) {
+                document.getElementById(`variantRow${variantNumber}`).remove();
+                removeVariant(variantNumber);
+            }
+            
+            // Remove variant from selected list
+            function removeVariant(variantNumber) {
+                selectedVariants = selectedVariants.filter(v => v.number !== variantNumber);
+                updateVariantDisplay();
+                
+                // Reset the form controls if they exist
+                const variantSelect = document.getElementById(`variantSelect${variantNumber}`);
+                const variantValueSelect = document.getElementById(`variantValue${variantNumber}`);
+                
+                if (variantSelect) variantSelect.value = '';
+                if (variantValueSelect) {
+                    variantValueSelect.innerHTML = '<option value="">Select variant first</option>';
+                    variantValueSelect.disabled = true;
+                }
+                
+                // Refresh all other variant value dropdowns to show newly available options
+                for (let i = 1; i <= variantCounter; i++) {
+                    if (i !== variantNumber) {
+                        const otherVariantSelect = document.getElementById(`variantSelect${i}`);
+                        if (otherVariantSelect && otherVariantSelect.value) {
+                            loadVariantOptions(i);
+                        }
+                    }
+                }
+                
+                // Re-enable add button if main variant is selected
+                const mainVariantValue = document.getElementById('variantValue1');
+                const addVariantBtn = document.getElementById('addVariantBtn');
+                if (mainVariantValue && mainVariantValue.value && addVariantBtn) {
+                    addVariantBtn.disabled = false;
+                }
             }
             
             // Update summary
@@ -435,93 +428,95 @@
                 document.getElementById('summaryStock').textContent = `${stock} units`;
                 
                 // Variants
-                const variantCount = document.querySelectorAll('.variant-item').length;
-                document.getElementById('summaryVariants').textContent = `${variantCount} variants`;
+                document.getElementById('summaryVariants').textContent = `${selectedVariants.length} variants`;
                 
                 // Images
                 const imageCount = document.querySelectorAll('.image-item').length;
                 document.getElementById('summaryImages').textContent = `${imageCount} images`;
             }
             
-            // Add variant
-            function addVariant() {
-                variantCounter++;
-                const container = document.getElementById('variantsContainer');
+            // Collect form data
+            function collectFormData() {
+                const form = document.getElementById('productForm');
+                const formData = new FormData(form);
                 
-                if (container.querySelector('p.text-muted')) {
-                    container.innerHTML = '';
-                }
+                const data = {
+                    name: formData.get('name'),
+                    description: formData.get('description'),
+                    category: formData.get('category'),
+                    price: parseFloat(formData.get('price')),
+                    discount: parseFloat(formData.get('discount')) || 0,
+                    stock: parseInt(formData.get('stock')),
+                    active: formData.get('active') === 'true'
+                };
                 
-                const variantHtml = `
-                    <div class="variant-item border rounded p-3 mb-3" data-variant-id="${variantCounter}">
-                        <div class="d-flex justify-content-between align-items-center mb-3">
-                            <h6 class="mb-0">Variant ${variantCounter}</h6>
-                            <button type="button" class="btn btn-sm btn-danger" onclick="removeVariant(${variantCounter})">
-                                <i class="material-icons md-delete"></i>
-                            </button>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <label class="form-label">Variant Type</label>
-                                <select class="form-select variant-select" onchange="loadVariantValues(${variantCounter})">
-                                    <option value="">Select Variant</option>
-                                    ${availableVariants.map(variant => 
-                                        `<option value="${variant._id}">${variant.name}</option>`
-                                    ).join('')}
-                                </select>
-                            </div>
-                            <div class="col-md-6">
-                                <label class="form-label">Available Values</label>
-                                <div class="variant-values" id="variantValues_${variantCounter}">
-                                    <p class="text-muted small">Select a variant type first</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                `;
+                // Collect variants
+                const variants = [];
+                selectedVariants.forEach(variant => {
+                    // Check if this variant type already exists
+                    const existingVariant = variants.find(v => v.variant === variant.id);
+                    if (existingVariant) {
+                        // Add value to existing variant
+                        if (!existingVariant.selectedValues.includes(variant.value)) {
+                            existingVariant.selectedValues.push(variant.value);
+                        }
+                    } else {
+                        // Create new variant entry
+                        variants.push({
+                            variant: variant.id,
+                            selectedValues: [variant.value]
+                        });
+                    }
+                });
+                data.variants = variants;
                 
-                container.insertAdjacentHTML('beforeend', variantHtml);
-                updateSummary();
+                // Collect images
+                const images = [];
+                document.querySelectorAll('.image-item .image-url').forEach(input => {
+                    if (input.value.trim()) {
+                        images.push(input.value.trim());
+                    }
+                });
+                data.images = images;
+                
+                return data;
             }
             
-            // Load variant values
-            function loadVariantValues(variantId) {
-                const variantSelect = document.querySelector(`[data-variant-id="${variantId}"] .variant-select`);
-                const selectedVariantId = variantSelect.value;
-                const valuesContainer = document.getElementById(`variantValues_${variantId}`);
-                
-                if (!selectedVariantId) {
-                    valuesContainer.innerHTML = '<p class="text-muted small">Select a variant type first</p>';
-                    return;
-                }
-                
-                const selectedVariant = availableVariants.find(v => v._id === selectedVariantId);
-                if (selectedVariant && selectedVariant.value) {
-                    const valuesHtml = selectedVariant.value.map(value => `
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="${value}" id="value_${variantId}_${value}">
-                            <label class="form-check-label" for="value_${variantId}_${value}">
-                                ${value}
-                            </label>
-                        </div>
-                    `).join('');
-                    
-                    valuesContainer.innerHTML = valuesHtml;
-                } else {
-                    valuesContainer.innerHTML = '<p class="text-muted small">No values available</p>';
-                }
+            // Save product
+            function saveProduct() {
+                const formData = collectFormData();
+                formData.active = true;
+                submitProduct(formData);
             }
             
-            // Remove variant
-            function removeVariant(variantId) {
-                document.querySelector(`[data-variant-id="${variantId}"]`).remove();
-                
-                // Check if no variants left
-                const container = document.getElementById('variantsContainer');
-                if (container.children.length === 0) {
-                    container.innerHTML = '<p class="text-muted">No variants added yet. Click "Add Variant" to get started.</p>';
-                }
-                updateSummary();
+            // Save as draft
+            function saveDraft() {
+                const formData = collectFormData();
+                formData.active = false;
+                submitProduct(formData);
+            }
+            
+            // Submit product
+            function submitProduct(data) {
+                fetch('/admin/user/api/products', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(data)
+                })
+                .then(response => response.json())
+                .then(result => {
+                    if (result.message) {
+                        window.location.href = '/admin/user/products?success=' + encodeURIComponent(result.message);
+                    } else {
+                        throw new Error(result.message || 'Unknown error');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Error saving product: ' + error.message);
+                });
             }
             
             // Show/Hide file upload section
@@ -665,89 +660,6 @@
                 updateSummary();
             }
             
-            // Save product
-            function saveProduct() {
-                const formData = collectFormData();
-                formData.active = true;
-                submitProduct(formData);
-            }
-            
-            // Save as draft
-            function saveDraft() {
-                const formData = collectFormData();
-                formData.active = false;
-                submitProduct(formData);
-            }
-            
-            // Collect form data
-            function collectFormData() {
-                const form = document.getElementById('productForm');
-                const formData = new FormData(form);
-                
-                const data = {
-                    name: formData.get('name'),
-                    description: formData.get('description'),
-                    category: formData.get('category'),
-                    price: parseFloat(formData.get('price')),
-                    discount: parseFloat(formData.get('discount')) || 0,
-                    stock: parseInt(formData.get('stock')),
-                    active: formData.get('active') === 'true'
-                };
-                
-                // Collect variants
-                const variants = [];
-                document.querySelectorAll('.variant-item').forEach(variantItem => {
-                    const variantSelect = variantItem.querySelector('.variant-select');
-                    const selectedValues = [];
-                    
-                    variantItem.querySelectorAll('.variant-values input:checked').forEach(checkbox => {
-                        selectedValues.push(checkbox.value);
-                    });
-                    
-                    if (variantSelect.value && selectedValues.length > 0) {
-                        variants.push({
-                            variant: variantSelect.value,
-                            selectedValues: selectedValues
-                        });
-                    }
-                });
-                data.variants = variants;
-                
-                // Collect images
-                const images = [];
-                document.querySelectorAll('.image-item .image-url').forEach(input => {
-                    if (input.value.trim()) {
-                        images.push(input.value.trim());
-                    }
-                });
-                data.images = images;
-                
-                return data;
-            }
-            
-            // Submit product
-            function submitProduct(data) {
-                fetch('/admin/user/api/products', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(data)
-                })
-                .then(response => response.json())
-                .then(result => {
-                    if (result.message) {
-                        window.location.href = '/admin/user/products?success=' + encodeURIComponent(result.message);
-                    } else {
-                        throw new Error(result.message || 'Unknown error');
-                    }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    alert('Error saving product: ' + error.message);
-                });
-            }
-            
             // Event listeners
             document.addEventListener('DOMContentLoaded', function() {
                 // Update summary on form changes
@@ -757,6 +669,16 @@
                 updateSummary();
                 
                 // Auto-dismiss alerts
+                const alerts = document.querySelectorAll('.alert.alert-dismissible');
+                alerts.forEach(function(alert) {
+                    setTimeout(function() {
+                        const bsAlert = new bootstrap.Alert(alert);
+                        bsAlert.close();
+                    }, 5000);
+                });
+            });
+        </script>
+<%- include('../partials/footer') %>
                 const alerts = document.querySelectorAll('.alert.alert-dismissible');
                 alerts.forEach(function(alert) {
                     setTimeout(function() {
