@@ -1,6 +1,6 @@
 const Product = require('../models/product.model')
 const Category = require('../models/category.model')
-const Variant = require('../models/variant.model')
+const Variant = require('../models/productVariant.model')
 const upload = require('../middlewares/upload.middleware')
 const fs = require('fs')
 const path = require('path')

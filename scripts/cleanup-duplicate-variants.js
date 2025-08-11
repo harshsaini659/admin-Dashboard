@@ -1,6 +1,6 @@
 require('dotenv').config()
 const mongoose = require('mongoose')
-const Variant = require('../models/variant.model')
+const Variant = require('../models/productVariant.model')
 
 async function cleanupDuplicateVariants() {
     try {

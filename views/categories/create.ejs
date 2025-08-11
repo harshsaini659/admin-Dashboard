@@ -156,10 +156,37 @@
                 border-radius: 0.375rem;
                 max-height: 300px;
                 overflow-y: auto;
+                overflow-x: hidden;
                 z-index: 1000;
                 box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
                 display: none;
                 margin-top: 0.125rem;
+                scrollbar-width: thin;
+                scrollbar-color: #ced4da #f8f9fa;
+            }
+            
+            .comboTreeDropDownContainer::-webkit-scrollbar {
+                width: 8px;
+            }
+            
+            .comboTreeDropDownContainer::-webkit-scrollbar-track {
+                background: #f8f9fa;
+                border-radius: 4px;
+                margin: 4px 0;
+            }
+            
+            .comboTreeDropDownContainer::-webkit-scrollbar-thumb {
+                background: #ced4da;
+                border-radius: 4px;
+                border: 1px solid #f8f9fa;
+            }
+            
+            .comboTreeDropDownContainer::-webkit-scrollbar-thumb:hover {
+                background: #adb5bd;
+            }
+            
+            .comboTreeDropDownContainer::-webkit-scrollbar-thumb:active {
+                background: #6c757d;
             }
             
             .comboTreeDropDownContent {
@@ -241,7 +268,7 @@
         
         <!-- Include comboTree JS -->
         <script src="/combotree/comboTreePlugin.js"></script>
-        
+
         <script>
             $(document).ready(function() {
                 // Category tree data from backend

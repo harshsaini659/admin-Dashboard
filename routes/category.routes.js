@@ -11,9 +11,9 @@ router.post('/create', categoryController.createCategory)
 router.get('/list', categoryController.listCategory)
 
 // Route for showing edit category form
-// router.get('/edit/:id', categoryController.editCategoryForm)
-// router.post('/edit/:id', categoryController.editCategory)
+router.get('/edit/:id', categoryController.editCategoryForm)
+router.post('/edit/:id', categoryController.editCategory)
 
-// router.post('/delete/:id', categoryController.deleteCategory)
+router.post('/delete/:id', categoryController.deleteCategory)
 
 module.exports = router

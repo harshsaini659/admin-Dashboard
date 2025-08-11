@@ -35,30 +35,12 @@
                                     </div>
 
                                     <div class="mb-3">
-                                        <label class="form-label">Variant Values <span class="text-danger">*</span></label>
-                                        <div id="valuesList">
-                                            <% if (variant.value && variant.value.length > 0) { %>
-                                                <% variant.value.forEach((val, index) => { %>
-                                                    <div class="input-group mb-2">
-                                                        <input type="text" class="form-control" name="value" value="<%= val %>" placeholder="Enter variant value" required>
-                                                        <button type="button" class="btn btn-outline-danger" onclick="removeValue(this)" <%= variant.value.length === 1 ? 'disabled' : '' %>>
-                                                            <i class="material-icons md-remove"></i>
-                                                        </button>
-                                                    </div>
-                                                <% }) %>
-                                            <% } else { %>
-                                                <div class="input-group mb-2">
-                                                    <input type="text" class="form-control" name="value" placeholder="Enter variant value" required>
-                                                    <button type="button" class="btn btn-outline-danger" onclick="removeValue(this)" disabled>
-                                                        <i class="material-icons md-remove"></i>
-                                                    </button>
-                                                </div>
-                                            <% } %>
-                                        </div>
-                                        <button type="button" class="btn btn-outline-primary btn-sm" onclick="addValue()">
-                                            <i class="material-icons md-add"></i> Add Another Value
-                                        </button>
-                                        <div class="form-text">Add all possible values for this variant</div>
+                                        <label for="variantStatus" class="form-label">Status</label>
+                                        <select class="form-select" id="variantStatus" name="status">
+                                            <option value="active" <%= variant.status === 'active' ? 'selected' : '' %>>Active</option>
+                                            <option value="inactive" <%= variant.status === 'inactive' ? 'selected' : '' %>>Inactive</option>
+                                        </select>
+                                        <div class="form-text">Set the variant availability status</div>
                                     </div>
 
                                     <div class="d-flex gap-2">
@@ -82,22 +64,13 @@
                                 <% if (variant.updatedAt && variant.updatedAt !== variant.createdAt) { %>
                                     <p><strong>Last Updated:</strong> <%= new Date(variant.updatedAt).toLocaleDateString() %></p>
                                 <% } %>
-                                <p><strong>Total Values:</strong> <%= variant.value ? variant.value.length : 0 %></p>
-                            </div>
-                        </div>
-                        
-                        <div class="card mt-3">
-                            <div class="card-header">
-                                <h6 class="card-title">Current Values</h6>
-                            </div>
-                            <div class="card-body">
-                                <% if (variant.value && variant.value.length > 0) { %>
-                                    <% variant.value.forEach(val => { %>
-                                        <span class="badge badge-soft-primary me-1 mb-1"><%= val %></span>
-                                    <% }) %>
-                                <% } else { %>
-                                    <p class="text-muted small">No values added yet</p>
-                                <% } %>
+                                <p><strong>Current Status:</strong> 
+                                    <% if (variant.status === 'active') { %>
+                                        <span class="badge bg-success">Active</span>
+                                    <% } else { %>
+                                        <span class="badge bg-secondary">Inactive</span>
+                                    <% } %>
+                                </p>
                             </div>
                         </div>
                     </div>
@@ -107,42 +80,16 @@
         </main>
         
         <script>
-            function addValue() {
-                const valuesList = document.getElementById('valuesList');
-                const newInput = document.createElement('div');
-                newInput.className = 'input-group mb-2';
-                newInput.innerHTML = `
-                    <input type="text" class="form-control" name="value" placeholder="Enter variant value" required>
-                    <button type="button" class="btn btn-outline-danger" onclick="removeValue(this)">
-                        <i class="material-icons md-remove"></i>
-                    </button>
-                `;
-                valuesList.appendChild(newInput);
-                updateRemoveButtons();
-            }
-
-            function removeValue(button) {
-                button.parentElement.remove();
-                updateRemoveButtons();
-            }
-
-            function updateRemoveButtons() {
-                const removeButtons = document.querySelectorAll('#valuesList .btn-outline-danger');
-                removeButtons.forEach((btn, index) => {
-                    btn.disabled = removeButtons.length === 1;
-                });
-            }
-
             // Handle form submission
             document.getElementById('variantForm').addEventListener('submit', function(e) {
                 e.preventDefault();
                 
                 const formData = new FormData(this);
                 const name = formData.get('name');
-                const values = formData.getAll('value').filter(v => v.trim() !== '');
+                const status = formData.get('status');
                 
-                if (!name || values.length === 0) {
-                    alert('Please provide variant name and at least one value');
+                if (!name || name.trim() === '') {
+                    alert('Please provide variant name');
                     return;
                 }
 
@@ -153,8 +100,8 @@
                         'Content-Type': 'application/json',
                     },
                     body: JSON.stringify({
-                        name: name,
-                        value: values
+                        name: name.trim(),
+                        status: status || 'active'
                     })
                 })
                 .then(response => response.json())

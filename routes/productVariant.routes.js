@@ -1,6 +1,6 @@
 const express = require('express')
 const router = express.Router()
-const variantController = require('../controllers/variant.controller')
+const variantController = require('../controllers/productVariant.controller')
 
 // Web interface routes
 router.get('/', variantController.listVariant)

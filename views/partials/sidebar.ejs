@@ -1,4 +1,4 @@
-        <aside class="navbar-aside" id="offcanvas_aside">
+<aside class="navbar-aside" id="offcanvas_aside">
             <div class="aside-top">
                 <a href="/admin/user/dashboard" class="brand-wrap">
                     <img src="/imgs/theme/logo.svg" class="logo" alt="Nest Dashboard" />
@@ -28,11 +28,21 @@
                     <li class="menu-item <%= typeof currentPage !== 'undefined' && currentPage === 'variants' ? 'active' : '' %> has-submenu">
                         <a class="menu-link" href="/admin/user/variants">
                             <i class="icon material-icons md-tune"></i>
-                            <span class="text">Variants</span>
+                            <span class="text">Product Variants</span>
                         </a>
                         <div class="submenu">
-                            <a href="/admin/user/variants">All Variants</a>
-                            <a href="/admin/user/variants/create">Add Variant</a>
+                            <a href="/admin/user/variants">All Product Variants</a>
+                            <a href="/admin/user/variants/create">Add Product Variant</a>
+                        </div>
+                    </li>
+                    <li class="menu-item <%= typeof currentPage !== 'undefined' && currentPage === 'variant-attributes' ? 'active' : '' %> has-submenu">
+                        <a class="menu-link" href="/admin/user/variantAtt">
+                            <i class="icon material-icons md-style"></i>
+                            <span class="text">Variant Attributes</span>
+                        </a>
+                        <div class="submenu">
+                            <a href="/admin/user/variantAtt">All Variant Attributes</a>
+                            <a href="/admin/user/variantAtt/create">Add Variant Attribute</a>
                         </div>
                     </li>
                     <li class="menu-item <%= typeof currentPage !== 'undefined' && currentPage === 'products' ? 'active' : '' %> has-submenu">

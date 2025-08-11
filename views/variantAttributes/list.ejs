@@ -1,16 +1,16 @@
 <%- include('../partials/header', { title: title }) %>
-<%- include('../partials/sidebar', { currentPage: 'variants' }) %>
+<%- include('../partials/sidebar', { currentPage: 'variant-attributes' }) %>
         <main class="main-wrap">
             <%- include('../partials/navbar') %>
             <section class="content-main">
                 <div class="content-header">
                     <div>
                         <h2 class="content-title card-title"><%= title %></h2>
-                        <p>Manage product variants like size, color, material</p>
+                        <p>Manage product variant attributes like size, color, material values</p>
                     </div>
                     <div>
-                        <a href="/admin/user/variants/create" class="btn btn-primary">
-                            <i class="material-icons md-add"></i> Add Product Variant
+                        <a href="/admin/user/variantAtt/create" class="btn btn-primary">
+                            <i class="material-icons md-add"></i> Add Product Variant Attribute
                         </a>
                     </div>
                 </div>
@@ -39,8 +39,8 @@
                                     <thead class="table-light">
                                         <tr>
                                             <th scope="col">#</th>
-                                            <th scope="col">Product Variant Name</th>
-                                            <th scope="col">Attributes</th>
+                                            <th scope="col">Attribute Name</th>
+                                            <th scope="col">Product Variant</th>
                                             <th scope="col">Status</th>
                                             <th scope="col">Created</th>
                                             <th scope="col">Actions</th>
@@ -54,16 +54,7 @@
                                                     <strong><%= variant.name %></strong>
                                                 </td>
                                                 <td>
-                                                    <% if (variant.value && variant.value.length > 0) { %>
-                                                        <% variant.value.slice(0, 3).forEach((val, idx) => { %>
-                                                            <span class="badge badge-soft-primary me-1"><%= val %></span>
-                                                        <% }) %>
-                                                        <% if (variant.value.length > 3) { %>
-                                                            <span class="text-muted">+<%= variant.value.length - 3 %> more</span>
-                                                        <% } %>
-                                                    <% } else { %>
-                                                        <span class="text-muted">No values</span>
-                                                    <% } %>
+                                                    <%= variant.variantName ? variant.variantName.name : 'N/A' %>
                                                 </td>
                                                 <td>
                                                     <% if (variant.status === 'active') { %>
@@ -75,10 +66,10 @@
                                                 <td><%= new Date(variant.createdAt).toLocaleDateString() %></td>
                                                 <td>
                                                     <div class="btn-group btn-group-sm" role="group">
-                                                        <a href="/admin/user/variants/edit/<%= variant._id %>" class="btn btn-light btn-sm" title="Edit Product Variant">
+                                                        <a href="/admin/user/variantAtt/edit/<%= variant._id %>" class="btn btn-light btn-sm" title="Edit Variant Attribute">
                                                             <i class="material-icons md-edit"></i>
                                                         </a>
-                                                        <button type="button" class="btn btn-light btn-sm text-danger" onclick="deleteVariant('<%= variant._id %>', '<%= variant.name %>')" title="Delete Product Variant">
+                                                        <button type="button" class="btn btn-light btn-sm text-danger" onclick="deleteVariant('<%= variant._id %>', '<%= variant.name %>')" title="Delete Variant Attribute">
                                                             <i class="material-icons md-delete"></i>
                                                         </button>
                                                     </div>
@@ -91,10 +82,10 @@
                         <% } else { %>
                             <div class="text-center py-5">
                                 <i class="material-icons md-tune" style="font-size: 4rem; color: #ddd;"></i>
-                                <h4 class="mt-3 text-muted">No Product Variants Found</h4>
-                                <p class="text-muted">Start by creating your first product variant like size, color, or material.</p>
-                                <a href="/admin/user/variants/create" class="btn btn-primary">
-                                    <i class="material-icons md-add"></i> Add Product Variant
+                                <h4 class="mt-3 text-muted">No Product Variant Attributes Found</h4>
+                                <p class="text-muted">Start by creating your first product variant attribute like size, color, or material.</p>
+                                <a href="/admin/user/variantAtt/create" class="btn btn-primary">
+                                    <i class="material-icons md-add"></i> Add Product Variant Attribute
                                 </a>
                             </div>
                         <% } %>
@@ -106,9 +97,9 @@
         
         <script>
             function deleteVariant(id, name) {
-                if (confirm(`Are you sure you want to delete the product variant "${name}"?`)) {
+                if (confirm(`Are you sure you want to delete the variant attribute "${name}"?`)) {
                     // Create a form to submit DELETE request via API
-                    fetch(`/admin/user/variants/delete/${id}`, {
+                    fetch(`/admin/user/variantAtt/delete/${id}`, {
                         method: 'DELETE',
                         headers: {
                             'Content-Type': 'application/json',
@@ -119,12 +110,12 @@
                         if (data.message.includes('successfully')) {
                             window.location.reload();
                         } else {
-                            alert('Error deleting product variant: ' + data.message);
+                            alert('Error deleting variant attribute: ' + data.message);
                         }
                     })
                     .catch(error => {
                         console.error('Error:', error);
-                        alert('Error deleting product variant');
+                        alert('Error deleting variant attribute');
                     });
                 }
             }

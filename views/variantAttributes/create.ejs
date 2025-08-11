@@ -1,16 +1,16 @@
 <%- include('../partials/header', { title: title }) %>
-<%- include('../partials/sidebar', { currentPage: 'variants' }) %>
+<%- include('../partials/sidebar', { currentPage: 'variant-attributes' }) %>
         <main class="main-wrap">
             <%- include('../partials/navbar') %>
             <section class="content-main">
                 <div class="content-header">
                     <div>
                         <h2 class="content-title card-title"><%= title %></h2>
-                        <p>Create a new product variant</p>
+                        <p>Create a new product variant attribute</p>
                     </div>
                     <div>
-                        <a href="/admin/user/variants" class="btn btn-light">
-                            <i class="material-icons md-arrow_back"></i> Back to Product Variants
+                        <a href="/admin/user/variantAtt" class="btn btn-light">
+                            <i class="material-icons md-arrow_back"></i> Back to Product Variant Attributes
                         </a>
                     </div>
                 </div>
@@ -29,9 +29,22 @@
                             <div class="card-body">
                                 <form id="variantForm">
                                     <div class="mb-3">
-                                        <label for="variantName" class="form-label">Product Variant Name <span class="text-danger">*</span></label>
-                                        <input type="text" class="form-control" id="variantName" name="name" required maxlength="50" placeholder="e.g., Size, Color, Material">
-                                        <div class="form-text">Choose a descriptive name for your product variant type</div>
+                                        <label for="attributeName" class="form-label">Attribute Name <span class="text-danger">*</span></label>
+                                        <input type="text" class="form-control" id="attributeName" name="name" required maxlength="50" placeholder="e.g., Red, Large, Cotton">
+                                        <div class="form-text">The specific attribute value (e.g., Red, Large, Cotton)</div>
+                                    </div>
+                                    
+                                    <div class="mb-3">
+                                        <label for="variantName" class="form-label">Product Variant <span class="text-danger">*</span></label>
+                                        <select class="form-select" id="variantName" name="variantName" required>
+                                            <option value="">Select a Product Variant</option>
+                                            <% if (variants && variants.length > 0) { %>
+                                                <% variants.forEach(variant => { %>
+                                                    <option value="<%= variant._id %>"><%= variant.name %></option>
+                                                <% }); %>
+                                            <% } %>
+                                        </select>
+                                        <div class="form-text">Select which product variant this attribute belongs to</div>
                                     </div>
 
                                     <div class="mb-3">
@@ -40,14 +53,14 @@
                                             <option value="active" selected>Active</option>
                                             <option value="inactive">Inactive</option>
                                         </select>
-                                        <div class="form-text">Set the variant availability status</div>
+                                        <div class="form-text">Set the variant attribute availability status</div>
                                     </div>
 
                                     <div class="d-flex gap-2">
                                         <button type="submit" class="btn btn-primary">
-                                            <i class="material-icons md-save"></i> Create Product Variant
+                                            <i class="material-icons md-save"></i> Create Variant Attribute
                                         </button>
-                                        <a href="/admin/user/variants" class="btn btn-light">Cancel</a>
+                                        <a href="/admin/user/variantAtt" class="btn btn-light">Cancel</a>
                                     </div>
                                 </form>
                             </div>
@@ -57,14 +70,14 @@
                     <div class="col-lg-4">
                         <div class="card">
                             <div class="card-header">
-                                <h6 class="card-title">What are Product Variants?</h6>
+                                <h6 class="card-title">What are Variant Attributes?</h6>
                             </div>
                             <div class="card-body">
-                                <p class="small text-muted mb-3">Product variants are different options for products, like sizes, colors, or materials.</p>
+                                <p class="small text-muted mb-3">Variant attributes are properties with specific values for product variations.</p>
                                 <p class="small text-muted">Examples:</p>
                                 <ul class="small text-muted">
-                                    <li>Size: Small, Medium, Large</li>
                                     <li>Color: Red, Blue, Green</li>
+                                    <li>Size: Small, Medium, Large</li>
                                     <li>Material: Cotton, Wool, Silk</li>
                                 </ul>
                             </div>
@@ -82,35 +95,42 @@
                 
                 const formData = new FormData(this);
                 const name = formData.get('name');
+                const variantName = formData.get('variantName');
                 const status = formData.get('status');
                 
                 if (!name || name.trim() === '') {
-                    alert('Please provide product variant name');
+                    alert('Please provide attribute name');
+                    return;
+                }
+
+                if (!variantName || variantName.trim() === '') {
+                    alert('Please select a product variant');
                     return;
                 }
 
                 // Submit via API
-                fetch('/admin/user/variants/create', {
+                fetch('/admin/user/variantAtt/create', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                     },
                     body: JSON.stringify({
                         name: name.trim(),
+                        variantName: variantName,
                         status: status || 'active'
                     })
                 })
                 .then(response => response.json())
                 .then(data => {
                     if (data.message && data.message.includes('successfully')) {
-                        window.location.href = '/admin/user/variants?success=' + encodeURIComponent(data.message);
+                        window.location.href = '/admin/user/variantAtt?success=' + encodeURIComponent(data.message);
                     } else {
                         alert('Error: ' + (data.message || 'Unknown error'));
                     }
                 })
                 .catch(error => {
                     console.error('Error:', error);
-                    alert('Error creating product variant');
+                    alert('Error creating variant attribute');
                 });
             });
             
