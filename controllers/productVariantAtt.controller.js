@@ -62,7 +62,12 @@ exports.createVariantAtt = async (req, res) => {
 exports.listVariantAtt = async (req, res) => {
     try{
         const variants = await VariantAtt.find().populate('variantName', 'name')
-        res.render('variantAttributes/list', { 
+        // console.log('Fetched variant attributes:', variants) // Debug log
+        // res.status(200).json({
+        //     message: "Variant attributes retrieved successfully",
+        //     variants
+        // })
+        res.render('variantAttributes/list', {
             title: 'All Product Variant Attributes',
             variants,
             success: req.query.success,

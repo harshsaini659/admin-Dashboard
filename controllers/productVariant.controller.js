@@ -1,4 +1,5 @@
 const Variant = require('../models/productVariant.model')
+const VariantAtt = require('../models/productVariantAtt.model')
 
 // Show create variant form (for web interface)
 exports.createVariantForm = async (req, res) => {
@@ -21,7 +22,7 @@ exports.createVariant = async (req, res) => {
     try{
         const { name, status } = req.body
         
-        console.log('Received data:', { name, status }) // Debug log
+        // console.log('Received data:', { name, status }) // Debug log
         
         if(!name) return res.status(400).json({ message: "Name is required" })
 
@@ -37,7 +38,7 @@ exports.createVariant = async (req, res) => {
         })
 
         const savedVariant = await newVariant.save()
-        console.log('Saved variant:', savedVariant) // Debug log
+        // console.log('Saved variant:', savedVariant) // Debug log
         
         res.status(201).json({ message: "Variant created successfully", variant: savedVariant })
         // res.redirect('/admin/user/variants?success=' + encodeURIComponent('Variant created successfully'))
@@ -53,12 +54,12 @@ exports.createVariant = async (req, res) => {
 // List variants (for web interface)
 exports.listVariant = async (req, res) => {
     try{
-        const variants = await Variant.find()
+        const variants = await Variant.find().populate('attributes')
         res.render('variants/list', { 
             title: 'All Product Variants',
             variants,
             success: req.query.success,
-            error: req.query.error
+            error: req.query.error      
         })
     }catch(err){
         console.error(err)
@@ -97,7 +98,7 @@ exports.editVariant = async (req, res) => {
         const { id } = req.params
         const { name, status } = req.body
 
-        console.log('Edit received data:', { name, status }) // Debug log
+        // console.log('Edit received data:', { name, status }) // Debug log
 
         if(!name) return res.status(400).json({ message: "Name is required" })
 
@@ -121,7 +122,7 @@ exports.editVariant = async (req, res) => {
         )
         if (!updatedVariant) return res.status(404).json({ message: "Variant not found" })
         
-        console.log('Updated variant:', updatedVariant) // Debug log
+        // console.log('Updated variant:', updatedVariant) // Debug log
         
         res.status(200).json({ message: "Variant updated successfully", variant: updatedVariant })
     }catch(err){

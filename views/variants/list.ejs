@@ -40,7 +40,7 @@
                                         <tr>
                                             <th scope="col">#</th>
                                             <th scope="col">Product Variant Name</th>
-                                            <th scope="col">Attributes</th>
+                                            <th scope="col" class="text-center">Total Attributes</th>
                                             <th scope="col">Status</th>
                                             <th scope="col">Created</th>
                                             <th scope="col">Actions</th>
@@ -53,16 +53,11 @@
                                                 <td>
                                                     <strong><%= variant.name %></strong>
                                                 </td>
-                                                <td>
-                                                    <% if (variant.value && variant.value.length > 0) { %>
-                                                        <% variant.value.slice(0, 3).forEach((val, idx) => { %>
-                                                            <span class="badge badge-soft-primary me-1"><%= val %></span>
-                                                        <% }) %>
-                                                        <% if (variant.value.length > 3) { %>
-                                                            <span class="text-muted">+<%= variant.value.length - 3 %> more</span>
-                                                        <% } %>
+                                                <td class="text-center">
+                                                    <% if (variant.attributes && variant.attributes.length > 0) { %>
+                                                        <span class="badge bg-info"><%= variant.attributes.length %></span>
                                                     <% } else { %>
-                                                        <span class="text-muted">No values</span>
+                                                        <span class="badge bg-secondary">0</span>
                                                     <% } %>
                                                 </td>
                                                 <td>
