@@ -1,89 +1,35 @@
 const mongoose = require('mongoose')
-
 const productSchema = new mongoose.Schema({
     name: {
         type: String,
-        required: true,
-        trim: true
+        required: true
     },
     description: {
         type: String,
-        required: true,
-        trim: true
+        required: true
     },
     category: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Category',
         required: true
     },
-    active: {
-        type: Boolean,
-        default: true
+    variant: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Variant',
+        required: false
     },
-    variants: [{
-        variant: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'Variant',
-            required: true
-        },
-        selectedValues: [{
-            type: String,
-            required: true
-        }]
-    }],
-    price: {
-        type: Number,
-        required: true,
-        min: 0
+    variantAttribute: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'VariantAttribute',
+        required: false
     },
-    discount: {
-        type: Number,
-        default: 0,
-        min: 0,
-        max: 100
-    },
-    images: [{
-        type: String, // Store image URLs/paths
-        required: true
-    }],
-    stock: {
-        type: Number,
-        required: true,
-        min: 0,
-        default: 0
-    },
-    // Calculated fields
-    finalPrice: {
-        type: Number
-    },
-    slug: {
+    status: {
         type: String,
-        unique: true
+        enum: ['active', 'inactive'],
+        default: 'active'
     }
 }, {
     timestamps: true
 })
-
-// Pre-save middleware to calculate final price and generate slug
-productSchema.pre('save', function(next) {
-    // Calculate final price after discount
-    this.finalPrice = this.price - (this.price * (this.discount / 100))
-    
-    // Generate slug from name
-    if (this.isModified('name')) {
-        this.slug = this.name
-            .toLowerCase()
-            .replace(/[^a-z0-9]+/g, '-')
-            .replace(/^-+|-+$/g, '')
-    }
-    
-    next()
-})
-
-// Index for better search performance
-productSchema.index({ name: 'text', description: 'text' })
-productSchema.index({ category: 1 })
-productSchema.index({ active: 1 })
-productSchema.index({ price: 1 })
 
 module.exports = mongoose.model('Product', productSchema)

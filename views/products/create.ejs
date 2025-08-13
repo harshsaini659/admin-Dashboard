@@ -23,7 +23,7 @@
                     </div>
                 <% } %>
                 
-                <div class="row">
+                <div class="row justify-content-center">
                     <div class="col-lg-8">
                         <div class="card mb-4">
                             <div class="card-header">
@@ -47,173 +47,72 @@
                                                 <label for="productCategory" class="form-label">Category <span class="text-danger">*</span></label>
                                                 <select class="form-select" id="productCategory" name="category" required>
                                                     <option value="">Select Category</option>
-                                                    <% categories.forEach(category => { %>
-                                                        <option value="<%= category._id %>"><%= category.name %></option>
-                                                    <% }) %>
+                                                    <% if (typeof categories !== 'undefined' && categories.length > 0) { %>
+                                                        <% categories.forEach(category => { %>
+                                                            <option value="<%= category._id %>"><%= category.name %></option>
+                                                        <% }) %>
+                                                    <% } %>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="variantStatus" class="form-label">Status</label>
+                                            <select class="form-select" id="variantStatus" name="status">
+                                                <option value="active" selected>Active</option>
+                                                <option value="inactive">Inactive</option>
+                                            </select>
+                                            <div class="form-text">Set the variant attribute availability status</div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="mb-4">
+                                                <label for="productVariant" class="form-label">Variant <span class="text-danger">*</span></label>
+                                                <select class="form-select" id="productVariant" name="variant" required>
+                                                    <option value="">Select Variant</option>
+                                                    <% if (typeof variants !== 'undefined' && variants.length > 0) { %>
+                                                        <% variants.forEach(variant => { %>
+                                                            <option value="<%= variant._id %>"><%= variant.name %></option>
+                                                        <% }) %>
+                                                    <% } %>
                                                 </select>
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="mb-4">
-                                                <label for="productStatus" class="form-label">Status</label>
-                                                <select class="form-select" id="productStatus" name="active">
-                                                    <option value="true">Active</option>
-                                                    <option value="false">Inactive</option>
+                                                <label for="productVariantAtt" class="form-label">Variant Attribute <span class="text-danger">*</span></label>
+                                                <select class="form-select" id="productVariantAtt" name="variantAttribute" required>
+                                                    <option value="">Select Variant Attribute</option>
+                                                    <% if (typeof variantAttributes !== 'undefined' && variantAttributes.length > 0) { %>
+                                                        <% variantAttributes.forEach(variantAttribute => { %>
+                                                            <option value="<%= variantAttribute._id %>"><%= variantAttribute.name %></option>
+                                                        <% }) %>
+                                                    <% } %>
                                                 </select>
                                             </div>
-                                        </div>
-                                    </div>
-                                    
-                                    <!-- Product Variants Section -->
-                                    <div class="mb-4">
-                                        <label class="form-label">Product Variants</label>
-                                        <div class="border rounded p-3 bg-light">
-                                            <div class="row mb-3">
-                                                <div class="col-md-4">
-                                                    <label for="variantSelect1" class="form-label">First Variant</label>
-                                                    <select class="form-select" id="variantSelect1" onchange="loadVariantOptions(1)">
-                                                        <option value="">Select Variant</option>
-                                                        <% variants.forEach(variant => { %>
-                                                            <option value="<%= variant._id %>"><%= variant.name %></option>
-                                                        <% }) %>
-                                                    </select>
-                                                </div>
-                                                <div class="col-md-4">
-                                                    <label for="variantValue1" class="form-label">Variant Value</label>
-                                                    <select class="form-select" id="variantValue1" disabled>
-                                                        <option value="">Select variant first</option>
-                                                    </select>
-                                                </div>
-                                                <div class="col-md-4">
-                                                    <label class="form-label">&nbsp;</label>
-                                                    <button type="button" class="btn btn-success w-100" onclick="addAnotherVariant()" disabled id="addVariantBtn">
-                                                        <i class="material-icons md-add"></i> Add Another Variant
-                                                    </button>
-                                                </div>
-                                            </div>
-                                            
-                                            <!-- Additional variants will be added here -->
-                                            <div id="additionalVariants"></div>
-                                            
-                                            <!-- Selected variants display -->
-                                            <div id="selectedVariants" class="mt-3" style="display: none;">
-                                                <h6>Selected Variants:</h6>
-                                                <div id="selectedVariantsList"></div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="row">
-                                        <div class="col-md-4">
-                                            <div class="mb-4">
-                                                <label for="productPrice" class="form-label">Price ($) <span class="text-danger">*</span></label>
-                                                <input type="number" class="form-control" id="productPrice" name="price" min="0" step="0.01" required>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <div class="mb-4">
-                                                <label for="productDiscount" class="form-label">Discount (%)</label>
-                                                <input type="number" class="form-control" id="productDiscount" name="discount" min="0" max="100" step="0.01">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <div class="mb-4">
-                                                <label for="productStock" class="form-label">Stock Quantity <span class="text-danger">*</span></label>
-                                                <input type="number" class="form-control" id="productStock" name="stock" min="0" required>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    
-                                    <!-- Final Price Display -->
-                                    <div class="mb-4">
-                                        <div class="alert alert-info">
-                                            <strong>Final Price: $<span id="finalPrice">0.00</span></strong>
                                         </div>
                                     </div>
                                 </form>
                             </div>
                         </div>
-                        
-                        <!-- Images Section -->
-                        <div class="card mb-4">
-                            <div class="card-header d-flex justify-content-between align-items-center">
-                                <h4>Product Images</h4>
-                                <div class="btn-group">
-                                    <button type="button" class="btn btn-sm btn-primary" onclick="showFileUpload()">
-                                        <i class="material-icons md-upload"></i> Upload Images
-                                    </button>
-                                    <button type="button" class="btn btn-sm btn-outline-primary" onclick="addImageUrl()">
-                                        <i class="material-icons md-link"></i> Add URL
-                                    </button>
-                                </div>
-                            </div>
-                            <div class="card-body">
-                                <!-- File Upload Section -->
-                                <div id="fileUploadSection" style="display: none;">
-                                    <div class="mb-3">
-                                        <label class="form-label">Upload Images</label>
-                                        <input type="file" class="form-control" id="imageUpload" multiple accept="image/*" onchange="handleFileUpload(this)">
-                                        <small class="text-muted">Select up to 10 images (JPG, PNG, GIF, WebP - Max 5MB each)</small>
-                                    </div>
-                                    <div id="uploadProgress" style="display: none;">
-                                        <div class="progress mb-3">
-                                            <div class="progress-bar" role="progressbar" style="width: 0%"></div>
-                                        </div>
-                                    </div>
-                                </div>
-                                
-                                <!-- Images Container -->
-                                <div id="imagesContainer">
-                                    <p class="text-muted">No images added yet. Click "Upload Images" or "Add URL" to get started.</p>
-                                </div>
-                            </div>
-                        </div>
                     </div>
-                    
-                    <div class="col-lg-4">
-                        <div class="card mb-4">
-                            <div class="card-header">
-                                <h4>Actions</h4>
-                            </div>
+                </div>
+                
+                <!-- Action Buttons at Bottom -->
+                <div class="row justify-content-center">
+                    <div class="col-lg-8">
+                        <div class="card">
                             <div class="card-body">
-                                <div class="d-grid gap-2">
-                                    <button type="button" class="btn btn-primary" onclick="saveProduct()">
-                                        <i class="material-icons md-save"></i> Save Product
-                                    </button>
-                                    <button type="button" class="btn btn-secondary" onclick="saveDraft()">
-                                        <i class="material-icons md-drafts"></i> Save as Draft
-                                    </button>
+                                <div class="d-flex justify-content-between">
                                     <a href="/admin/user/products" class="btn btn-light">
                                         <i class="material-icons md-cancel"></i> Cancel
                                     </a>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="card mb-4">
-                            <div class="card-header">
-                                <h4>Product Summary</h4>
-                            </div>
-                            <div class="card-body">
-                                <div class="mb-3">
-                                    <small class="text-muted">Category</small>
-                                    <div id="summaryCategory">Not selected</div>
-                                </div>
-                                <div class="mb-3">
-                                    <small class="text-muted">Price</small>
-                                    <div id="summaryPrice">$0.00</div>
-                                </div>
-                                <div class="mb-3">
-                                    <small class="text-muted">Stock</small>
-                                    <div id="summaryStock">0 units</div>
-                                </div>
-                                <div class="mb-3">
-                                    <small class="text-muted">Variants</small>
-                                    <div id="summaryVariants">0 variants</div>
-                                </div>
-                                <div class="mb-3">
-                                    <small class="text-muted">Images</small>
-                                    <div id="summaryImages">0 images</div>
+                                    <div class="d-flex gap-2">
+                                        <button type="button" class="btn btn-secondary" onclick="saveDraft()">
+                                            <i class="material-icons md-drafts"></i> Save as Draft
+                                        </button>
+                                        <button type="button" class="btn btn-primary" onclick="saveProduct()">
+                                            <i class="material-icons md-save"></i> Save Product
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -222,219 +121,6 @@
             </section>
         
         <script>
-            // Available variants from server
-            const availableVariants = <%- JSON.stringify(variants) %>;
-            let variantCounter = 1;
-            let imageCounter = 0;
-            let selectedVariants = [];
-            
-            // Calculate final price
-            function calculateFinalPrice() {
-                const price = parseFloat(document.getElementById('productPrice').value) || 0;
-                const discount = parseFloat(document.getElementById('productDiscount').value) || 0;
-                const finalPrice = price - (price * (discount / 100));
-                document.getElementById('finalPrice').textContent = finalPrice.toFixed(2);
-                return finalPrice;
-            }
-            
-            // Load variant options for a specific variant selector
-            function loadVariantOptions(variantNumber) {
-                const variantSelect = document.getElementById(`variantSelect${variantNumber}`);
-                const variantValueSelect = document.getElementById(`variantValue${variantNumber}`);
-                const addVariantBtn = document.getElementById('addVariantBtn');
-                
-                if (!variantSelect.value) {
-                    variantValueSelect.innerHTML = '<option value="">Select variant first</option>';
-                    variantValueSelect.disabled = true;
-                    if (variantNumber === 1) {
-                        addVariantBtn.disabled = true;
-                    }
-                    return;
-                }
-                
-                const selectedVariant = availableVariants.find(v => v._id === variantSelect.value);
-                if (selectedVariant && selectedVariant.value) {
-                    variantValueSelect.innerHTML = '<option value="">Select value</option>';
-                    
-                    // Get already selected values for this variant type to avoid duplicates
-                    const selectedValuesForThisVariant = selectedVariants
-                        .filter(v => v.id === variantSelect.value)
-                        .map(v => v.value);
-                    
-                    selectedVariant.value.forEach(value => {
-                        const isAlreadySelected = selectedValuesForThisVariant.includes(value);
-                        if (!isAlreadySelected) {
-                            variantValueSelect.innerHTML += `<option value="${value}">${value}</option>`;
-                        }
-                    });
-                    
-                    variantValueSelect.disabled = false;
-                    
-                    // Auto-update when value is selected
-                    variantValueSelect.onchange = function() {
-                        if (this.value) {
-                            updateSelectedVariants(variantNumber);
-                            if (variantNumber === 1) {
-                                addVariantBtn.disabled = false;
-                            }
-                        } else {
-                            // Remove this variant from selected list if value is cleared
-                            removeVariant(variantNumber);
-                        }
-                    };
-                }
-            }
-            
-            // Update selected variants display
-            function updateSelectedVariants(variantNumber) {
-                const variantSelect = document.getElementById(`variantSelect${variantNumber}`);
-                const variantValueSelect = document.getElementById(`variantValue${variantNumber}`);
-                
-                if (variantSelect.value && variantValueSelect.value) {
-                    const variantName = variantSelect.selectedOptions[0].text;
-                    const variantValue = variantValueSelect.value;
-                    
-                    // Update or add to selected variants
-                    const existingIndex = selectedVariants.findIndex(v => v.number === variantNumber);
-                    if (existingIndex >= 0) {
-                        selectedVariants[existingIndex] = {
-                            number: variantNumber,
-                            id: variantSelect.value,
-                            name: variantName,
-                            value: variantValue
-                        };
-                    } else {
-                        selectedVariants.push({
-                            number: variantNumber,
-                            id: variantSelect.value,
-                            name: variantName,
-                            value: variantValue
-                        });
-                    }
-                    
-                    // Update display
-                    updateVariantDisplay();
-                }
-            }
-            
-            // Update variant display
-            function updateVariantDisplay() {
-                const selectedVariantsDiv = document.getElementById('selectedVariants');
-                const selectedVariantsList = document.getElementById('selectedVariantsList');
-                
-                if (selectedVariants.length > 0) {
-                    selectedVariantsDiv.style.display = 'block';
-                    selectedVariantsList.innerHTML = selectedVariants.map(variant => `
-                        <span class="badge bg-primary me-2 mb-2">
-                            ${variant.name}: ${variant.value}
-                            <button type="button" class="btn-close btn-close-white ms-2" 
-                                    onclick="removeVariant(${variant.number})" style="font-size: 0.7em;"></button>
-                        </span>
-                    `).join('');
-                } else {
-                    selectedVariantsDiv.style.display = 'none';
-                }
-                
-                updateSummary();
-            }
-            
-            // Add another variant
-            function addAnotherVariant() {
-                variantCounter++;
-                const additionalVariants = document.getElementById('additionalVariants');
-                const addVariantBtn = document.getElementById('addVariantBtn');
-                
-                const variantHtml = `
-                    <div class="row mb-3" id="variantRow${variantCounter}">
-                        <div class="col-md-4">
-                            <select class="form-select" id="variantSelect${variantCounter}" onchange="loadVariantOptions(${variantCounter})">
-                                <option value="">Select Variant</option>
-                                ${availableVariants.map(variant => 
-                                    `<option value="${variant._id}">${variant.name}</option>`
-                                ).join('')}
-                            </select>
-                        </div>
-                        <div class="col-md-4">
-                            <select class="form-select" id="variantValue${variantCounter}" disabled>
-                                <option value="">Select variant first</option>
-                            </select>
-                        </div>
-                        <div class="col-md-4">
-                            <button type="button" class="btn btn-danger w-100" onclick="removeVariantRow(${variantCounter})">
-                                <i class="material-icons md-delete"></i> Remove
-                            </button>
-                        </div>
-                    </div>
-                `;
-                
-                additionalVariants.insertAdjacentHTML('beforeend', variantHtml);
-                
-                // Keep add button enabled so user can add more variants
-                addVariantBtn.disabled = false;
-            }
-            
-            // Remove variant row
-            function removeVariantRow(variantNumber) {
-                document.getElementById(`variantRow${variantNumber}`).remove();
-                removeVariant(variantNumber);
-            }
-            
-            // Remove variant from selected list
-            function removeVariant(variantNumber) {
-                selectedVariants = selectedVariants.filter(v => v.number !== variantNumber);
-                updateVariantDisplay();
-                
-                // Reset the form controls if they exist
-                const variantSelect = document.getElementById(`variantSelect${variantNumber}`);
-                const variantValueSelect = document.getElementById(`variantValue${variantNumber}`);
-                
-                if (variantSelect) variantSelect.value = '';
-                if (variantValueSelect) {
-                    variantValueSelect.innerHTML = '<option value="">Select variant first</option>';
-                    variantValueSelect.disabled = true;
-                }
-                
-                // Refresh all other variant value dropdowns to show newly available options
-                for (let i = 1; i <= variantCounter; i++) {
-                    if (i !== variantNumber) {
-                        const otherVariantSelect = document.getElementById(`variantSelect${i}`);
-                        if (otherVariantSelect && otherVariantSelect.value) {
-                            loadVariantOptions(i);
-                        }
-                    }
-                }
-                
-                // Re-enable add button if main variant is selected
-                const mainVariantValue = document.getElementById('variantValue1');
-                const addVariantBtn = document.getElementById('addVariantBtn');
-                if (mainVariantValue && mainVariantValue.value && addVariantBtn) {
-                    addVariantBtn.disabled = false;
-                }
-            }
-            
-            // Update summary
-            function updateSummary() {
-                // Category
-                const categorySelect = document.getElementById('productCategory');
-                const categoryText = categorySelect.selectedOptions[0]?.text || 'Not selected';
-                document.getElementById('summaryCategory').textContent = categoryText;
-                
-                // Price
-                const finalPrice = calculateFinalPrice();
-                document.getElementById('summaryPrice').textContent = `$${finalPrice.toFixed(2)}`;
-                
-                // Stock
-                const stock = document.getElementById('productStock').value || 0;
-                document.getElementById('summaryStock').textContent = `${stock} units`;
-                
-                // Variants
-                document.getElementById('summaryVariants').textContent = `${selectedVariants.length} variants`;
-                
-                // Images
-                const imageCount = document.querySelectorAll('.image-item').length;
-                document.getElementById('summaryImages').textContent = `${imageCount} images`;
-            }
-            
             // Collect form data
             function collectFormData() {
                 const form = document.getElementById('productForm');
@@ -444,40 +130,10 @@
                     name: formData.get('name'),
                     description: formData.get('description'),
                     category: formData.get('category'),
-                    price: parseFloat(formData.get('price')),
-                    discount: parseFloat(formData.get('discount')) || 0,
-                    stock: parseInt(formData.get('stock')),
-                    active: formData.get('active') === 'true'
+                    status: formData.get('status'),
+                    variant: formData.get('variant'),
+                    variantAttribute: formData.get('variantAttribute')
                 };
-                
-                // Collect variants
-                const variants = [];
-                selectedVariants.forEach(variant => {
-                    // Check if this variant type already exists
-                    const existingVariant = variants.find(v => v.variant === variant.id);
-                    if (existingVariant) {
-                        // Add value to existing variant
-                        if (!existingVariant.selectedValues.includes(variant.value)) {
-                            existingVariant.selectedValues.push(variant.value);
-                        }
-                    } else {
-                        // Create new variant entry
-                        variants.push({
-                            variant: variant.id,
-                            selectedValues: [variant.value]
-                        });
-                    }
-                });
-                data.variants = variants;
-                
-                // Collect images
-                const images = [];
-                document.querySelectorAll('.image-item .image-url').forEach(input => {
-                    if (input.value.trim()) {
-                        images.push(input.value.trim());
-                    }
-                });
-                data.images = images;
                 
                 return data;
             }
@@ -485,20 +141,20 @@
             // Save product
             function saveProduct() {
                 const formData = collectFormData();
-                formData.active = true;
+                formData.status = formData.status || 'active'; // Ensure status is set
                 submitProduct(formData);
             }
             
             // Save as draft
             function saveDraft() {
                 const formData = collectFormData();
-                formData.active = false;
+                formData.status = 'inactive'; // Draft is always inactive
                 submitProduct(formData);
             }
             
             // Submit product
             function submitProduct(data) {
-                fetch('/admin/user/api/products', {
+                fetch('/admin/user/products/create', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -507,7 +163,7 @@
                 })
                 .then(response => response.json())
                 .then(result => {
-                    if (result.message) {
+                    if (result.message && result.message.includes('successfully')) {
                         window.location.href = '/admin/user/products?success=' + encodeURIComponent(result.message);
                     } else {
                         throw new Error(result.message || 'Unknown error');
@@ -519,155 +175,8 @@
                 });
             }
             
-            // Show/Hide file upload section
-            function showFileUpload() {
-                const uploadSection = document.getElementById('fileUploadSection');
-                if (uploadSection.style.display === 'none') {
-                    uploadSection.style.display = 'block';
-                } else {
-                    uploadSection.style.display = 'none';
-                }
-            }
-            
-            // Handle file upload
-            function handleFileUpload(input) {
-                const files = input.files;
-                if (files.length === 0) return;
-                
-                // Show progress
-                const progressSection = document.getElementById('uploadProgress');
-                const progressBar = progressSection.querySelector('.progress-bar');
-                progressSection.style.display = 'block';
-                
-                // Create FormData
-                const formData = new FormData();
-                for (let i = 0; i < files.length; i++) {
-                    formData.append('images', files[i]);
-                }
-                
-                // Upload files
-                fetch('/admin/user/api/products/upload-images', {
-                    method: 'POST',
-                    body: formData
-                })
-                .then(response => response.json())
-                .then(data => {
-                    progressSection.style.display = 'none';
-                    
-                    if (data.success) {
-                        // Add uploaded images to container
-                        const container = document.getElementById('imagesContainer');
-                        
-                        if (container.querySelector('p.text-muted')) {
-                            container.innerHTML = '';
-                        }
-                        
-                        data.imageUrls.forEach(imageUrl => {
-                            imageCounter++;
-                            const imageHtml = `
-                                <div class="image-item border rounded p-2 mb-2" data-image-id="${imageCounter}">
-                                    <div class="d-flex gap-2 align-items-center">
-                                        <img src="${imageUrl}" alt="Product Image" class="img-thumbnail" style="width: 60px; height: 60px; object-fit: cover;">
-                                        <input type="hidden" value="${imageUrl}" class="image-url">
-                                        <div class="flex-grow-1">
-                                            <small class="text-muted">${imageUrl}</small>
-                                        </div>
-                                        <button type="button" class="btn btn-danger btn-sm" onclick="removeImage(${imageCounter})">
-                                            <i class="material-icons md-delete"></i>
-                                        </button>
-                                    </div>
-                                </div>
-                            `;
-                            container.insertAdjacentHTML('beforeend', imageHtml);
-                        });
-                        
-                        updateSummary();
-                        
-                        // Show success message
-                        alert(data.message);
-                        
-                        // Clear file input
-                        input.value = '';
-                        
-                    } else {
-                        alert('Error uploading images: ' + data.message);
-                    }
-                })
-                .catch(error => {
-                    progressSection.style.display = 'none';
-                    console.error('Error:', error);
-                    alert('Error uploading images');
-                });
-            }
-            
-            // Add image URL
-            function addImageUrl() {
-                imageCounter++;
-                const container = document.getElementById('imagesContainer');
-                
-                if (container.querySelector('p.text-muted')) {
-                    container.innerHTML = '';
-                }
-                
-                const imageHtml = `
-                    <div class="image-item border rounded p-2 mb-2" data-image-id="${imageCounter}">
-                        <div class="row align-items-center">
-                            <div class="col-md-2">
-                                <div class="image-preview bg-light d-flex align-items-center justify-content-center" style="width: 60px; height: 60px; border: 1px dashed #ccc;">
-                                    <i class="material-icons md-image text-muted">image</i>
-                                </div>
-                            </div>
-                            <div class="col-md-8">
-                                <input type="url" class="form-control image-url" placeholder="Enter image URL" onchange="previewImageUrl(this, ${imageCounter})">
-                            </div>
-                            <div class="col-md-2">
-                                <button type="button" class="btn btn-danger btn-sm" onclick="removeImage(${imageCounter})">
-                                    <i class="material-icons md-delete"></i>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                `;
-                
-                container.insertAdjacentHTML('beforeend', imageHtml);
-                updateSummary();
-            }
-            
-            // Preview image URL
-            function previewImageUrl(input, imageId) {
-                const imageUrl = input.value.trim();
-                const imageItem = document.querySelector(`[data-image-id="${imageId}"]`);
-                const preview = imageItem.querySelector('.image-preview');
-                
-                if (imageUrl) {
-                    preview.innerHTML = `<img src="${imageUrl}" alt="Preview" style="width: 60px; height: 60px; object-fit: cover;">`;
-                } else {
-                    preview.innerHTML = '<i class="material-icons md-image text-muted">image</i>';
-                }
-                
-                updateSummary();
-            }
-            
-            // Remove image
-            function removeImage(imageId) {
-                document.querySelector(`[data-image-id="${imageId}"]`).remove();
-                
-                // Check if no images left
-                const container = document.getElementById('imagesContainer');
-                if (container.children.length === 0) {
-                    container.innerHTML = '<p class="text-muted">No images added yet. Click "Upload Images" or "Add URL" to get started.</p>';
-                }
-                updateSummary();
-            }
-            
             // Event listeners
             document.addEventListener('DOMContentLoaded', function() {
-                // Update summary on form changes
-                document.getElementById('productForm').addEventListener('input', updateSummary);
-                
-                // Initial summary update
-                updateSummary();
-                
                 // Auto-dismiss alerts
                 const alerts = document.querySelectorAll('.alert.alert-dismissible');
                 alerts.forEach(function(alert) {

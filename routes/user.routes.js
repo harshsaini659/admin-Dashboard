@@ -10,6 +10,6 @@ router.get('/dashboard', authMiddleware, userController.dashboard)    // /admin/
 router.use('/categories', require('./category.routes'))              // /admin/user/categories
 router.use('/variants',require('./productVariant.routes'))           // /admin/user/variants
 router.use('/variantAtt',require('./productVariantAtt.routes'))           // /admin/user/variants
-router.use('/', require('./product.routes'))                         // /admin/user/products
+router.use('/products', require('./product.routes'))                         // /admin/user/products
 
 module.exports = router

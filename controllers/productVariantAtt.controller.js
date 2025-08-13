@@ -6,7 +6,7 @@ exports.createVariantAttForm = async (req, res) => {
     try {
         // Fetch all active product variants for the dropdown
         const variants = await ProductVariant.find({ status: 'active' }).sort({ name: 1 })
-        console.log()
+        console.log("Fetched active variants:", variants) // Debug log
         
         res.render('variantAttributes/create', { 
             title: 'Add Product Variant Attribute',
