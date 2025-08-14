@@ -58,23 +58,70 @@ exports.createProductForm = async (req, res) => {
 // Create product (API method - keep existing)
 exports.createProduct = async (req, res) => {
     try {
-        const { name, description, category, status, variant, variantAttribute } = req.body
-        console.log('Received data:', { name, category, description, status, variant, variantAttribute }) // Debug log
+        console.log('=== Product Creation Request ===')
+        console.log('Body:', req.body)
+        console.log('File:', req.file)
+        console.log('================================')
+        
+        const { name, description, shortDescription, category, status, variant, variantAttribute } = req.body
+        console.log('Received data:', { name, description, shortDescription, category, status, variant, variantAttribute }) // Debug log
+        
+        // Validate required fields
+        if (!name || !name.trim()) {
+            return res.status(400).json({ message: "Product name is required" })
+        }
+        
+        if (!description || !description.trim()) {
+            return res.status(400).json({ message: "Product description is required" })
+        }
+        
+        if (!shortDescription || !shortDescription.trim()) {
+            return res.status(400).json({ message: "Short description is required" })
+        }
+        
+        if (!category) {
+            return res.status(400).json({ message: "Category is required" })
+        }
+        
+        // Handle image upload
+        let imagePath = null
+        if (req.file) {
+            // Store relative path from public directory
+            imagePath = `/uploads/products/${req.file.filename}`
+            console.log('Image uploaded:', imagePath)
+        }
         
         const newProduct = new Product({
             name: name.trim(), 
             description: description.trim(),
+            shortDescription: shortDescription.trim(),
             category: category, // ObjectId - no trim needed
             status: status || 'active', // Simplified
             variant: variant || null,
-            variantAttribute: variantAttribute || null
+            variantAttribute: variantAttribute || null,
+            image: imagePath
         })
 
         const savedProduct = await newProduct.save()
         console.log('Saved product:', savedProduct) // Debug log
         res.status(201).json({ message: "Product created successfully", product: savedProduct })
     } catch (err) {
-        console.error(err)
+        console.error('=== Product Creation Error ===')
+        console.error('Error details:', err)
+        console.error('Error message:', err.message)
+        console.error('Error stack:', err.stack)
+        console.error('=============================')
+        
+        // Clean up uploaded file if database save fails
+        if (req.file) {
+            const fs = require('fs')
+            const path = require('path')
+            const filePath = path.join(__dirname, '../public/uploads/products', req.file.filename)
+            fs.unlink(filePath, (unlinkErr) => {
+                if (unlinkErr) console.error('Error deleting file:', unlinkErr)
+            })
+        }
+        
         if(err.code === 11000) {
             return res.status(400).json({ message: "Product with this name already exists" })
         }

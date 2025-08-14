@@ -2,7 +2,7 @@ const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
 
-// Create uploads directory if it doesn't exist
+// Uploads folder banata hai, nahi bhi hai to create karta hai
 const uploadDir = path.join(__dirname, '../public/uploads/products');
 if (!fs.existsSync(uploadDir)) {
     fs.mkdirSync(uploadDir, { recursive: true });
