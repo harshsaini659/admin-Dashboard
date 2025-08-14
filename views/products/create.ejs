@@ -39,10 +39,10 @@
                                     <div class="row">
                                         <!-- Parent Category Tree Dropdown -->
                                         <div class="col-12 mb-3">
-                                            <label for="categoryParent" class="form-label">Category</label>
-                                            <input type="text" id="categoryParentTree" class="form-control" placeholder="Select parent category or leave empty for root category" readonly>
-                                            <input type="hidden" id="categoryParent" name="parent" value="">
-                                            <div class="form-text">Select a parent category or leave as root category</div>
+                                            <label for="categoryParent" class="form-label">Category <span class="text-danger">*</span></label>
+                                            <input type="text" id="categoryParentTree" class="form-control" placeholder="Select a category" readonly>
+                                            <input type="hidden" id="categoryParent" name="category" value="">
+                                            <div class="form-text">Select a product category</div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="mb-4">
@@ -242,6 +242,27 @@
             
             // Submit product
             function submitProduct(data) {
+                // Validate required fields
+                if (!data.category || data.category === '' || data.category === 'null') {
+                    alert('Please select a category for the product');
+                    return;
+                }
+                
+                if (!data.name || !data.name.trim()) {
+                    alert('Please enter a product name');
+                    return;
+                }
+                
+                if (!data.shortDescription || !data.shortDescription.trim()) {
+                    alert('Please enter a short description');
+                    return;
+                }
+                
+                if (!data.description || data.description.trim() === '<p><br></p>' || data.description.trim() === '') {
+                    alert('Please enter a detailed description');
+                    return;
+                }
+                
                 // Create FormData for file upload
                 const formData = new FormData();
                 
