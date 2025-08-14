@@ -56,8 +56,16 @@
                                         </div>
                                     </div>
                                     
+                                    <!-- Added Variants Display Section -->
+                                    <div id="addedVariantsSection" class="mb-4" style="display: none;">
+                                        <label class="form-label">Added Variants</label>
+                                        <div id="addedVariantsList" class="d-flex flex-wrap gap-2">
+                                            <!-- Added variants will appear here as chips -->
+                                        </div>
+                                    </div>
+                                    
                                     <div class="row">
-                                        <div class="col-md-6">
+                                        <div class="col-md-4">
                                             <div class="mb-4">
                                                 <label for="productVariant" class="form-label">Variant <span class="text-danger">*</span></label>
                                                 <select class="form-select" id="productVariant" name="variant" required>
@@ -70,13 +78,23 @@
                                                 </select>
                                             </div>
                                         </div>
-                                        <div class="col-md-6">
+                                        <div class="col-md-4">
                                             <div class="mb-4">
                                                 <label for="productVariantAtt" class="form-label">Variant Attribute <span class="text-danger">*</span></label>
                                                 <select class="form-select" id="productVariantAtt" name="variantAttribute" required disabled>
                                                     <option value="">Select Variant First</option>
                                                 </select>
                                                 <div class="form-text">Select a variant first to see available attributes</div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="mb-4">
+                                                <label class="form-label">&nbsp;</label>
+                                                <div>
+                                                    <button type="button" class="btn btn-outline-primary" onclick="addVariant()">
+                                                        <i class="material-icons md-add"></i> Add
+                                                    </button>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -213,8 +231,7 @@
                     description: descriptionHTML,
                     category: formData.get('category'),
                     status: formData.get('status'),
-                    variant: formData.get('variant'),
-                    variantAttribute: formData.get('variantAttribute'),
+                    addedVariants: addedVariants, // Use the addedVariants array
                     hasImage: !!imageFile
                 };
                 
@@ -263,6 +280,12 @@
                     return;
                 }
                 
+                // Validate variants
+                if (!data.addedVariants || data.addedVariants.length === 0) {
+                    alert('Please add at least one variant');
+                    return;
+                }
+                
                 // Create FormData for file upload
                 const formData = new FormData();
                 
@@ -272,8 +295,19 @@
                 formData.append('description', data.description);
                 formData.append('category', data.category);
                 formData.append('status', data.status);
-                formData.append('variant', data.variant);
-                formData.append('variantAttribute', data.variantAttribute);
+                
+                // Add variants data
+                if (data.addedVariants.length > 0) {
+                    // For single variant (backward compatibility)
+                    formData.append('variant', data.addedVariants[0].variantId);
+                    formData.append('variantAttribute', data.addedVariants[0].variantAttributeId);
+                    
+                    // For multiple variants (future use)
+                    data.addedVariants.forEach((variant, index) => {
+                        formData.append(`variants[${index}][variant]`, variant.variantId);
+                        formData.append(`variants[${index}][variantAttribute]`, variant.variantAttributeId);
+                    });
+                }
                 
                 // Add image file if present
                 if (data.imageFile) {
@@ -348,6 +382,108 @@
                 previewContainer.style.display = 'none';
             }
             
+            // Array to store added variants
+            let addedVariants = [];
+            
+            // Add variant functionality
+            function addVariant() {
+                const variantSelect = document.getElementById('productVariant');
+                const variantAttributeSelect = document.getElementById('productVariantAtt');
+                
+                // Check if both are selected
+                if (!variantSelect.value || !variantAttributeSelect.value) {
+                    alert('Please select both Variant and Variant Attribute');
+                    return;
+                }
+                
+                // Get selected text and values
+                const variantText = variantSelect.options[variantSelect.selectedIndex].text;
+                const variantAttributeText = variantAttributeSelect.options[variantAttributeSelect.selectedIndex].text;
+                const variantId = variantSelect.value;
+                const variantAttributeId = variantAttributeSelect.value;
+                
+                // Check if this combination already exists
+                const existingVariant = addedVariants.find(v => 
+                    v.variantId === variantId && v.variantAttributeId === variantAttributeId
+                );
+                
+                if (existingVariant) {
+                    alert('This variant combination has already been added');
+                    return;
+                }
+                
+                // Add to array
+                const variantData = {
+                    variantId: variantId,
+                    variantText: variantText,
+                    variantAttributeId: variantAttributeId,
+                    variantAttributeText: variantAttributeText
+                };
+                
+                addedVariants.push(variantData);
+                
+                // Display the added variant
+                displayAddedVariant(variantData, addedVariants.length - 1);
+                
+                // Clear selections
+                clearVariantSelections();
+                
+                // Show the added variants section
+                document.getElementById('addedVariantsSection').style.display = 'block';
+            }
+            
+            // Display added variant as a chip
+            function displayAddedVariant(variantData, index) {
+                const addedVariantsList = document.getElementById('addedVariantsList');
+                
+                const chip = document.createElement('span');
+                chip.className = 'badge bg-light text-dark border me-2 mb-2';
+                chip.innerHTML = `
+                    ${variantData.variantText} - ${variantData.variantAttributeText}
+                    <button type="button" class="btn-close btn-close-sm ms-2" onclick="removeVariant(${index})" style="font-size: 0.7em;"></button>
+                `;
+                chip.id = `variant-chip-${index}`;
+                
+                addedVariantsList.appendChild(chip);
+            }
+            
+            // Remove variant from list
+            function removeVariant(index) {
+                // Remove from array
+                addedVariants.splice(index, 1);
+                
+                // Refresh display
+                refreshVariantDisplay();
+            }
+            
+            // Refresh the variant display
+            function refreshVariantDisplay() {
+                const addedVariantsList = document.getElementById('addedVariantsList');
+                addedVariantsList.innerHTML = '';
+                
+                if (addedVariants.length === 0) {
+                    document.getElementById('addedVariantsSection').style.display = 'none';
+                } else {
+                    addedVariants.forEach((variant, index) => {
+                        displayAddedVariant(variant, index);
+                    });
+                }
+            }
+            
+            // Clear variant selections
+            function clearVariantSelections() {
+                const variantSelect = document.getElementById('productVariant');
+                const variantAttributeSelect = document.getElementById('productVariantAtt');
+                
+                // Reset variant select
+                variantSelect.value = '';
+                
+                // Reset variant attribute select
+                variantAttributeSelect.value = '';
+                variantAttributeSelect.disabled = true;
+                variantAttributeSelect.innerHTML = '<option value="">Select Variant First</option>';
+            }
+            
             // Initialize variant filtering functionality
             function initializeVariantFiltering() {
                 // Get variant attributes data from backend
@@ -360,6 +496,7 @@
                 // Add event listener for variant selection change
                 variantSelect.addEventListener('change', function() {
                     const selectedVariantId = this.value;
+                    console.log("selectedVariantId: ",selectedVariantId)
                     updateVariantAttributes(selectedVariantId, variantAttributesData);
                 });
             }
@@ -394,7 +531,7 @@
                 
                 // Enable the select and add default option
                 variantAttributeSelect.disabled = false;
-                variantAttributeSelect.innerHTML = '<option value="">Select Variant Attribute</option>';
+                variantAttributeSelect.innerHTML = '<option value="">Select Attribute</option>';
                 
                 // Add filtered attributes
                 filteredAttributes.forEach(attr => {
