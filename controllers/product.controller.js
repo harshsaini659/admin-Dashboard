@@ -35,7 +35,7 @@ exports.createProductForm = async (req, res) => {
     try {
         const categories = await Category.find({ status: 'active' }).sort({ name: 1 })
         const variants = await Variant.find({ status: 'active' }).sort({ name: 1 })
-        const variantAttributes = await VariantAttribute.find({ status: 'active' }).sort({ name: 1 })
+        const variantAttributes = await VariantAttribute.find({ status: 'active' }).populate('variantName', 'name _id').sort({ name: 1 })
         // console.log('Active categories:', categories) // Debug log
 
         // Build category tree for dropdown

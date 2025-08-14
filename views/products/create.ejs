@@ -73,14 +73,10 @@
                                         <div class="col-md-6">
                                             <div class="mb-4">
                                                 <label for="productVariantAtt" class="form-label">Variant Attribute <span class="text-danger">*</span></label>
-                                                <select class="form-select" id="productVariantAtt" name="variantAttribute" required>
-                                                    <option value="">Select Variant Attribute</option>
-                                                    <% if (typeof variantAttributes !== 'undefined' && variantAttributes.length > 0) { %>
-                                                        <% variantAttributes.forEach(variantAttribute => { %>
-                                                            <option value="<%= variantAttribute._id %>"><%= variantAttribute.name %></option>
-                                                        <% }) %>
-                                                    <% } %>
+                                                <select class="form-select" id="productVariantAtt" name="variantAttribute" required disabled>
+                                                    <option value="">Select Variant First</option>
                                                 </select>
+                                                <div class="form-text">Select a variant first to see available attributes</div>
                                             </div>
                                         </div>
                                     </div>
@@ -185,6 +181,9 @@
                 
                 // Initialize image upload preview
                 initializeImagePreview();
+                
+                // Initialize variant filtering
+                initializeVariantFiltering();
                 
                 // Auto-dismiss alerts
                 const alerts = document.querySelectorAll('.alert.alert-dismissible');
@@ -326,6 +325,66 @@
                 
                 imageInput.value = '';
                 previewContainer.style.display = 'none';
+            }
+            
+            // Initialize variant filtering functionality
+            function initializeVariantFiltering() {
+                // Get variant attributes data from backend
+                const variantAttributesData = <%- JSON.stringify(variantAttributes) %>;
+                console.log('Variant attributes data:', variantAttributesData);
+                
+                const variantSelect = document.getElementById('productVariant');
+                const variantAttributeSelect = document.getElementById('productVariantAtt');
+                
+                // Add event listener for variant selection change
+                variantSelect.addEventListener('change', function() {
+                    const selectedVariantId = this.value;
+                    updateVariantAttributes(selectedVariantId, variantAttributesData);
+                });
+            }
+            
+            // Update variant attributes based on selected variant
+            function updateVariantAttributes(selectedVariantId, variantAttributesData) {
+                const variantAttributeSelect = document.getElementById('productVariantAtt');
+                
+                // Clear current options
+                variantAttributeSelect.innerHTML = '';
+                
+                if (!selectedVariantId) {
+                    // No variant selected - disable and show placeholder
+                    variantAttributeSelect.disabled = true;
+                    variantAttributeSelect.innerHTML = '<option value="">Select Variant First</option>';
+                    document.querySelector('#productVariantAtt').parentElement.querySelector('.form-text').textContent = 'Select a variant first to see available attributes';
+                    return;
+                }
+                
+                // Filter attributes for the selected variant
+                const filteredAttributes = variantAttributesData.filter(attr => 
+                    attr.variantName && attr.variantName._id === selectedVariantId
+                );
+                
+                if (filteredAttributes.length === 0) {
+                    // No attributes found for this variant
+                    variantAttributeSelect.disabled = true;
+                    variantAttributeSelect.innerHTML = '<option value="">No attributes available for this variant</option>';
+                    document.querySelector('#productVariantAtt').parentElement.querySelector('.form-text').textContent = 'No attributes available for this variant';
+                    return;
+                }
+                
+                // Enable the select and add default option
+                variantAttributeSelect.disabled = false;
+                variantAttributeSelect.innerHTML = '<option value="">Select Variant Attribute</option>';
+                
+                // Add filtered attributes
+                filteredAttributes.forEach(attr => {
+                    const option = document.createElement('option');
+                    option.value = attr._id;
+                    option.textContent = attr.name;
+                    variantAttributeSelect.appendChild(option);
+                });
+                
+                // Update help text
+                document.querySelector('#productVariantAtt').parentElement.querySelector('.form-text').textContent = `Select an attribute for the selected variant (${filteredAttributes.length} available)`;
             }
             
             // Event listeners
