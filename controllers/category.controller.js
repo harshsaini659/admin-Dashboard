@@ -1,34 +1,35 @@
 const Category = require('../models/category.model')
+const buildCategoryDropdownTree = require('../utils/categoryDropdownTree')
 
 // Helper function to build tree structure for comboTree plugin
-const buildCategoryDropdownTree = (categories) => {
-    // First, build the hierarchical tree structure
-    const buildTree = (parentId = null) => {
-        return categories
-            .filter(cat => {
-                if (parentId === null) {
-                    return !cat.parent;
-                }
-                return cat.parent && cat.parent._id && cat.parent._id.toString() === parentId.toString();
-            })
-            .map(category => {
-                const children = buildTree(category._id);
-                const treeNode = {
-                    id: category._id.toString(),
-                    title: category.name,
-                    isSelectable: true
-                };
+// const buildCategoryDropdownTree = (categories) => {
+//     // First, build the hierarchical tree structure
+//     const buildTree = (parentId = null) => {
+//         return categories
+//             .filter(cat => {
+//                 if (parentId === null) {
+//                     return !cat.parent;
+//                 }
+//                 return cat.parent && cat.parent._id && cat.parent._id.toString() === parentId.toString();
+//             })
+//             .map(category => {
+//                 const children = buildTree(category._id);
+//                 const treeNode = {
+//                     id: category._id.toString(),
+//                     title: category.name,
+//                     isSelectable: true
+//                 };
                 
-                if (children.length > 0) {
-                    treeNode.subs = children;
-                }
+//                 if (children.length > 0) {
+//                     treeNode.subs = children;
+//                 }
                 
-                return treeNode;
-            });
-    };
+//                 return treeNode;
+//             });
+//     };
     
-    return buildTree();
-};
+//     return buildTree();
+// };
 
 // Show create category form
 exports.createCategoryForm = async (req, res) => {
@@ -38,6 +39,7 @@ exports.createCategoryForm = async (req, res) => {
         
         // Build simple dropdown structure
         const categoryTree = buildCategoryDropdownTree(allCategories)
+        // console.log("Category tree for dropdown:", categoryTree) // Debug log
 
         res.render('categories/create', {
             title: 'Add Category',
@@ -102,6 +104,8 @@ exports.createCategory = async (req, res) => {
         })
     }
 }
+
+////////////////////////////////////////------///////////////////////////////////////
 
 // Helper function to build category hierarchy path
 const buildCategoryPath = (category, categories) => {

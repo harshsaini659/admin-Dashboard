@@ -2,6 +2,7 @@ const Product = require('../models/product.model')
 const Category = require('../models/category.model')
 const Variant = require('../models/productVariant.model')
 const VariantAttribute = require('../models/productVariantAtt.model')
+const buildCategoryDropdownTree = require('../utils/categoryDropdownTree')
 
 exports.listProduct = async (req, res) => {
     try {
@@ -36,10 +37,14 @@ exports.createProductForm = async (req, res) => {
         const variants = await Variant.find({ status: 'active' }).sort({ name: 1 })
         const variantAttributes = await VariantAttribute.find({ status: 'active' }).sort({ name: 1 })
         // console.log('Active categories:', categories) // Debug log
+
+        // Build category tree for dropdown
+        const categoryTree = buildCategoryDropdownTree(categories)
+
         res.render('products/create', { 
             title: 'Add Product',
             error: req.query.error,
-            categories,
+            categoryTree: categoryTree,
             variants, // Assuming you will fetch variants from the database
             variantAttributes // Assuming you will fetch variant attributes from the database
         })
@@ -48,7 +53,7 @@ exports.createProductForm = async (req, res) => {
         res.render('products/create', { 
             title: 'Add Product',
             error: 'Error loading form',
-            categories: [],
+            categoryTree: [],
             variants: [],
             variantAttributes: []
         })
