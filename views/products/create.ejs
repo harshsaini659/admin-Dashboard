@@ -56,44 +56,131 @@
                                         </div>
                                     </div>
                                     
-                                    <!-- Added Variants Display Section -->
-                                    <div id="addedVariantsSection" class="mb-4" style="display: none;">
-                                        <label class="form-label">Added Variants</label>
-                                        <div id="addedVariantsList" class="d-flex flex-wrap gap-2">
-                                            <!-- Added variants will appear here as chips -->
+                                    <!-- Default Product Pricing Fields (shown when no variants) -->
+                                    <div id="defaultPricingFields" class="mb-4">
+                                        <label class="form-label">Product Pricing</label>
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <div class="mb-3">
+                                                    <label for="productPrice" class="form-label">Price <span class="text-danger">*</span></label>
+                                                    <input type="number" class="form-control" id="productPrice" name="price" placeholder="0.00" step="0.01" min="0">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="mb-3">
+                                                    <label for="productDiscount" class="form-label">Discount (%)</label>
+                                                    <input type="number" class="form-control" id="productDiscount" name="discount" placeholder="0" step="0.01" min="0" max="100" value="0">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="mb-3">
+                                                    <label for="productFinalPrice" class="form-label">Final Price</label>
+                                                    <input type="number" class="form-control" id="productFinalPrice" name="finalPrice" placeholder="0.00" readonly>
+                                                </div>
+                                            </div>
                                         </div>
+                                        <div class="form-text">Set the default price for this product (will be hidden when variants are added)</div>
                                     </div>
                                     
-                                    <div class="row">
-                                        <div class="col-md-4">
-                                            <div class="mb-4">
-                                                <label for="productVariant" class="form-label">Variant <span class="text-danger">*</span></label>
-                                                <select class="form-select" id="productVariant" name="variant" required>
-                                                    <option value="">Select Variant</option>
-                                                    <% if (typeof variants !== 'undefined' && variants.length > 0) { %>
-                                                        <% variants.forEach(variant => { %>
-                                                            <option value="<%= variant._id %>"><%= variant.name %></option>
-                                                        <% }) %>
-                                                    <% } %>
-                                                </select>
+                                    <!-- Variants Section -->
+                                    <div class="mb-4">
+                                        <label class="form-label">Product Variants</label>
+                                        <div class="form-text mb-3">Add variants to set different pricing for different attributes (Color, Size, etc.)</div>
+                                        
+                                        <!-- Added Variants Display -->
+                                        <div id="addedVariantsSection" class="mb-3" style="display: none;">
+                                            <div class="card">
+                                                <div class="card-header py-2">
+                                                    <h6 class="mb-0">Added Variants</h6>
+                                                </div>
+                                                <div class="card-body p-0">
+                                                    <div class="table-responsive">
+                                                        <table class="table table-sm mb-0">
+                                                            <thead class="table-light">
+                                                                <tr>
+                                                                    <th>Variant</th>
+                                                                    <th>Attribute</th>
+                                                                    <th>Price</th>
+                                                                    <th>Discount</th>
+                                                                    <th>Final Price</th>
+                                                                    <th>Action</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody id="addedVariantsList">
+                                                                <!-- Added variants will appear here -->
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
-                                        <div class="col-md-4">
-                                            <div class="mb-4">
-                                                <label for="productVariantAtt" class="form-label">Variant Attribute <span class="text-danger">*</span></label>
-                                                <select class="form-select" id="productVariantAtt" name="variantAttribute" required disabled>
-                                                    <option value="">Select Variant First</option>
-                                                </select>
-                                                <div class="form-text">Select a variant first to see available attributes</div>
-                                            </div>
+                                        
+                                        <!-- Add Variant Button -->
+                                        <div id="addVariantButton">
+                                            <button type="button" class="btn btn-outline-primary" onclick="showVariantForm()">
+                                                <i class="material-icons md-add"></i> Add Variant
+                                            </button>
                                         </div>
-                                        <div class="col-md-4">
-                                            <div class="mb-4">
-                                                <label class="form-label">&nbsp;</label>
-                                                <div>
-                                                    <button type="button" class="btn btn-outline-primary" onclick="addVariant()">
-                                                        <i class="material-icons md-add"></i> Add
-                                                    </button>
+                                        
+                                        <!-- Variant Sub-form (Hidden by default) -->
+                                        <div id="variantForm" class="card mt-3" style="display: none;">
+                                            <div class="card-header py-2">
+                                                <h6 class="mb-0">Add New Variant</h6>
+                                            </div>
+                                            <div class="card-body">
+                                                <div class="row">
+                                                    <div class="col-md-2">
+                                                        <div class="mb-3">
+                                                            <label for="formVariant" class="form-label">Variant <span class="text-danger">*</span></label>
+                                                            <select class="form-select form-select-sm" id="formVariant">
+                                                                <option value="">Select Variant</option>
+                                                                <% if (typeof variants !== 'undefined' && variants.length > 0) { %>
+                                                                    <% variants.forEach(variant => { %>
+                                                                        <option value="<%= variant._id %>"><%= variant.name %></option>
+                                                                    <% }) %>
+                                                                <% } %>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-2">
+                                                        <div class="mb-3">
+                                                            <label for="formVariantAtt" class="form-label">Attribute <span class="text-danger">*</span></label>
+                                                            <select class="form-select form-select-sm" id="formVariantAtt" disabled>
+                                                                <option value="">Select Variant First</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-2">
+                                                        <div class="mb-3">
+                                                            <label for="formPrice" class="form-label">Price <span class="text-danger">*</span></label>
+                                                            <input type="number" class="form-control form-control-sm" id="formPrice" placeholder="0.00" step="0.01" min="0">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-2">
+                                                        <div class="mb-3">
+                                                            <label for="formDiscount" class="form-label">Discount (%)</label>
+                                                            <input type="number" class="form-control form-control-sm" id="formDiscount" placeholder="0" step="0.01" min="0" max="100" value="0">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-2">
+                                                        <div class="mb-3">
+                                                            <label for="formFinalPrice" class="form-label">Final Price</label>
+                                                            <input type="number" class="form-control form-control-sm" id="formFinalPrice" placeholder="0.00" readonly>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-2">
+                                                        <div class="mb-3">
+                                                            <label class="form-label">&nbsp;</label>
+                                                            <div class="d-flex gap-1">
+                                                                <button type="button" class="btn btn-success btn-sm" onclick="saveVariant()">
+                                                                    <i class="material-icons md-check" style="font-size: 16px;"></i>
+                                                                </button>
+                                                                <button type="button" class="btn btn-secondary btn-sm" onclick="cancelVariantForm()">
+                                                                    <i class="material-icons md-close" style="font-size: 16px;"></i>
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -203,6 +290,9 @@
                 // Initialize variant filtering
                 initializeVariantFiltering();
                 
+                // Initialize default pricing calculation
+                initializeDefaultPricing();
+                
                 // Auto-dismiss alerts
                 const alerts = document.querySelectorAll('.alert.alert-dismissible');
                 alerts.forEach(function(alert) {
@@ -231,9 +321,16 @@
                     description: descriptionHTML,
                     category: formData.get('category'),
                     status: formData.get('status'),
-                    addedVariants: addedVariants, // Use the addedVariants array
+                    variants: addedVariants, // Use the addedVariants array with pricing
                     hasImage: !!imageFile
                 };
+                
+                // If no variants are used, include default pricing
+                if (addedVariants.length === 0) {
+                    data.price = formData.get('price');
+                    data.discount = formData.get('discount');
+                    data.finalPrice = formData.get('finalPrice');
+                }
                 
                 // If there's an image, we'll need to handle file upload separately
                 if (imageFile) {
@@ -280,10 +377,20 @@
                     return;
                 }
                 
-                // Validate variants
-                if (!data.addedVariants || data.addedVariants.length === 0) {
-                    alert('Please add at least one variant');
-                    return;
+                // Validate pricing - either variants or default pricing must be provided
+                if (data.variants && data.variants.length > 0) {
+                    // If variants are provided, they should have pricing
+                    const hasInvalidVariant = data.variants.some(v => !v.price || v.price <= 0);
+                    if (hasInvalidVariant) {
+                        alert('All variants must have valid pricing information');
+                        return;
+                    }
+                } else {
+                    // If no variants, default pricing must be provided
+                    if (!data.price || data.price <= 0) {
+                        alert('Please enter a valid price for the product');
+                        return;
+                    }
                 }
                 
                 // Create FormData for file upload
@@ -296,17 +403,25 @@
                 formData.append('category', data.category);
                 formData.append('status', data.status);
                 
-                // Add variants data
-                if (data.addedVariants.length > 0) {
+                // Add variants data or default pricing
+                if (data.variants && data.variants.length > 0) {
                     // For single variant (backward compatibility)
-                    formData.append('variant', data.addedVariants[0].variantId);
-                    formData.append('variantAttribute', data.addedVariants[0].variantAttributeId);
+                    formData.append('variant', data.variants[0].variantId);
+                    formData.append('variantAttribute', data.variants[0].variantAttributeId);
                     
-                    // For multiple variants (future use)
-                    data.addedVariants.forEach((variant, index) => {
+                    // For multiple variants with pricing
+                    data.variants.forEach((variant, index) => {
                         formData.append(`variants[${index}][variant]`, variant.variantId);
                         formData.append(`variants[${index}][variantAttribute]`, variant.variantAttributeId);
+                        formData.append(`variants[${index}][price]`, variant.price);
+                        formData.append(`variants[${index}][discount]`, variant.discount);
+                        formData.append(`variants[${index}][finalPrice]`, variant.finalPrice);
                     });
+                } else {
+                    // Add default pricing when no variants
+                    formData.append('price', data.price);
+                    formData.append('discount', data.discount || '0');
+                    formData.append('finalPrice', data.finalPrice);
                 }
                 
                 // Add image file if present
@@ -382,106 +497,239 @@
                 previewContainer.style.display = 'none';
             }
             
+            // Initialize default pricing calculation
+            function initializeDefaultPricing() {
+                const productPrice = document.getElementById('productPrice');
+                const productDiscount = document.getElementById('productDiscount');
+                const productFinalPrice = document.getElementById('productFinalPrice');
+                
+                function calculateDefaultFinalPrice() {
+                    const price = parseFloat(productPrice.value) || 0;
+                    const discount = parseFloat(productDiscount.value) || 0;
+                    const finalPrice = price - (price * discount / 100);
+                    productFinalPrice.value = finalPrice.toFixed(2);
+                }
+                
+                productPrice.addEventListener('input', calculateDefaultFinalPrice);
+                productDiscount.addEventListener('input', calculateDefaultFinalPrice);
+            }
+            
+            // Toggle pricing fields visibility based on variant usage
+            function togglePricingFields() {
+                const defaultPricingFields = document.getElementById('defaultPricingFields');
+                const hasVariants = addedVariants.length > 0;
+                
+                if (hasVariants) {
+                    // Hide default pricing when variants are present
+                    defaultPricingFields.style.display = 'none';
+                } else {
+                    // Show default pricing when no variants
+                    defaultPricingFields.style.display = 'block';
+                }
+            }
+            
             // Array to store added variants
             let addedVariants = [];
             
-            // Add variant functionality
-            function addVariant() {
-                const variantSelect = document.getElementById('productVariant');
-                const variantAttributeSelect = document.getElementById('productVariantAtt');
+            // Show variant form
+            function showVariantForm() {
+                document.getElementById('variantForm').style.display = 'block';
+                document.getElementById('addVariantButton').style.display = 'none';
                 
-                // Check if both are selected
-                if (!variantSelect.value || !variantAttributeSelect.value) {
-                    alert('Please select both Variant and Variant Attribute');
+                // Hide default pricing fields immediately when variant form is shown
+                const defaultPricingFields = document.getElementById('defaultPricingFields');
+                defaultPricingFields.style.display = 'none';
+                
+                // Initialize form functionality
+                initializeVariantForm();
+            }
+            
+            // Initialize variant form functionality
+            function initializeVariantForm() {
+                const variantAttributesData = <%- JSON.stringify(variantAttributes) %>;
+                const formVariant = document.getElementById('formVariant');
+                const formVariantAtt = document.getElementById('formVariantAtt');
+                const formPrice = document.getElementById('formPrice');
+                const formDiscount = document.getElementById('formDiscount');
+                const formFinalPrice = document.getElementById('formFinalPrice');
+                
+                // Add event listener for variant selection
+                formVariant.addEventListener('change', function() {
+                    updateFormVariantAttributes(this.value, variantAttributesData);
+                });
+                
+                // Add event listeners for price calculation
+                formPrice.addEventListener('input', calculateFormFinalPrice);
+                formDiscount.addEventListener('input', calculateFormFinalPrice);
+            }
+            
+            // Update variant attributes in form
+            function updateFormVariantAttributes(selectedVariantId, variantAttributesData) {
+                const formVariantAtt = document.getElementById('formVariantAtt');
+                
+                formVariantAtt.innerHTML = '<option value="">Select Variant First</option>';
+                formVariantAtt.disabled = true;
+                
+                if (selectedVariantId) {
+                    const filteredAttributes = variantAttributesData.filter(attr => 
+                        attr.variantName && attr.variantName._id === selectedVariantId
+                    );
+                    
+                    if (filteredAttributes.length > 0) {
+                        formVariantAtt.innerHTML = '<option value="">Select Variant Attribute</option>';
+                        filteredAttributes.forEach(attr => {
+                            const option = document.createElement('option');
+                            option.value = attr._id;
+                            option.textContent = attr.name;
+                            formVariantAtt.appendChild(option);
+                        });
+                        formVariantAtt.disabled = false;
+                    }
+                }
+            }
+            
+            // Calculate final price in form
+            function calculateFormFinalPrice() {
+                const formPrice = document.getElementById('formPrice');
+                const formDiscount = document.getElementById('formDiscount');
+                const formFinalPrice = document.getElementById('formFinalPrice');
+                
+                const price = parseFloat(formPrice.value) || 0;
+                const discount = parseFloat(formDiscount.value) || 0;
+                const finalPrice = price - (price * discount / 100);
+                
+                formFinalPrice.value = finalPrice.toFixed(2);
+            }
+            
+            // Save variant from form
+            function saveVariant() {
+                const formVariant = document.getElementById('formVariant');
+                const formVariantAtt = document.getElementById('formVariantAtt');
+                const formPrice = document.getElementById('formPrice');
+                const formDiscount = document.getElementById('formDiscount');
+                const formFinalPrice = document.getElementById('formFinalPrice');
+                
+                // Validation
+                if (!formVariant.value) {
+                    alert('Please select a variant');
                     return;
                 }
                 
-                // Get selected text and values
-                const variantText = variantSelect.options[variantSelect.selectedIndex].text;
-                const variantAttributeText = variantAttributeSelect.options[variantAttributeSelect.selectedIndex].text;
-                const variantId = variantSelect.value;
-                const variantAttributeId = variantAttributeSelect.value;
+                if (!formVariantAtt.value) {
+                    alert('Please select a variant attribute');
+                    return;
+                }
                 
-                // Check if this combination already exists
+                if (!formPrice.value || formPrice.value <= 0) {
+                    alert('Please enter a valid price');
+                    return;
+                }
+                
+                // Check for duplicate combination
                 const existingVariant = addedVariants.find(v => 
-                    v.variantId === variantId && v.variantAttributeId === variantAttributeId
+                    v.variantId === formVariant.value && v.variantAttributeId === formVariantAtt.value
                 );
                 
                 if (existingVariant) {
-                    alert('This variant combination has already been added');
+                    alert('This variant combination already exists');
                     return;
                 }
                 
-                // Add to array
+                // Create variant object
                 const variantData = {
-                    variantId: variantId,
-                    variantText: variantText,
-                    variantAttributeId: variantAttributeId,
-                    variantAttributeText: variantAttributeText
+                    variantId: formVariant.value,
+                    variantName: formVariant.options[formVariant.selectedIndex].text,
+                    variantAttributeId: formVariantAtt.value,
+                    variantAttributeName: formVariantAtt.options[formVariantAtt.selectedIndex].text,
+                    price: parseFloat(formPrice.value),
+                    discount: parseFloat(formDiscount.value) || 0,
+                    finalPrice: parseFloat(formFinalPrice.value)
                 };
                 
+                // Add to array
                 addedVariants.push(variantData);
                 
-                // Display the added variant
-                displayAddedVariant(variantData, addedVariants.length - 1);
-                
-                // Clear selections
-                clearVariantSelections();
-                
-                // Show the added variants section
-                document.getElementById('addedVariantsSection').style.display = 'block';
-            }
-            
-            // Display added variant as a chip
-            function displayAddedVariant(variantData, index) {
-                const addedVariantsList = document.getElementById('addedVariantsList');
-                
-                const chip = document.createElement('span');
-                chip.className = 'badge bg-light text-dark border me-2 mb-2';
-                chip.innerHTML = `
-                    ${variantData.variantText} - ${variantData.variantAttributeText}
-                    <button type="button" class="btn-close btn-close-sm ms-2" onclick="removeVariant(${index})" style="font-size: 0.7em;"></button>
-                `;
-                chip.id = `variant-chip-${index}`;
-                
-                addedVariantsList.appendChild(chip);
-            }
-            
-            // Remove variant from list
-            function removeVariant(index) {
-                // Remove from array
-                addedVariants.splice(index, 1);
-                
                 // Refresh display
-                refreshVariantDisplay();
+                displayAddedVariants();
+                
+                // Toggle pricing fields visibility
+                togglePricingFields();
+                
+                // Hide form and show button
+                cancelVariantForm();
             }
             
-            // Refresh the variant display
-            function refreshVariantDisplay() {
+            // Cancel variant form
+            function cancelVariantForm() {
+                // Hide form
+                document.getElementById('variantForm').style.display = 'none';
+                
+                // Show add button
+                document.getElementById('addVariantButton').style.display = 'block';
+                
+                // Show default pricing fields if no variants exist
+                const defaultPricingFields = document.getElementById('defaultPricingFields');
+                if (addedVariants.length === 0) {
+                    defaultPricingFields.style.display = 'block';
+                }
+                
+                // Clear form
+                clearVariantForm();
+            }
+            
+            // Clear variant form
+            function clearVariantForm() {
+                document.getElementById('formVariant').value = '';
+                document.getElementById('formVariantAtt').value = '';
+                document.getElementById('formVariantAtt').disabled = true;
+                document.getElementById('formVariantAtt').innerHTML = '<option value="">Select Variant First</option>';
+                document.getElementById('formPrice').value = '';
+                document.getElementById('formDiscount').value = '0';
+                document.getElementById('formFinalPrice').value = '';
+            }
+            
+            // Display added variants in table
+            function displayAddedVariants() {
                 const addedVariantsList = document.getElementById('addedVariantsList');
-                addedVariantsList.innerHTML = '';
+                const addedVariantsSection = document.getElementById('addedVariantsSection');
                 
                 if (addedVariants.length === 0) {
-                    document.getElementById('addedVariantsSection').style.display = 'none';
-                } else {
-                    addedVariants.forEach((variant, index) => {
-                        displayAddedVariant(variant, index);
-                    });
+                    addedVariantsSection.style.display = 'none';
+                    return;
                 }
+                
+                addedVariantsSection.style.display = 'block';
+                
+                let tableHTML = '';
+                addedVariants.forEach((variant, index) => {
+                    tableHTML += `
+                        <tr>
+                            <td>${variant.variantName}</td>
+                            <td>${variant.variantAttributeName}</td>
+                            <td>₹${variant.price.toFixed(2)}</td>
+                            <td>${variant.discount}%</td>
+                            <td><strong>₹${variant.finalPrice.toFixed(2)}</strong></td>
+                            <td>
+                                <button type="button" class="btn btn-sm btn-outline-danger" onclick="removeVariant(${index})" title="Remove">
+                                    <i class="material-icons md-delete" style="font-size: 14px;"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    `;
+                });
+                
+                addedVariantsList.innerHTML = tableHTML;
             }
             
-            // Clear variant selections
-            function clearVariantSelections() {
-                const variantSelect = document.getElementById('productVariant');
-                const variantAttributeSelect = document.getElementById('productVariantAtt');
-                
-                // Reset variant select
-                variantSelect.value = '';
-                
-                // Reset variant attribute select
-                variantAttributeSelect.value = '';
-                variantAttributeSelect.disabled = true;
-                variantAttributeSelect.innerHTML = '<option value="">Select Variant First</option>';
+            // Remove variant
+            function removeVariant(index) {
+                if (confirm('Are you sure you want to remove this variant?')) {
+                    addedVariants.splice(index, 1);
+                    displayAddedVariants();
+                    
+                    // Toggle pricing fields visibility
+                    togglePricingFields();
+                }
             }
             
             // Initialize variant filtering functionality
@@ -730,6 +978,81 @@
             /* Ensure dropdown appears above other elements */
             .comboTreeWrapper {
                 z-index: 1050;
+            }
+            
+            /* Variant form styling */
+            #variantForm {
+                background-color: #f8f9fa;
+                border: 1px solid #dee2e6;
+            }
+            
+            #variantForm .card-header {
+                background-color: #e9ecef;
+                border-bottom: 1px solid #dee2e6;
+            }
+            
+            .table-sm th, .table-sm td {
+                padding: 0.5rem;
+                font-size: 0.875rem;
+                vertical-align: middle;
+            }
+            
+            /* Responsive adjustments */
+            @media (max-width: 768px) {
+                #variantForm .row > div {
+                    margin-bottom: 0.75rem;
+                }
+                
+                #variantForm .col-md-2 {
+                    flex: 0 0 100%;
+                    max-width: 100%;
+                }
+                
+                .table-responsive {
+                    font-size: 0.8rem;
+                }
+            }
+            
+            /* Dark mode support */
+            @media (prefers-color-scheme: dark) {
+                .table th, .table td {
+                    color: white;
+                }
+                
+                #variantForm {
+                    background-color: #2d3748;
+                    border-color: #4a5568;
+                }
+                
+                #variantForm .card-header {
+                    background-color: #4a5568;
+                    border-color: #4a5568;
+                    color: white;
+                }
+            }
+            
+            .dark-mode .table th, 
+            .dark-mode .table td,
+            [data-theme="dark"] .table th,
+            [data-theme="dark"] .table td,
+            body.dark .table th,
+            body.dark .table td {
+                color: white;
+            }
+            
+            .dark-mode #variantForm,
+            [data-theme="dark"] #variantForm,
+            body.dark #variantForm {
+                background-color: #2d3748;
+                border-color: #4a5568;
+            }
+            
+            .dark-mode #variantForm .card-header,
+            [data-theme="dark"] #variantForm .card-header,
+            body.dark #variantForm .card-header {
+                background-color: #4a5568;
+                border-color: #4a5568;
+                color: white;
             }
         </style>
 
