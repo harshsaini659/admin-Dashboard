@@ -6,14 +6,58 @@ const buildCategoryDropdownTree = require('../utils/categoryDropdownTree')
 
 exports.listProduct = async (req, res) => {
     try {
-        const products = await Product.find().populate('category').sort({ createdAt: -1 })
+        const page = parseInt(req.query.page) || 1
+        const limit = parseInt(req.query.limit) || 10
+        const search = req.query.search || ''
+        const status = req.query.status || ''
+        const category = req.query.category || ''
+        
+        // Build query object
+        let query = {}
+        
+        if (search) {
+            query.name = { $regex: search, $options: 'i' }
+        }
+        
+        if (status) {
+            query.status = status
+        }
+        
+        if (category) {
+            query.category = category
+        }
+        
+        // Calculate pagination
+        const skip = (page - 1) * limit
+        
+        // Get total count for pagination
+        const total = await Product.countDocuments(query)
+        const totalPages = Math.ceil(total / limit)
+        
+        // Fetch products with populated fields
+        const products = await Product.find(query)
+            .populate('category', 'name')
+            .populate('variant', 'name')
+            .populate('variantAttribute', 'name')
+            .sort({ createdAt: -1 })
+            .skip(skip)
+            .limit(limit)
+        
+        // Get categories for filter dropdown
+        const categories = await Category.find({ status: 'active' }).sort({ name: 1 })
+        
         console.log('Products found:', products.length)
         
         res.render('products/list', {
             title: 'All Products',
             products: products || [],
-            currentPage: 1,
-            totalPages: 1, // Add this for pagination
+            categories: categories || [],
+            currentPage: page,
+            totalPages: totalPages,
+            total: total,
+            search: search,
+            statusFilter: status,
+            categoryFilter: category,
             success: req.query.success,
             error: req.query.error
         })
@@ -22,8 +66,13 @@ exports.listProduct = async (req, res) => {
         res.render('products/list', {
             title: 'All Products',
             products: [],
+            categories: [],
             currentPage: 1,
-            totalPages: 1, // Add this for pagination
+            totalPages: 1,
+            total: 0,
+            search: '',
+            statusFilter: '',
+            categoryFilter: '',
             error: 'Error loading products'
         })
     }
@@ -130,6 +179,58 @@ exports.createProduct = async (req, res) => {
         if(err.code === 11000) {
             return res.status(400).json({ message: "Product with this name already exists" })
         }
+        res.status(500).json({ message: "Server error" })
+    }
+}
+
+// Delete product
+exports.deleteProduct = async (req, res) => {
+    try {
+        const productId = req.params.id
+        const product = await Product.findById(productId)
+        
+        if (!product) {
+            return res.status(404).json({ message: "Product not found" })
+        }
+        
+        // Delete associated image file if exists
+        if (product.image) {
+            const fs = require('fs')
+            const path = require('path')
+            const filePath = path.join(__dirname, '../public/uploads/products', product.image)
+            fs.unlink(filePath, (unlinkErr) => {
+                if (unlinkErr) console.error('Error deleting image file:', unlinkErr)
+            })
+        }
+        
+        await Product.findByIdAndDelete(productId)
+        res.json({ message: "Product deleted successfully" })
+    } catch (err) {
+        console.error('Error deleting product:', err)
+        res.status(500).json({ message: "Server error" })
+    }
+}
+
+// Toggle product status
+exports.toggleProductStatus = async (req, res) => {
+    try {
+        const productId = req.params.id
+        const product = await Product.findById(productId)
+        
+        if (!product) {
+            return res.status(404).json({ message: "Product not found" })
+        }
+        
+        // Toggle status
+        const newStatus = product.status === 'active' ? 'inactive' : 'active'
+        await Product.findByIdAndUpdate(productId, { status: newStatus })
+        
+        res.json({ 
+            message: `Product ${newStatus === 'active' ? 'activated' : 'deactivated'} successfully`,
+            status: newStatus 
+        })
+    } catch (err) {
+        console.error('Error toggling product status:', err)
         res.status(500).json({ message: "Server error" })
     }
 }
