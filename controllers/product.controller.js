@@ -116,10 +116,10 @@ exports.createProduct = async (req, res) => {
         console.log('Body:', req.body)
         console.log('File:', req.file)
         console.log('================================')
-        
-        const { name, description, shortDescription, category, status, variant, variantAttribute } = req.body
-        console.log('Received data:', { name, description, shortDescription, category, status, variant, variantAttribute }) // Debug log
-        
+
+        const { name, description, shortDescription, category, status, variant, variantAttribute, price, discount, finalPrice, stock } = req.body
+        console.log('Received data:', { name, description, shortDescription, category, status, variant, variantAttribute, price, discount, finalPrice, stock }) // Debug log
+
         // Validate required fields
         if (!name || !name.trim()) {
             return res.status(400).json({ message: "Product name is required" })
@@ -153,6 +153,10 @@ exports.createProduct = async (req, res) => {
             status: status || 'active', // Simplified
             variant: variant || null,
             variantAttribute: variantAttribute || null,
+            price: parseFloat(price) || 0, // Ensure price is a number
+            discount: parseFloat(discount) || 0, // Ensure discount is a number
+            finalPrice: parseFloat(finalPrice) || 0, // Ensure finalPrice is a number
+            stock: parseInt(stock) || 0, // Ensure stock is a number
             image: imagePath
         })
 

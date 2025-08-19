@@ -6,7 +6,7 @@ const path = require('path')
 dotenv.config()
 const app = express()
 app.use(express.urlencoded({ extended: true }))
-app.use(express.json())
+app.use(express.json())  //express.json() middleware to parse JSON bodies
 app.use(cookieParser())
 app.use(express.static('public'));
 // Serve uploaded files

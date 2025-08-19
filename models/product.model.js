@@ -4,22 +4,15 @@ const productSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    description: {
-        type: String,
-        required: true
-    },
-    shortDescription: {
-        type: String,
-        required: true
-    },
-    image: {
-        type: String,
-        required: false
-    },
     category: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Category',
         required: true
+    },
+    status: {
+        type: String,
+        enum: ['active', 'inactive'],
+        default: 'active'
     },
     variant: {
         type: mongoose.Schema.Types.ObjectId,
@@ -31,10 +24,30 @@ const productSchema = new mongoose.Schema({
         ref: 'VariantAttribute',
         required: false
     },
-    status: {
+    price: {
+        type: Number,
+        required: true
+    },
+    discount: {
+        type: Number,
+        default: 0
+    },
+    finalPrice: {
+        type: Number,
+        required: true
+    },
+    stock: {
+        type: Number,
+        required: true,
+        default: 0
+    },
+    shortDescription: {
         type: String,
-        enum: ['active', 'inactive'],
-        default: 'active'
+        required: true
+    },
+    image: {
+        type: String,
+        required: false
     }
 }, {
     timestamps: true

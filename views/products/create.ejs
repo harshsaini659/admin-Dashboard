@@ -6,7 +6,7 @@
                 <div class="content-header">
                     <div>
                         <h2 class="content-title card-title"><%= title %></h2>
-                        <p>Add a new product to your inventory</p>
+                        <!-- <p>Add a new product to your inventory</p> -->
                     </div>
                     <div>
                         <a href="/admin/user/products" class="btn btn-light">
@@ -26,14 +26,16 @@
                 <div class="row justify-content-center">
                     <div class="col-lg-8">
                         <div class="card mb-4">
-                            <div class="card-header">
+                            <!-- <div class="card-header">
                                 <h4>Product Information</h4>
-                            </div>
+                            </div> -->
+
+                            
                             <div class="card-body">
                                 <form id="productForm">
                                     <div class="mb-4">
                                         <label for="productName" class="form-label">Product Name <span class="text-danger">*</span></label>
-                                        <input type="text" class="form-control" id="productName" name="name" required>
+                                        <input type="text" class="form-control" placeholder="Enter product name" id="productName" name="name" required>
                                     </div>
                                     
                                     <div class="row">
@@ -42,7 +44,7 @@
                                             <label for="categoryParent" class="form-label">Category <span class="text-danger">*</span></label>
                                             <input type="text" id="categoryParentTree" class="form-control" placeholder="Select a category" readonly>
                                             <input type="hidden" id="categoryParent" name="category" value="">
-                                            <div class="form-text">Select a product category</div>
+                                            <!-- <div class="form-text">Select a product category</div> -->
                                         </div>
                                         <div class="col-md-6">
                                             <div class="mb-4">
@@ -51,7 +53,7 @@
                                                     <option value="active" selected>Active</option>
                                                     <option value="inactive">Inactive</option>
                                                 </select>
-                                                <div class="form-text">Set the product availability status</div>
+                                                <!-- <div class="form-text">Set the product availability status</div> -->
                                             </div>
                                         </div>
                                     </div>
@@ -59,7 +61,7 @@
                                     <!-- Variants Section -->
                                     <div class="mb-4">
                                         <label class="form-label">Product Variants</label>
-                                        <div class="form-text mb-3">Add variants to set different pricing for different attributes (Color, Size, etc.)</div>
+                                        <!-- <div class="form-text mb-3">Add variants to set different pricing for different attributes (Color, Size, etc.)</div> -->
                                         
                                         <!-- Added Variants Display -->
                                         <div id="addedVariantsSection" class="mb-3" style="display: none;">
@@ -74,10 +76,6 @@
                                                                 <tr>
                                                                     <th>Variant</th>
                                                                     <th>Attribute</th>
-                                                                    <th>Price</th>
-                                                                    <th>Discount</th>
-                                                                    <th>Final Price</th>
-                                                                    <th>Action</th>
                                                                 </tr>
                                                             </thead>
                                                             <tbody id="addedVariantsList">
@@ -102,57 +100,38 @@
                                                 <h6 class="mb-0">Add New Variant</h6>
                                             </div>
                                             <div class="card-body">
-                                                <div class="row">
-                                                    <div class="col-md-2">
-                                                        <div class="mb-3">
-                                                            <label for="formVariant" class="form-label">Variant <span class="text-danger">*</span></label>
-                                                            <select class="form-select form-select-sm" id="formVariant">
-                                                                <option value="">Select Variant</option>
-                                                                <% if (typeof variants !== 'undefined' && variants.length > 0) { %>
-                                                                    <% variants.forEach(variant => { %>
-                                                                        <option value="<%= variant._id %>"><%= variant.name %></option>
-                                                                    <% }) %>
-                                                                <% } %>
-                                                            </select>
-                                                        </div>
+                                                <!-- First Row: Variant Selection -->
+                                                <div class="row mb-3">
+                                                    <div class="col-md-6">
+                                                        <label for="formVariant" class="form-label">Variant <span class="text-danger">*</span></label>
+                                                        <select class="form-select" id="formVariant">
+                                                            <option value="">Select Variant</option>
+                                                            <% if (typeof variants !== 'undefined' && variants.length > 0) { %>
+                                                                <% variants.forEach(variant => { %>
+                                                                    <option value="<%= variant._id %>"><%= variant.name %></option>
+                                                                <% }) %>
+                                                            <% } %>
+                                                        </select>
                                                     </div>
-                                                    <div class="col-md-2">
-                                                        <div class="mb-3">
-                                                            <label for="formVariantAtt" class="form-label">Attribute <span class="text-danger">*</span></label>
-                                                            <select class="form-select form-select-sm" id="formVariantAtt" disabled>
-                                                                <option value="">Select Variant First</option>
-                                                            </select>
-                                                        </div>
+                                                    <div class="col-md-6">
+                                                        <label for="formVariantAtt" class="form-label">Attribute <span class="text-danger">*</span></label>
+                                                        <select class="form-select" id="formVariantAtt" disabled>
+                                                            <option value="">Select Variant First</option>
+                                                        </select>
                                                     </div>
-                                                    <div class="col-md-2">
-                                                        <div class="mb-3">
-                                                            <label for="formPrice" class="form-label">Price <span class="text-danger">*</span></label>
-                                                            <input type="number" class="form-control form-control-sm" id="formPrice" placeholder="0.00" step="0.01" min="0">
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-2">
-                                                        <div class="mb-3">
-                                                            <label for="formDiscount" class="form-label">Discount (%)</label>
-                                                            <input type="number" class="form-control form-control-sm" id="formDiscount" placeholder="0" step="0.01" min="0" max="100" value="0">
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-2">
-                                                        <div class="mb-3">
-                                                            <label for="formFinalPrice" class="form-label">Final Price</label>
-                                                            <input type="number" class="form-control form-control-sm" id="formFinalPrice" placeholder="0.00" readonly>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-2">
-                                                        <div class="mb-3">
-                                                            <label class="form-label">&nbsp;</label>
-                                                            <div class="d-flex gap-1">
-                                                                <button type="button" class="btn btn-success btn-sm" onclick="saveVariant()">
-                                                                    <i class="material-icons md-check" style="font-size: 16px;"></i>
-                                                                </button>
-                                                                <button type="button" class="btn btn-secondary btn-sm" onclick="cancelVariantForm()">
-                                                                    <i class="material-icons md-close" style="font-size: 16px;"></i>
-                                                                </button>
-                                                            </div>
+                                                </div>
+                                                
+                                                <!-- Third Row: Stock and Actions -->
+                                                <div class="row mb-3">
+                                                    <div class="col-md-6">
+                                                        <label class="form-label">&nbsp;</label>
+                                                        <div class="d-flex gap-2">
+                                                            <button type="button" class="btn btn-success" onclick="saveVariant()">
+                                                                <i class="material-icons md-check"></i> Save Variant
+                                                            </button>
+                                                            <button type="button" class="btn btn-secondary" onclick="cancelVariantForm()">
+                                                                <i class="material-icons md-close"></i> Cancel
+                                                            </button>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -161,29 +140,38 @@
                                     </div>
                                     
                                     <!-- Default Product Pricing Fields (shown when no variants) -->
-                                    <div id="defaultPricingFields" class="mb-4">
-                                        <label class="form-label">Product Pricing</label>
+                                    <div id="defaultPricingFields" class="mb-4" onchange="initializeDefaultPricing()">
+                                        <label class="form-label">Product Pricing & Stock</label>
                                         <div class="row">
-                                            <div class="col-md-4">
+                                            <div class="col-md-3">
                                                 <div class="mb-3">
-                                                    <label for="productPrice" class="form-label">Price <span class="text-danger">*</span></label>
+                                                    <label for="productPrice" class="form-label">MRP <span class="text-danger">*</span></label>
                                                     <input type="number" class="form-control" id="productPrice" name="price" placeholder="0.00" step="0.01" min="0">
                                                 </div>
                                             </div>
-                                            <div class="col-md-4">
+                                            <div class="col-md-3">
                                                 <div class="mb-3">
                                                     <label for="productDiscount" class="form-label">Discount (%)</label>
                                                     <input type="number" class="form-control" id="productDiscount" name="discount" placeholder="0" step="0.01" min="0" max="100" value="0">
+                                                    <div class="invalid-feedback" id="discountError" style="display: none;">
+                                                        Discount cannot be more than 100%
+                                                    </div>
                                                 </div>
                                             </div>
-                                            <div class="col-md-4">
+                                            <div class="col-md-3">
                                                 <div class="mb-3">
                                                     <label for="productFinalPrice" class="form-label">Final Price</label>
                                                     <input type="number" class="form-control" id="productFinalPrice" name="finalPrice" placeholder="0.00" readonly>
                                                 </div>
                                             </div>
+                                            <div class="col-md-3">
+                                                <div class="mb-3">
+                                                    <label for="productStock" class="form-label">Stock <span class="text-danger">*</span></label>
+                                                    <input type="number" class="form-control" id="productStock" name="stock" placeholder="0" min="0" value="0">
+                                                </div>
+                                            </div>
                                         </div>
-                                        <div class="form-text">Set the default price for this product (will be hidden when variants are added)</div>
+                                        <!-- <div class="form-text">Set the default pricing and stock for this product (will be hidden when variants are added)</div> -->
                                     </div>
                                     
                                     <!-- Short Description Field -->
@@ -227,7 +215,7 @@
                         </div>
                     </div>
                 </div>
-                
+
                 <!-- Action Buttons at Bottom -->
                 <div class="row justify-content-center">
                     <div class="col-lg-8">
@@ -238,9 +226,9 @@
                                         <i class="material-icons md-cancel"></i> Cancel
                                     </a>
                                     <div class="d-flex gap-2">
-                                        <button type="button" class="btn btn-secondary" onclick="saveDraft()">
+                                        <!-- <button type="button" class="btn btn-secondary" onclick="saveDraft()">
                                             <i class="material-icons md-drafts"></i> Save as Draft
-                                        </button>
+                                        </button> -->
                                         <button type="button" class="btn btn-primary" onclick="saveProduct()">
                                             <i class="material-icons md-save"></i> Save Product
                                         </button>
@@ -251,8 +239,6 @@
                     </div>
                 </div>
             </section>
-        
-        </script>
         
         <!-- Quill Rich Text Editor -->
         <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
@@ -291,7 +277,7 @@
                 initializeVariantFiltering();
                 
                 // Initialize default pricing calculation
-                initializeDefaultPricing();
+                <!-- initializeDefaultPricing(); -->
                 
                 // Auto-dismiss alerts
                 const alerts = document.querySelectorAll('.alert.alert-dismissible');
@@ -307,7 +293,8 @@
             function collectFormData() {
                 const form = document.getElementById('productForm');
                 const formData = new FormData(form);
-                
+                console.log("Product Form Data from collectFormData(): ", formData)
+
                 // Get rich text content from Quill editor
                 const description = quill.getContents();
                 const descriptionHTML = quill.root.innerHTML;
@@ -330,6 +317,7 @@
                     data.price = formData.get('price');
                     data.discount = formData.get('discount');
                     data.finalPrice = formData.get('finalPrice');
+                    data.stock = formData.get('stock');
                 }
                 
                 // If there's an image, we'll need to handle file upload separately
@@ -343,14 +331,8 @@
             // Save product
             function saveProduct() {
                 const formData = collectFormData();
+                console.log("Product Form Data from saveProduct() function: ",formData);
                 formData.status = formData.status || 'active'; // Ensure status is set
-                submitProduct(formData);
-            }
-            
-            // Save as draft
-            function saveDraft() {
-                const formData = collectFormData();
-                formData.status = 'inactive'; // Draft is always inactive
                 submitProduct(formData);
             }
             
@@ -413,16 +395,13 @@
                     data.variants.forEach((variant, index) => {
                         formData.append(`variants[${index}][variant]`, variant.variantId);
                         formData.append(`variants[${index}][variantAttribute]`, variant.variantAttributeId);
-                        formData.append(`variants[${index}][price]`, variant.price);
-                        formData.append(`variants[${index}][discount]`, variant.discount);
-                        formData.append(`variants[${index}][finalPrice]`, variant.finalPrice);
                     });
-                } else {
-                    // Add default pricing when no variants
-                    formData.append('price', data.price);
-                    formData.append('discount', data.discount || '0');
-                    formData.append('finalPrice', data.finalPrice);
                 }
+
+                formData.append('price', data.price);
+                formData.append('discount', data.discount || '0');
+                formData.append('finalPrice', data.finalPrice);
+                formData.append('stock', data.stock || '0'); // Add stock if available
                 
                 // Add image file if present
                 if (data.imageFile) {
@@ -499,33 +478,56 @@
             
             // Initialize default pricing calculation
             function initializeDefaultPricing() {
+                console.log('Initializing default pricing calculation...');
+                
                 const productPrice = document.getElementById('productPrice');
                 const productDiscount = document.getElementById('productDiscount');
                 const productFinalPrice = document.getElementById('productFinalPrice');
+                const discountError = document.getElementById('discountError');
+
+                //console.log("progyguy", productPrice, productDiscount, productFinalPrice);
+
+                // Check if elements exist
+                if (!productPrice || !productDiscount || !productFinalPrice) {
+                    console.error('Default pricing elements not found:', {
+                        productPrice: !!productPrice,
+                        productDiscount: !!productDiscount,
+                        productFinalPrice: !!productFinalPrice
+                    });
+                    return;
+                }
                 
-                function calculateDefaultFinalPrice() {
+                window.calculateDefaultFinalPrice = function() {
                     const price = parseFloat(productPrice.value) || 0;
                     const discount = parseFloat(productDiscount.value) || 0;
-                    const finalPrice = price - (price * discount / 100);
+                    // Validate discount
+                    if (discount > 100) {
+                        productDiscount.classList.add('is-invalid');
+                        if (discountError) {
+                            discountError.style.display = 'block';
+                        }
+                        productFinalPrice.value = '';
+                        return;
+                    } else {
+                        productDiscount.classList.remove('is-invalid');
+                        if (discountError) {
+                            discountError.style.display = 'none';
+                        }
+                    }
+                    // Calculate final price
+                    let finalPrice;
+                    if (discount === 0 || isNaN(discount)) {
+                        finalPrice = price; // Final Price = MRP when no discount
+                    } else {
+                        finalPrice = price - (price * discount / 100);
+                    }
                     productFinalPrice.value = finalPrice.toFixed(2);
-                }
-                
-                productPrice.addEventListener('input', calculateDefaultFinalPrice);
-                productDiscount.addEventListener('input', calculateDefaultFinalPrice);
-            }
-            
-            // Toggle pricing fields visibility based on variant usage
-            function togglePricingFields() {
-                const defaultPricingFields = document.getElementById('defaultPricingFields');
-                const hasVariants = addedVariants.length > 0;
-                
-                if (hasVariants) {
-                    // Hide default pricing when variants are present
-                    defaultPricingFields.style.display = 'none';
-                } else {
-                    // Show default pricing when no variants
-                    defaultPricingFields.style.display = 'block';
-                }
+                };
+                // Add event listeners
+                productPrice.addEventListener('input', window.calculateDefaultFinalPrice);
+                productDiscount.addEventListener('input', window.calculateDefaultFinalPrice);
+                // Calculate initial value
+                window.calculateDefaultFinalPrice();
             }
             
             // Array to store added variants
@@ -537,8 +539,8 @@
                 document.getElementById('addVariantButton').style.display = 'none';
                 
                 // Hide default pricing fields immediately when variant form is shown
-                const defaultPricingFields = document.getElementById('defaultPricingFields');
-                defaultPricingFields.style.display = 'none';
+                //const defaultPricingFields = document.getElementById('defaultPricingFields');
+                //defaultPricingFields.style.display = 'none';
                 
                 // Initialize form functionality
                 initializeVariantForm();
@@ -549,9 +551,9 @@
                 const variantAttributesData = <%- JSON.stringify(variantAttributes) %>;
                 const formVariant = document.getElementById('formVariant');
                 const formVariantAtt = document.getElementById('formVariantAtt');
-                const formPrice = document.getElementById('formPrice');
-                const formDiscount = document.getElementById('formDiscount');
-                const formFinalPrice = document.getElementById('formFinalPrice');
+                //const formPrice = document.getElementById('formPrice');
+                //const formDiscount = document.getElementById('formDiscount');
+                //const formFinalPrice = document.getElementById('formFinalPrice');
                 
                 // Add event listener for variant selection
                 formVariant.addEventListener('change', function() {
@@ -605,9 +607,6 @@
             function saveVariant() {
                 const formVariant = document.getElementById('formVariant');
                 const formVariantAtt = document.getElementById('formVariantAtt');
-                const formPrice = document.getElementById('formPrice');
-                const formDiscount = document.getElementById('formDiscount');
-                const formFinalPrice = document.getElementById('formFinalPrice');
                 
                 // Validation
                 if (!formVariant.value) {
@@ -617,11 +616,6 @@
                 
                 if (!formVariantAtt.value) {
                     alert('Please select a variant attribute');
-                    return;
-                }
-                
-                if (!formPrice.value || formPrice.value <= 0) {
-                    alert('Please enter a valid price');
                     return;
                 }
                 
@@ -641,9 +635,6 @@
                     variantName: formVariant.options[formVariant.selectedIndex].text,
                     variantAttributeId: formVariantAtt.value,
                     variantAttributeName: formVariantAtt.options[formVariantAtt.selectedIndex].text,
-                    price: parseFloat(formPrice.value),
-                    discount: parseFloat(formDiscount.value) || 0,
-                    finalPrice: parseFloat(formFinalPrice.value)
                 };
                 
                 // Add to array
@@ -653,7 +644,7 @@
                 displayAddedVariants();
                 
                 // Toggle pricing fields visibility
-                togglePricingFields();
+                //togglePricingFields();
                 
                 // Hide form and show button
                 cancelVariantForm();
@@ -668,10 +659,10 @@
                 document.getElementById('addVariantButton').style.display = 'block';
                 
                 // Show default pricing fields if no variants exist
-                const defaultPricingFields = document.getElementById('defaultPricingFields');
-                if (addedVariants.length === 0) {
-                    defaultPricingFields.style.display = 'block';
-                }
+                //const defaultPricingFields = document.getElementById('defaultPricingFields');
+                //if (addedVariants.length === 0) {
+                //    defaultPricingFields.style.display = 'block';
+                //}
                 
                 // Clear form
                 clearVariantForm();
@@ -683,9 +674,10 @@
                 document.getElementById('formVariantAtt').value = '';
                 document.getElementById('formVariantAtt').disabled = true;
                 document.getElementById('formVariantAtt').innerHTML = '<option value="">Select Variant First</option>';
-                document.getElementById('formPrice').value = '';
-                document.getElementById('formDiscount').value = '0';
-                document.getElementById('formFinalPrice').value = '';
+                //document.getElementById('formPrice').value = '';
+                //document.getElementById('formDiscount').value = '0';
+                //document.getElementById('formFinalPrice').value = '';
+                //document.getElementById('formStock').value = '0';
             }
             
             // Display added variants in table
@@ -706,9 +698,6 @@
                         <tr>
                             <td>${variant.variantName}</td>
                             <td>${variant.variantAttributeName}</td>
-                            <td>₹${variant.price.toFixed(2)}</td>
-                            <td>${variant.discount}%</td>
-                            <td><strong>₹${variant.finalPrice.toFixed(2)}</strong></td>
                             <td>
                                 <button type="button" class="btn btn-sm btn-outline-danger" onclick="removeVariant(${index})" title="Remove">
                                     <i class="material-icons md-delete" style="font-size: 14px;"></i>
@@ -728,7 +717,7 @@
                     displayAddedVariants();
                     
                     // Toggle pricing fields visibility
-                    togglePricingFields();
+                   // togglePricingFields();
                 }
             }
             
@@ -805,6 +794,8 @@
                 });
             });
         </script>
+
+
 <%- include('../partials/footer') %>
 
         <style>
