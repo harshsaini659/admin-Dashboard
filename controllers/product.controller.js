@@ -85,6 +85,53 @@ exports.listProduct = async (req, res) => {
     }
 }
 
+exports.listProductDetail = async (req, res) => {
+    try {
+        console.log('Fetching product detailed list...')
+        const productId = req.params.id
+        console.log("log1");
+        
+        const page = parseInt(req.query.page) || 1
+        const limit = parseInt(req.query.limit) || 10
+
+        const skip = (page - 1) * limit
+        
+        // Fetch products with populated fields
+        const products = await Product.find({ _id: productId })
+            // .populate('category', 'name')
+            .populate('variants.variant', 'name')
+            .populate('variants.variantAttribute', 'name')
+            .sort({ createdAt: -1 })
+            .skip(skip)
+            // .limit(limit)
+
+
+        // // Get categories for filter dropdown
+        // const categories = await Category.find({ status: 'active' }).sort({ name: 1 })
+        // //get variant and variant attribute for filter dropdown
+        // const variant = await Variant.find({ status: 'active' }).sort({ name: 1 })
+        // const variantAttributes = await VariantAttribute.find({ status: 'active' }).populate('variantName', 'name _id').sort({ name: 1 })
+        console.log('Sending detailed product list...')
+        console.log("Product Data",products);
+        
+        res.render('products/detailedList', {
+            title: 'List Detailed Product',
+            products: products || [],
+            currentPage: page,
+        })
+    } catch(err) {
+        console.error('Error fetching products:', err)
+        res.render('products/detailedList', {
+            title: 'List Detailed Product',
+            products: [],
+            currentPage: 1,
+            error: 'Error loading products'
+        })
+    }
+}
+
+
+
 // Show create product form (for web interface)
 exports.createProductForm = async (req, res) => {
     try {
@@ -198,6 +245,7 @@ exports.createProduct = async (req, res) => {
         res.status(500).json({ message: "Server error" })
     }
 }
+
 
 // Delete product
 exports.deleteProduct = async (req, res) => {
