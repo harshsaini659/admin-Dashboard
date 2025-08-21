@@ -36,10 +36,9 @@
                                     <th scope="col">#</th>
                                     <th scope="col">Product Name</th>
                                     <th scope="col">Variant</th>
-                                    <!-- <th scope="col">Attribute</th> -->
                                     <th scope="col">Stock</th>
-                                    <!-- <th scope="col">Status</th> -->
                                     <th scope="col">Price</th>
+                                    <th scope="col">Status</th>
                                     <th scope="col">Created</th>
                                     <th scope="col">Actions</th>
                                 </tr>
@@ -68,21 +67,39 @@
                                                     <span class="text-muted">-</span>
                                                     <% } %>
                                         </td>
-                                        <!-- <td>
-                                            <% (product.attribute)  %>
-                                        </td> -->
                                         <td>
                                             <%= product.stock %>
                                         </td>
                                         <td>
                                             ₹<%= product.price %>
                                         </td>
+                                        <td>
+                                            <% if (product.status === 'active') { %>
+                                                <span class="badge badge-pill badge-soft-success">Active</span>
+                                            <% } else { %>
+                                                <span class="badge badge-pill badge-soft-secondary">Inactive</span>
+                                            <% } %>
+                                        </td>
                                         <td><%= new Date(product.createdAt).toLocaleDateString() %></td>
                                         <td>
-                                            <div class="btn-group btn-group-sm" role="group">
-                                                <a href="/admin/user/products/list/<%= product._id %>" class="btn btn-light btn-sm" title="List Detailed Product">
-                                                    <i class="material-icons md-edit"></i>
-                                                </a>
+                                            <div class="dropdown">
+                                                    <button class="btn btn-light btn-sm " type="button" id="actionMenu<%= product._id %>" data-bs-toggle="dropdown" aria-expanded="false">
+                                                    <i class="material-icons">+</i>
+                                                    </button>
+                                                    <ul class="dropdown-menu" aria-labelledby="actionMenu<%= product._id %>">
+                                                    <!-- View option -->
+                                                    <li>
+                                                        <a class="dropdown-item" href="/admin/user/products/list/<%= product._id %>">
+                                                        <i class="material-icons md-list me-1"></i> List
+                                                        </a>
+                                                    </li>
+                                                    <!-- Delete option -->
+                                                    <li>
+                                                        <button class="dropdown-item text-danger" onclick="deleteProduct('<%= product._id %>', '<%= product.name %>')">
+                                                        <i class="material-icons md-delete me-1"></i> Delete
+                                                        </button>
+                                                    </li>
+                                                </ul>
                                             </div>
                                         </td>
                                     </tr>
