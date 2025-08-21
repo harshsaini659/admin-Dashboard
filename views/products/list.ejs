@@ -41,7 +41,6 @@
                                             <th scope="col">#</th>
                                             <th scope="col">Product Name</th>
                                             <th scope="col">Category</th>
-                                            <th scope="col" class="text-center">Variants</th>
                                             <th scope="col">Stock</th>
                                             <th scope="col">Price</th>
                                             <th scope="col">Status</th>
@@ -70,13 +69,13 @@
                                                         </div>
                                                         <div>
                                                             <strong><%= product.name %></strong>
-                                                            <% if (product.shortDescription) { %>
+                                                            <!-- <% if (product.shortDescription) { %>
                                                                 <br><small class="text-muted">
                                                                     <%= product.shortDescription.length > 50 ? 
                                                                         product.shortDescription.substring(0, 50) + '...' : 
                                                                         product.shortDescription %>
                                                                 </small>
-                                                            <% } %>
+                                                            <% } %> -->
                                                         </div>
                                                     </div>
                                                 </td>
@@ -87,26 +86,24 @@
                                                         <span class="text-muted">No Category</span>
                                                     <% } %>
                                                 </td>
-                                                <td class="text-center">
-                                                    <% if (product.variant && product.variantAttribute) { %>
-                                                        <span class="badge bg-info">1</span>
+                                                <!-- <td class="text-center">
+                                                    <% if (product.variants && product.variants.length> 0) { %>
+                                                    <% product.variants.forEach(function(v) { %>
+                                                <div>
+                                                    <span class="badge bg-info">
+                                                    <%= v.variant.name %> - <%= v.variantAttribute.name %>
+                                                    </span>
+                                                </div>
+                                                    <% }) %>
                                                     <% } else { %>
-                                                        <span class="text-muted">-</span>
+                                                    <span class="text-muted">-</span>
                                                     <% } %>
+                                                </td> -->
+                                                <td>
+                                                    <%= product.stock %>
                                                 </td>
                                                 <td>
-                                                    <% 
-                                                        // Mock stock data - replace with actual stock field
-                                                        const mockStock = Math.floor(Math.random() * 100) + 1;
-                                                    %>
-                                                    <%= mockStock %>
-                                                </td>
-                                                <td>
-                                                    <% 
-                                                        // Mock price data - replace with actual price field
-                                                        const mockPrice = (Math.random() * 1000 + 100).toFixed(2);
-                                                    %>
-                                                    ₹<%= mockPrice %>
+                                                    ₹<%= product.price %>
                                                 </td>
                                                 <td>
                                                     <% if (product.status === 'active') { %>

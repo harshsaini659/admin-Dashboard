@@ -14,16 +14,16 @@ const productSchema = new mongoose.Schema({
         enum: ['active', 'inactive'],
         default: 'active'
     },
-    variant: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Variant',
-        required: false
-    },
-    variantAttribute: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'VariantAttribute',
-        required: false
-    },
+    variants: [{
+        variant: { type: mongoose.Schema.Types.ObjectId,
+        ref: 'Variant', 
+        required: true
+        },
+        variantAttribute: { type: mongoose.Schema.Types.ObjectId, 
+        ref: 'VariantAttribute', 
+        required: true 
+        }
+    }],
     price: {
         type: Number,
         required: true

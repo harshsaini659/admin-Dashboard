@@ -292,8 +292,7 @@
             // Collect form data
             function collectFormData() {
                 const form = document.getElementById('productForm');
-                const formData = new FormData(form);
-                console.log("Product Form Data from collectFormData(): ", formData)
+                const formData = new FormData(form);   //FormData ki help se maine formData main sari fields ki values leli.
 
                 // Get rich text content from Quill editor
                 const description = quill.getContents();
@@ -304,11 +303,15 @@
                 
                 const data = {
                     name: formData.get('name'),
-                    shortDescription: formData.get('shortDescription'),
-                    description: descriptionHTML,
                     category: formData.get('category'),
                     status: formData.get('status'),
-                    variants: addedVariants, // Use the addedVariants array with pricing
+                    variants: addedVariants, // Use the addedVariants array
+                    price: formData.get('price'),
+                    discount: formData.get('discount'),
+                    finalPrice: formData.get('finalPrice'),
+                    stock: formData.get('stock'),
+                    shortDescription: formData.get('shortDescription'),
+                    description: descriptionHTML,
                     hasImage: !!imageFile
                 };
                 
@@ -333,6 +336,7 @@
                 const formData = collectFormData();
                 console.log("Product Form Data from saveProduct() function: ",formData);
                 formData.status = formData.status || 'active'; // Ensure status is set
+                console.log("Data from saveProduct :",formData)
                 submitProduct(formData);
             }
             
@@ -359,44 +363,18 @@
                     return;
                 }
                 
-                // Validate pricing - either variants or default pricing must be provided
-                if (data.variants && data.variants.length > 0) {
-                    // If variants are provided, they should have pricing
-                    const hasInvalidVariant = data.variants.some(v => !v.price || v.price <= 0);
-                    if (hasInvalidVariant) {
-                        alert('All variants must have valid pricing information');
-                        return;
-                    }
-                } else {
-                    // If no variants, default pricing must be provided
-                    if (!data.price || data.price <= 0) {
-                        alert('Please enter a valid price for the product');
-                        return;
-                    }
-                }
-                
                 // Create FormData for file upload
-                const formData = new FormData();
+                const formData = new FormData(); // or yaha main FormData function ki help se main empty formData create kiya.
                 
                 // Add regular form fields
                 formData.append('name', data.name);
-                formData.append('shortDescription', data.shortDescription);
-                formData.append('description', data.description);
                 formData.append('category', data.category);
                 formData.append('status', data.status);
+                formData.append('shortDescription', data.shortDescription);
+                formData.append('description', data.description);
                 
-                // Add variants data or default pricing
-                if (data.variants && data.variants.length > 0) {
-                    // For single variant (backward compatibility)
-                    formData.append('variant', data.variants[0].variantId);
-                    formData.append('variantAttribute', data.variants[0].variantAttributeId);
-                    
-                    // For multiple variants with pricing
-                    data.variants.forEach((variant, index) => {
-                        formData.append(`variants[${index}][variant]`, variant.variantId);
-                        formData.append(`variants[${index}][variantAttribute]`, variant.variantAttributeId);
-                    });
-                }
+                // Send the exact array you have on the client:
+                formData.append('variants', JSON.stringify(data.variants || []));
 
                 formData.append('price', data.price);
                 formData.append('discount', data.discount || '0');
@@ -404,15 +382,13 @@
                 formData.append('stock', data.stock || '0'); // Add stock if available
                 
                 // Add image file if present
-                if (data.imageFile) {
-                    formData.append('image', data.imageFile);
-                }
+                if (data.imageFile) formData.append('image', data.imageFile);
                 
-                fetch('/admin/user/products/create', {
+               const res =  fetch('/admin/user/products/create', {
                     method: 'POST',
                     body: formData // Don't set Content-Type header, let browser set it with boundary
                 })
-                .then(response => response.json())
+                .then(response => response.json()) //ye chalta hai or backend ka JSON response yaha milta hai or JS Object main convert ho jata hai.)
                 .then(result => {
                     if (result.message && result.message.includes('successfully')) {
                         window.location.href = '/admin/user/products?success=' + encodeURIComponent(result.message);
@@ -561,8 +537,8 @@
                 });
                 
                 // Add event listeners for price calculation
-                formPrice.addEventListener('input', calculateFormFinalPrice);
-                formDiscount.addEventListener('input', calculateFormFinalPrice);
+                //formPrice.addEventListener('input', calculateFormFinalPrice);
+                //formDiscount.addEventListener('input', calculateFormFinalPrice);
             }
             
             // Update variant attributes in form
@@ -725,7 +701,6 @@
             function initializeVariantFiltering() {
                 // Get variant attributes data from backend
                 const variantAttributesData = <%- JSON.stringify(variantAttributes) %>;
-                console.log('Variant attributes data:', variantAttributesData);
                 
                 const variantSelect = document.getElementById('productVariant');
                 const variantAttributeSelect = document.getElementById('productVariantAtt');

@@ -6,6 +6,7 @@ const buildCategoryDropdownTree = require('../utils/categoryDropdownTree')
 
 exports.listProduct = async (req, res) => {
     try {
+        console.log('Fetching product list...')
         const page = parseInt(req.query.page) || 1
         const limit = parseInt(req.query.limit) || 10
         const search = req.query.search || ''
@@ -37,21 +38,27 @@ exports.listProduct = async (req, res) => {
         // Fetch products with populated fields
         const products = await Product.find(query)
             .populate('category', 'name')
-            .populate('variant', 'name')
-            .populate('variantAttribute', 'name')
+            // .populate('variants.variant', 'name')
+            // .populate('variants.variantAttribute', 'name')
             .sort({ createdAt: -1 })
             .skip(skip)
             .limit(limit)
-        
-        // Get categories for filter dropdown
-        const categories = await Category.find({ status: 'active' }).sort({ name: 1 })
-        
-        console.log('Products found:', products.length)
+
+            console.log('Fetched product variants:', JSON.stringify(products, null, 2))
+
+
+        // // Get categories for filter dropdown
+        // const categories = await Category.find({ status: 'active' }).sort({ name: 1 })
+        // //get variant and variant attribute for filter dropdown
+        // const variant = await Variant.find({ status: 'active' }).sort({ name: 1 })
+        // const variantAttributes = await VariantAttribute.find({ status: 'active' }).populate('variantName', 'name _id').sort({ name: 1 })
         
         res.render('products/list', {
             title: 'All Products',
             products: products || [],
-            categories: categories || [],
+            // categories: categories || [],
+            // variant: variant || [],
+            // variantAttributes: variantAttributes || [],
             currentPage: page,
             totalPages: totalPages,
             total: total,
@@ -80,7 +87,6 @@ exports.listProduct = async (req, res) => {
 
 // Show create product form (for web interface)
 exports.createProductForm = async (req, res) => {
-    console.log("log1")
     try {
         const categories = await Category.find({ status: 'active' }).sort({ name: 1 })
         const variants = await Variant.find({ status: 'active' }).sort({ name: 1 })
@@ -112,13 +118,13 @@ exports.createProductForm = async (req, res) => {
 // Create product (API method - keep existing)
 exports.createProduct = async (req, res) => {
     try {
-        console.log('=== Product Creation Request ===')
-        console.log('Body:', req.body)
-        console.log('File:', req.file)
-        console.log('================================')
-
-        const { name, description, shortDescription, category, status, variant, variantAttribute, price, discount, finalPrice, stock } = req.body
-        console.log('Received data:', { name, description, shortDescription, category, status, variant, variantAttribute, price, discount, finalPrice, stock }) // Debug log
+        const { name, description, shortDescription, category, status, price, discount, finalPrice, stock } = req.body
+        let variants = [];
+        try {
+          variants = req.body.variants ? JSON.parse(req.body.variants) : [];
+        } catch (e) {
+          return res.status(400).json({ message: 'Invalid variants payload' });
+        }
 
         // Validate required fields
         if (!name || !name.trim()) {
@@ -146,22 +152,28 @@ exports.createProduct = async (req, res) => {
         }
         
         const newProduct = new Product({
-            name: name.trim(), 
-            description: description.trim(),
-            shortDescription: shortDescription.trim(),
-            category: category, // ObjectId - no trim needed
-            status: status || 'active', // Simplified
-            variant: variant || null,
-            variantAttribute: variantAttribute || null,
-            price: parseFloat(price) || 0, // Ensure price is a number
-            discount: parseFloat(discount) || 0, // Ensure discount is a number
-            finalPrice: parseFloat(finalPrice) || 0, // Ensure finalPrice is a number
-            stock: parseInt(stock) || 0, // Ensure stock is a number
-            image: imagePath
-        })
+          name: name.trim(),
+          description: description.trim(),
+          shortDescription: shortDescription.trim(),
+          category, // ObjectId - no trim needed
+          status: status || "active", // Simplified
+          variants: variants.map((v) => ({
+            variant: v.variantId,
+            variantAttribute: v.variantAttributeId,
+            variantName: v.variantName,
+            variantAttributeName: v.variantAttributeName,
+          })),
+          price: parseFloat(price) || 0, // Ensure price is a number
+          discount: parseFloat(discount) || 0, // Ensure discount is a number
+          finalPrice: parseFloat(finalPrice) || 0, // Ensure finalPrice is a number
+          stock: parseInt(stock) || 0, // Ensure stock is a number
+          image: imagePath,
+        });
+
+        console.log("New product created:", newProduct)
 
         const savedProduct = await newProduct.save()
-        console.log('Saved product:', savedProduct) // Debug log
+        // console.log('Saved product:', savedProduct) // Debug log
         res.status(201).json({ message: "Product created successfully", product: savedProduct })
     } catch (err) {
         console.error('=== Product Creation Error ===')
