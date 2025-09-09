@@ -6,7 +6,6 @@
                 <div class="content-header">
                     <div>
                         <h2 class="content-title card-title"><%= title %></h2>
-                        <p>Create a new product category</p>
                     </div>
                     <div>
                         <a href="/admin/user/categories" class="btn btn-light">
@@ -24,50 +23,51 @@
                 <% } %>
                 
                 <div class="row">
-                    <div class="col-lg-8">
+                    <div class="col-12">
                         <div class="card mb-4">
                             <div class="card-body">
-                                <!-- here the tree is form -->
+                                <!-- Category Creation Form -->
                                 <form method="POST" action="/admin/user/categories/create">
-                                    <div class="row">
-                                        <!-- Parent Category Tree Dropdown -->
-                                        <div class="col-12 mb-3">
-                                            <label for="categoryParent" class="form-label">Parent Category</label>
-                                            <input type="text" id="categoryParentTree" class="form-control" placeholder="Select parent category or leave empty for root category" readonly>
-                                            <input type="hidden" id="categoryParent" name="parent" value="">
-                                            <div class="form-text">Select a parent category or leave as root category</div>
-                                        </div>
-                                        
-                                        <!-- Category Name -->
-                                        <div class="col-md-6">
-                                            <div class="mb-3">
-                                                <label for="categoryName" class="form-label">Category Name <span class="text-danger">*</span></label>
-                                                <input type="text" class="form-control" id="categoryName" name="name" required maxlength="50" placeholder="Enter category name">
-                                                <div class="form-text">Maximum 50 characters</div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="mb-3">
-                                                <label for="categoryStatus" class="form-label">Status</label>
-                                                <select class="form-select" id="categoryStatus" name="status">
-                                                    <option value="active" selected>Active</option>
-                                                    <option value="inactive">Inactive</option>
-                                                </select>
-                                            </div>
-                                        </div>
+                                    <!-- Parent Category Tree Dropdown -->
+                                    <div class="mb-4">
+                                        <label for="categoryParent" class="form-label">Parent Category <span id="parentCategoryRequired" class="text-danger" style="display: none;">*</span></label>
+                                        <input type="text" id="categoryParentTree" class="form-control" placeholder="--Select Category--" readonly>
+                                        <input type="hidden" id="categoryParent" name="parent" value="">
+                                        <div class="form-text">Category is required</div>
                                     </div>
-                                    <div class="d-flex gap-2">
-                                        <button type="submit" class="btn btn-primary">
-                                            <i class="material-icons md-save"></i> Create Category
+                                    
+                                    <!-- Category Name -->
+                                    <div class="mb-4">
+                                        <label for="categoryName" class="form-label">Category Name <span class="text-danger">*</span></label>
+                                        <input type="text" class="form-control" id="categoryName" name="name" required maxlength="50" placeholder="Enter category name">
+                                        <div class="form-text">Maximum 50 characters</div>
+                                    </div>
+                                    
+                                    <!-- Status -->
+                                    <div class="mb-4">
+                                        <label for="categoryStatus" class="form-label">Status</label>
+                                        <select class="form-select" id="categoryStatus" name="status">
+                                            <option value="active" selected>Active</option>
+                                            <option value="inactive">Inactive</option>
+                                        </select>
+                                        <div class="form-text">Set the category status</div>
+                                    </div>
+                                    
+                                    <!-- Action Buttons -->
+                                    <div class="d-flex gap-3 pt-3">
+                                        <button type="submit" class="btn btn-primary btn-lg px-4">
+                                            <i class="material-icons md-save me-2"></i> Create Category
                                         </button>
-                                        <a href="/admin/user/categories" class="btn btn-light">Cancel</a>
+                                        <a href="/admin/user/categories" class="btn btn-light btn-lg px-4">
+                                            <i class="material-icons md-arrow_back me-2"></i> Cancel
+                                        </a>
                                     </div>
                                 </form>
                             </div>
                         </div>
                     </div>
                     
-                    <div class="col-lg-4">
+                    <!-- <div class="col-lg-4">
                         <div class="card">
                             <div class="card-header">
                                 <h6 class="card-title">Help</h6>
@@ -83,13 +83,113 @@
                                 </p>
                             </div>
                         </div>
-                    </div>
+                    </div> -->
                 </div>
             </section>
             <%- include('../partials/footer') %>
         </main>
         
         <style>
+            /* Full-width form styling */
+            .form-control, .form-select {
+                width: 100% !important;
+                min-height: 48px;
+                font-size: 1rem;
+                padding: 0.75rem 1rem;
+                border-radius: 0.5rem;
+                border: 1px solid #e0e6ed;
+                transition: all 0.2s ease-in-out;
+            }
+            
+            .form-control:focus, .form-select:focus {
+                border-color: #0d6efd;
+                box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
+                outline: 0;
+            }
+            
+            .form-label {
+                font-weight: 600;
+                color: #2c3e50;
+                margin-bottom: 0.75rem;
+                font-size: 1rem;
+            }
+            
+            .form-text {
+                font-size: 0.875rem;
+                color: #6c757d;
+                margin-top: 0.5rem;
+            }
+            
+            /* Card styling improvements */
+            .card {
+                border-radius: 1rem;
+                box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+                border: none;
+            }
+            
+            .card-body {
+                padding: 2rem;
+            }
+            
+            /* Button styling improvements */
+            .btn-lg {
+                padding: 0.75rem 2rem;
+                font-size: 1.1rem;
+                border-radius: 0.5rem;
+                font-weight: 500;
+            }
+            
+            .btn-primary {
+                background-color: #0d6efd;
+                border-color: #0d6efd;
+                transition: all 0.2s ease-in-out;
+            }
+            
+            .btn-primary:hover {
+                background-color: #0b5ed7;
+                border-color: #0a58ca;
+                transform: translateY(-1px);
+            }
+            
+            .btn-light {
+                background-color: #f8f9fa;
+                border-color: #dee2e6;
+                color: #495057;
+                transition: all 0.2s ease-in-out;
+            }
+            
+            .btn-light:hover {
+                background-color: #e9ecef;
+                border-color: #adb5bd;
+                transform: translateY(-1px);
+            }
+            
+            /* Form spacing improvements */
+            .mb-4 {
+                margin-bottom: 1.5rem !important;
+            }
+            
+            /* Responsive improvements */
+            @media (max-width: 768px) {
+                .card-body {
+                    padding: 1.5rem;
+                }
+                
+                .btn-lg {
+                    padding: 0.6rem 1.5rem;
+                    font-size: 1rem;
+                }
+                
+                .d-flex.gap-3 {
+                    flex-direction: column;
+                    gap: 1rem !important;
+                }
+                
+                .btn-lg {
+                    width: 100%;
+                }
+            }
+            
             /* ComboTree Plugin Styling to match Bootstrap theme */
             .comboTreeWrapper {
                 position: relative;
@@ -125,26 +225,7 @@
                 box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
             }
             
-            .comboTreeArrowBtn {
-                position: absolute;
-                top: 50%;
-                right: 0.75rem;
-                transform: translateY(-50%);
-                width: 16px;
-                height: 16px;
-                background: none;
-                border: none;
-                cursor: pointer;
-                color: #6c757d;
-                z-index: 3;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-            }
             
-            .comboTreeArrowBtnImg {
-                font-size: 16px;
-            }
             
             .comboTreeDropDownContainer {
                 position: absolute;
@@ -296,11 +377,46 @@
                     selectableLastNode: true
                 });
                 
+                // Function to check if category selection is required
+                function checkCategoryRequirement() {
+                    var currentText = $('#categoryParentTree').val();
+                    var requiredSpan = $('#parentCategoryRequired');
+                    
+                    // If placeholder text is still showing, make it required
+                    if (currentText === '--Select Category--' || currentText === '') {
+                        requiredSpan.show();
+                        $('#categoryParentTree').attr('data-required', 'true');
+                    } else {
+                        requiredSpan.hide();
+                        $('#categoryParentTree').removeAttr('data-required');
+                    }
+                }
+                
                 // Handle selection change
                 comboTree.onChange(function() {
                     var selectedIds = comboTree.getSelectedIds();
                     var selectedId = selectedIds && selectedIds.length > 0 ? selectedIds[0] : '';
                     $('#categoryParent').val(selectedId);
+                    
+                    // Check requirement after selection
+                    setTimeout(checkCategoryRequirement, 100);
+                });
+                
+                // Initial check
+                checkCategoryRequirement();
+                
+                // Form validation before submit
+                $('form').on('submit', function(e) {
+                    var currentText = $('#categoryParentTree').val();
+                    var parentValue = $('#categoryParent').val();
+                    
+                    // If placeholder is still showing and no parent value is set, prevent submission
+                    if ((currentText === '--Select Category--' || currentText === '') && parentValue === '') {
+                        e.preventDefault();
+                        alert('Please select a parent category or choose "Root Category"');
+                        $('#categoryParentTree').focus();
+                        return false;
+                    }
                 });
             });
         </script>

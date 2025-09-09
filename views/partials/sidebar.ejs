@@ -55,6 +55,12 @@
                             <a href="/admin/user/products/create">Add Product</a>
                         </div>
                     </li>
+                    <li class="menu-item <%= typeof currentPage !== 'undefined' && currentPage === 'orders' ? 'active' : '' %> ">
+                        <a class="menu-link" href="/admin/user/usersList">
+                            <i class="icon material-icons md-shopping_cart"></i>
+                            <span class="text">Users</span>
+                        </a>
+                    </li>
                     <li class="menu-item <%= typeof currentPage !== 'undefined' && currentPage === 'orders' ? 'active' : '' %> has-submenu">
                         <a class="menu-link" href="/admin/user/orders">
                             <i class="icon material-icons md-shopping_cart"></i>

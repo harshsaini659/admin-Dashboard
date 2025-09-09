@@ -11,5 +11,6 @@ router.use('/categories', require('./category.routes'))              // /admin/u
 router.use('/variants',require('./productVariant.routes'))           // /admin/user/variants
 router.use('/variantAtt',require('./productVariantAtt.routes'))           // /admin/user/variants
 router.use('/products', require('./product.routes'))                         // /admin/user/products
+router.use('/usersList', require('./usersList.routes'))                           // /admin/user/users
 
 module.exports = router
